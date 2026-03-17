@@ -1,28 +1,26 @@
 <?php
 
-namespace App\Http\Controllers\Libro;
+namespace App\Http\Controllers\Autor;
 
 use App\Http\Controllers\Controller;
+use App\Models\Autor;
 use Illuminate\Http\Request;
-use App\Models\Libro;
 
-class VerLibroController extends Controller
+class VerAutorController extends Controller
 {
     /**
      * Handle the incoming request.
      */
     public function __invoke(Request $request, $id)
     {
-        //
         //findOrFail return exception
         try {
-            $libro=Libro::findOrFail($id);
-            return response()->json([
-                $libro , 200
-            ]);
+            $autor=Autor::findOrFail($id);
+            return response()->json(
+                $autor , 200);
         } catch (\Throwable $th) {
             return response()->json(
-                ["message"=>"Libro no encontrado"], 404);
+                ["message"=>"Autor no encontrado"], 400);
         }
     }
 }

@@ -15,6 +15,6 @@ class ListarLibrosController extends Controller
     {
         //
         $Listadolibros= Libro::all();
-        return response()->json($Listadolibros);
+        return response()->json($Listadolibros, 200);
     }
 }

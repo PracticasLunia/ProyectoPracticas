@@ -25,5 +25,7 @@ class CrearLibroController extends Controller
         ]);
 
         Libro::create($request->all());
+
+        response()->json("Libro creado", 200);
     }
 }

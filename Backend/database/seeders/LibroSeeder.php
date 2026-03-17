@@ -20,6 +20,8 @@ class LibroSeeder extends Seeder
             "sinopsis" => "se centra en la familia Buendía de Riohacha y la maldición que llevan con ellos, por involucrarse entre parientes",
             "num_paginas" => 450,
             "disponible" => true,
+            "autor_id" =>1
+
         ]);
         Libro::create([
             "titulo" => "Don Quijote de la Mancha",
@@ -28,6 +30,7 @@ class LibroSeeder extends Seeder
             "sinopsis" => "La novela narra las aventuras de Alonso Quijano, un viejo caballero que de tanto leer historias de caballería pierde la razón y decide convertirse en caballero andante para salir a resolver problemas e impartir justicia.",
             "num_paginas" => 234,
             "disponible" => true,
+            "autor_id"=>2
         ]);
         Libro::create([
             "titulo" => "El señor de los anillos",
@@ -36,6 +39,7 @@ class LibroSeeder extends Seeder
             "sinopsis" => "La novela narra el viaje del protagonista principal, Frodo Bolsón, hobbit de la Comarca, para destruir el Anillo Único y la consiguiente guerra que provocará el enemigo para recuperarlo",
             "num_paginas" => 923,
             "disponible" => false,
+            "autor_id"=>3
         ]);
         Libro::create([
             "titulo" => "Cien años de soledad",
@@ -44,6 +48,7 @@ class LibroSeeder extends Seeder
             "sinopsis" => "se centra en la familia Buendía de Riohacha y la maldición que llevan con ellos, por involucrarse entre parientes",
             "num_paginas" => 450,
             "disponible" => true,
+            "autor_id"=>3
         ]);
         Libro::create([
             "titulo" => "El guardian entre el centeno",
@@ -52,6 +57,7 @@ class LibroSeeder extends Seeder
             "sinopsis" => "Narra las experiencias de Holden Caulfield un adolescente de diecisiete años, perteneciente a una familia adinerada en los años 50 en los Estados Unidos, en plena recuperación de la guerra de Vietnam.",
             "num_paginas" => 125,
             "disponible" => true,
+            "autor_id"=>2
         ]);
     }
 }

@@ -17,7 +17,10 @@ class DatabaseSeeder extends Seeder
     {
 
         $this->call([
+            GeneroSeeder::class,
+            AutorSeeder::class,
             LibroSeeder::class,
+            GeneroLibroSeeder::class,
         ]);
         /*// User::factory(10)->create();
 
