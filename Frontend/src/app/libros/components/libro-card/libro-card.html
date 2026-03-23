@@ -1,0 +1,12 @@
+<div class="card w-96 bg-base-100 card-md shadow-sm">
+  <div class="card-body">
+    <h2 class="card-title">{{libro().titulo}}</h2>
+    <p>{{libro().autor_id}}</p>
+    <p>{{libro().publicacion}}</p>
+    <p>{{libro().sinopsis}}</p>
+
+    <div class="justify-end card-actions">
+      <a [routerLink]="['/libros', libro().id]" class="btn btn-primary">Más informacion</a>
+    </div>
+  </div>
+</div>
