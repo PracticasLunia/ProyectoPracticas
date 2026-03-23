@@ -13,7 +13,7 @@ class LibroSeeder extends Seeder
      */
     public function run(): void
     {
-        Libro::create([
+        $libro=Libro::create([
             "titulo" => "Cien años de soledad",
             "isbn"=> "97884968",
             "publicacion"=> 2018,
@@ -21,9 +21,10 @@ class LibroSeeder extends Seeder
             "num_paginas" => 450,
             "disponible" => true,
             "autor_id" =>1
-
         ]);
-        Libro::create([
+        //$libro->generos()->attach([1,2]);
+
+        $libro= Libro::create([
             "titulo" => "Don Quijote de la Mancha",
             "isbn"=> "97884568",
             "publicacion"=> 2010,
@@ -32,7 +33,9 @@ class LibroSeeder extends Seeder
             "disponible" => true,
             "autor_id"=>2
         ]);
-        Libro::create([
+        //$libro->generos()->attach([2,3]);
+
+        $libro=Libro::create([
             "titulo" => "El señor de los anillos",
             "isbn"=> "1245679834",
             "publicacion"=> 2012,
@@ -41,7 +44,9 @@ class LibroSeeder extends Seeder
             "disponible" => false,
             "autor_id"=>3
         ]);
-        Libro::create([
+        //$libro->generos()->attach([3,4]);
+
+        $libro=Libro::create([
             "titulo" => "Cien años de soledad",
             "isbn"=> "978849643",
             "publicacion"=> 2018,
@@ -50,7 +55,9 @@ class LibroSeeder extends Seeder
             "disponible" => true,
             "autor_id"=>3
         ]);
-        Libro::create([
+        //$libro->generos()->attach([3,4]);
+
+        $libro=Libro::create([
             "titulo" => "El guardian entre el centeno",
             "isbn"=> "9076352467",
             "publicacion"=> 2016,
@@ -59,5 +66,6 @@ class LibroSeeder extends Seeder
             "disponible" => true,
             "autor_id"=>2
         ]);
+        //$libro->generos()->attach([1,5]);
     }
 }

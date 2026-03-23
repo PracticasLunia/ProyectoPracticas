@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Libro;
 use App\Http\Controllers\Controller;
 use App\Models\Libro;
 use Illuminate\Http\Request;
-
+use Illuminate\Database\Eloquent\Builder;
 class BuscarLibrosController extends Controller
 {
     /**
@@ -22,6 +22,8 @@ class BuscarLibrosController extends Controller
             'sinopsis' => $request->input('sinopsis'),
             'num_paginas' => $request->input('num_paginas'),
             'disponible' => $request->input('disponible'),
+            'autor_id' => $request->input('autor_id'),
+            'genero_nombre' => $request->input('genero_nombre'),
         ];
 
         //Evaluacion
@@ -50,6 +52,10 @@ class BuscarLibrosController extends Controller
                 ->where('sinopsis', 'LIKE', '%'.$parametros['sinopsis'].'%')
                 ->where('num_paginas', 'LIKE', '%'.$parametros['num_paginas'].'%')
                 ->where('disponible', 'LIKE', '%'.$parametros['disponible'].'%')
+                ->where('autor_id', 'LIKE', '%'.$parametros['autor_id'].'%')
+                ->whereHas('generos', function(Builder $query) use($parametros){
+                    $query->whereIn('generos.nombre',$parametros['genero_nombre']);
+                })
                 ->get();
             return response()->json($libros, 200);
     }

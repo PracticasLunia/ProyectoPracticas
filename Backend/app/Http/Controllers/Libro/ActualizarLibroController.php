@@ -21,7 +21,7 @@ class ActualizarLibroController extends Controller
             "sinopsis"=>"nullable|max:255",
             "num_paginas"=>"required|integer",
             "disponible" => "boolean",
-            "autor_id"=> "required|exits:autores,id",
+            "autor_id"=> "required|exists:autores,id",
             "genero_ids" => "required|array"
         ]);
 
@@ -44,10 +44,10 @@ class ActualizarLibroController extends Controller
             //Update relations to generos
             $libro->generos()->sync($request->genero_ids);
 
-            $libroGeneros= $libro->generos;
+            //$libroGeneros= $libro->generos;
             return response()->json([
 
-                $libroGeneros
+                $libro
 
             ], 200);
         }
