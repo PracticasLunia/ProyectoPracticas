@@ -46,7 +46,9 @@ class BuscarLibrosController extends Controller
                 return response()->json('Formato no compatible', 200);
             }*/
 
-            $libros= Libro::where('titulo', 'LIKE', '%'.$parametros['titulo'].'%')
+
+            $libros =
+            Libro::where('titulo', 'LIKE', '%'.$parametros['titulo'].'%')
                 ->where('isbn', 'LIKE', '%'.$parametros['isbn'].'%')
                 ->where('publicacion', 'LIKE', '%'.$parametros['publicacion'].'%')
                 ->where('sinopsis', 'LIKE', '%'.$parametros['sinopsis'].'%')
@@ -54,7 +56,13 @@ class BuscarLibrosController extends Controller
                 ->where('disponible', 'LIKE', '%'.$parametros['disponible'].'%')
                 ->where('autor_id', 'LIKE', '%'.$parametros['autor_id'].'%')
                 ->whereHas('generos', function(Builder $query) use($parametros){
-                    $query->whereIn('generos.nombre',$parametros['genero_nombre']);
+                    if(is_array($parametros['genero_nombre']))
+                        {
+                            $query->whereIn('generos.nombre',$parametros['genero_nombre']);
+                        }else{
+                            $query->where('generos.nombre',$parametros['genero_nombre']);
+
+                        }
                 })
                 ->get();
             return response()->json($libros, 200);

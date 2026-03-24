@@ -1,3 +1,36 @@
-@if(libro()!=null){
-  <h2>{{libro()?.titulo}}</h2>
-}
+<div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
+  <table class="table">
+    <!-- head -->
+    <thead>
+      <tr>
+        <th>Titulo</th>
+        <th>ISBN</th>
+        <th>AÑo</th>
+        <th>Sinopsis</th>
+        <th>Páginas</th>
+        <th>Disponibilidad</th>
+        <th>Autor Completo</th>
+        <th>Generos</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- row 1 -->
+      <tr>
+        <td>{{libro()?.titulo}}</td>
+        <td>{{libro()?.isbn}}</td>
+        <td>{{libro()?.publicacion}}</td>
+        <td>{{libro()?.sinopsis}}</td>
+        <td>{{libro()?.num_paginas}}</td>
+        <td>
+          @if(libro()?.disponible==1){
+            Disponible
+          }
+          @else {
+            No disponible
+          }
+        </td>
+        <td>{{libro()?.autor_id}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

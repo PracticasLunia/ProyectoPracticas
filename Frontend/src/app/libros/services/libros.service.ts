@@ -11,9 +11,6 @@ export class LibrosService {
   //Inyection depency
   private http= inject(HttpClient);
 
-  //Se guardaran los libros
-  //libros= signal<Libro[]>([]);
-
   cargarLibros(){
     //Peticion
     return this.http.get<Libro[]>(`${environment.urlBackend}/libros`)
@@ -21,6 +18,11 @@ export class LibrosService {
 
   cargarLibroById(id:number){
     return this.http.get<Libro>(`${environment.urlBackend}/libros/${id}`)
+  }
+
+  buscarLibrosFormulario(urlForm:string){
+    return this.http.get<Libro[]>
+    (`${environment.urlBackend}/libros/buscar?${urlForm}`)
   }
 
 }

@@ -17,9 +17,9 @@ class VerLibroController extends Controller
         //findOrFail return exception
         try {
             $libro=Libro::findOrFail($id);
-            return response()->json([
+            return response()->json(
                 $libro , 200
-            ]);
+            );
         } catch (\Throwable $th) {
             return response()->json(
                 ["message"=>"Libro no encontrado"], 404);

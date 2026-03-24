@@ -1,6 +1,3 @@
-@for (libro of libros(); track libro.id) {
-  <app-libro-card [libro]="libro" ></app-libro-card>
-}
 <h2>Filtrar por</h2>
 
 <form autocomplete="off" [formGroup]="formulario" (ngSubmit)="onSubmit()">
@@ -51,4 +48,3 @@
 </div>
 
 </form>
-

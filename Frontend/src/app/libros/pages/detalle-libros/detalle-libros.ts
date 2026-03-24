@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@ang
 import { LibrosService } from '../../services/libros.service';
 import { Libro } from '../../interfaces/libros.interface';
 import { ActivatedRoute, Router} from '@angular/router';
-
+import { JsonPipe } from '@angular/common';
 @Component({
   selector: 'app-detalle-libros',
   imports: [],
@@ -12,7 +12,7 @@ import { ActivatedRoute, Router} from '@angular/router';
 })
 export default class DetalleLibros implements OnInit {
 
-  ngOnInit() {
+  ngOnInit(): void{
     this.detalleLibro(this.id);
   }
 
@@ -20,7 +20,7 @@ export default class DetalleLibros implements OnInit {
   router= inject(Router);
 
   //Tomar el id de la ruta
-  id= inject(ActivatedRoute).snapshot.params['code'];
+  id= inject(ActivatedRoute).snapshot.params['id'];
 
   //Informacion del libro, valor inicial nulo
   libro= signal<Libro|null>(null);
@@ -33,6 +33,7 @@ export default class DetalleLibros implements OnInit {
     this.service.cargarLibroById(id)
     .subscribe((respuesta)=>{
       this.libro.set(respuesta)
+      console.log(respuesta);
     })
   }
 
