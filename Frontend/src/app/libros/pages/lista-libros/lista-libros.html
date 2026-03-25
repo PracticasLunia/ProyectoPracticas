@@ -1,54 +1,67 @@
-@for (libro of libros(); track libro.id) {
-  <app-libro-card [libro]="libro" ></app-libro-card>
-}
+<div class="w-full flex flex-col gap-6 p-6">
+
+<div class="w-full bg-white p-6 rounded-xl shadow-md border">
 <h2>Filtrar por</h2>
 
 <form autocomplete="off" [formGroup]="formulario" (ngSubmit)="onSubmit()">
-
-<div class="p-4">
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
 
     <div class="flex gap-4">
 
-      <div class="flex items-center gap-2">
-        <label class="whitespace-nowrap">Titulo:</label>
+      <div class="flex flex-col">
+        <label class="text-sm text-gray-600 mb-1">Título</label>
         <input type="text"
           class="form-control"
           placeholder="Titulo"
           formControlName="titulo">
       </div>
 
-      <div class="flex items-center gap-2">
-        <label class="whitespace-nowrap">Isbn:</label>
+      <div class="flex flex-col">
+        <label class="text-sm text-gray-600 mb-1">Isbn</label>
         <input type="text"
           class="form-control"
           placeholder="Isbn"
           formControlName="isbn">
       </div>
 
-      <div class="flex items-center gap-2">
-        <label class="whitespace-nowrap">Autor:</label>
+      <div class="flex flex-col">
+        <label class="text-sm text-gray-600 mb-1">Autor</label>
         <input type="text"
           class="form-control"
           placeholder="Autor"
           formControlName="autor">
       </div>
 
-      <div class="flex items-center gap-2">
-        <label class="whitespace-nowrap">Genero:</label>
+      <div class="flex flex-col">
+        <label class="text-sm text-gray-600 mb-1">Genero</label>
         <input type="text"
           class="form-control"
           placeholder="Genero"
           formControlName="genero_nombre">
       </div>
 
-      <div>
-        <button class="btn btn-primary float-end"
-          type="submit">
-          Filtrar
-        </button>
+      <div class="flex items-end">
+          <button
+            class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+            Filtrar
+          </button>
       </div>
-    </div>
-</div>
 
+    </div>
+  </div>
 </form>
 
+</div>
+
+<div class="w-full">
+
+    <h2 class="text-xl font-semibold mb-4">Resultados</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      @for (libro of libros(); track libro.id) {
+        <app-libro-card [libro]="libro"></app-libro-card>
+      }
+    </div>
+
+</div>
+
+</div>

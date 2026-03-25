@@ -22,7 +22,7 @@ class BuscarLibrosController extends Controller
             'sinopsis' => $request->input('sinopsis'),
             'num_paginas' => $request->input('num_paginas'),
             'disponible' => $request->input('disponible'),
-            'autor_id' => $request->input('autor_id'),
+            'autor' => $request->input('autor'),
             'genero_nombre' => $request->input('genero_nombre'),
         ];
 
@@ -54,14 +54,23 @@ class BuscarLibrosController extends Controller
                 ->where('sinopsis', 'LIKE', '%'.$parametros['sinopsis'].'%')
                 ->where('num_paginas', 'LIKE', '%'.$parametros['num_paginas'].'%')
                 ->where('disponible', 'LIKE', '%'.$parametros['disponible'].'%')
-                ->where('autor_id', 'LIKE', '%'.$parametros['autor_id'].'%')
+                //->where('autor', '=', $parametros['autor'])
+
+                ->whereHas('autor', function(Builder $query) use ($parametros){
+                    if(is_array($parametros['autor'])){
+                        $query->whereIn('autores.nombre', $parametros['autor']);
+                    }
+                    elseif(!empty($parametros['autor'])){
+                        $query->where('autores.nombre', 'LIKE', '%'.$parametros['autor'].'%');
+                    }
+                })
+
                 ->whereHas('generos', function(Builder $query) use($parametros){
                     if(is_array($parametros['genero_nombre']))
                         {
                             $query->whereIn('generos.nombre',$parametros['genero_nombre']);
-                        }else{
-                            $query->where('generos.nombre',$parametros['genero_nombre']);
-
+                        }elseif(!empty($parametros['genero_nombre'])){
+                            $query->where('generos.nombre', $parametros['genero_nombre']);
                         }
                 })
                 ->get();

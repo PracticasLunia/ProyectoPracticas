@@ -16,9 +16,26 @@ class VerLibroController extends Controller
         //
         //findOrFail return exception
         try {
-            $libro=Libro::findOrFail($id);
+            $libro = Libro::with('autor', 'generos')
+                ->findOrFail($id);
+
+            $respuesta = [
+                'id' => $libro['id'],
+                'created_at' => $libro['created_at'],
+                'updated_at' => $libro['updated_at'],
+                'titulo' => $libro['titulo'],
+                'isbn' => $libro['isbn'],
+                'autor_id' => $libro['autor_id'],
+                'publicacion' => $libro['publicacion'],
+                'sinopsis' => $libro['sinopsis'],
+                'num_paginas' => $libro['num_paginas'],
+                'disponible' => $libro['disponible'],
+                'nombre_autor' => $libro['autor']['nombre'],
+                'generos'=>$libro['generos']
+            ];
+
             return response()->json(
-                $libro , 200
+                $respuesta , 200
             );
         } catch (\Throwable $th) {
             return response()->json(

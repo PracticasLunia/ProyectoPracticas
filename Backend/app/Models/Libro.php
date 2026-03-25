@@ -17,7 +17,7 @@ class Libro extends Model
     ];
 
     //Method relation
-    public function autores(){
+    public function autor(){
         return $this->belongsTo(Autor::class);
     }
 

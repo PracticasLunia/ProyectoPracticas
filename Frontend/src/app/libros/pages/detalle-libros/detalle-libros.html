@@ -29,7 +29,11 @@
             No disponible
           }
         </td>
-        <td>{{libro()?.autor_id}}</td>
+        <td>{{libro()?.nombre_autor}}</td>
+
+        @for (genero of libro()?.generos; track $index) {
+          <td>{{genero.nombre}}</td>
+        }
       </tr>
     </tbody>
   </table>
