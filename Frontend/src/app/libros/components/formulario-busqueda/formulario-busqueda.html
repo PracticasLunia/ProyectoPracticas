@@ -1,50 +1,60 @@
-<h2>Filtrar por</h2>
-
 <form autocomplete="off" [formGroup]="formulario" (ngSubmit)="onSubmit()">
-
-<div class="p-4">
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
 
     <div class="flex gap-4">
 
-      <div class="flex items-center gap-2">
-        <label class="whitespace-nowrap">Titulo:</label>
+      <div class="flex flex-col">
+        <label class="text-sm text-gray-600 mb-1">Título</label>
         <input type="text"
           class="form-control"
-          placeholder="Titulo"
           formControlName="titulo">
       </div>
 
-      <div class="flex items-center gap-2">
-        <label class="whitespace-nowrap">Isbn:</label>
+      <div class="flex flex-col">
+        <label class="text-sm text-gray-600 mb-1">Isbn</label>
         <input type="text"
           class="form-control"
-          placeholder="Isbn"
           formControlName="isbn">
       </div>
 
-      <div class="flex items-center gap-2">
-        <label class="whitespace-nowrap">Autor:</label>
+      <div class="flex flex-col">
+        <label class="text-sm text-gray-600 mb-1">Año de publicacion</label>
         <input type="text"
           class="form-control"
-          placeholder="Autor"
-          formControlName="autor">
+          formControlName="anio_publicacion">
       </div>
 
-      <div class="flex items-center gap-2">
-        <label class="whitespace-nowrap">Genero:</label>
-        <input type="text"
-          class="form-control"
-          placeholder="Genero"
-          formControlName="genero_nombre">
+      <div class="flex flex-col">
+        <label class="text-sm text-gray-600 mb-1">Disponible</label>
+        <input type="checkbox" value="true">Si
+        <input type="checkbox" value="false">No
       </div>
 
-      <div>
-        <button class="btn btn-primary float-end"
-          type="submit">
-          Filtrar
-        </button>
+      <div class="flex flex-col">
+        <label class="text-sm text-gray-600 mb-1">Autor</label>
+        <select class="form-control" formControlName="autor">
+        @for (autor of autores(); track $index) {
+            <option [value]="autor.id" >{{autor.nombre}}</option>
+          }
+        </select>
       </div>
+
+      <div class="flex flex-col">
+        <label class="text-sm text-gray-600 mb-1">Genero</label>
+        <select class="form-control" formControlName="autor" multiple>
+          @for (genero of generos(); track $index) {
+            <option [value]="genero.id" >{{genero.nombre}}</option>
+          }
+        </select>
+      </div>
+
+      <div class="flex items-end">
+          <button
+            class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+            Crear
+          </button>
+      </div>
+
     </div>
-</div>
-
+  </div>
 </form>

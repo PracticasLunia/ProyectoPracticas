@@ -11,12 +11,18 @@ export const routes: Routes = [
       },
     ]*/
   },
-
+  {
+    path: 'libros/nuevo',
+    loadComponent:()=>import('./libros/pages/nuevo-libro/nuevo-libro'),
+  },
   {
     path: 'libros/:id',
     loadComponent: ()=> import('./libros/pages/detalle-libros/detalle-libros'),
   },
-
+  {
+    path: 'libros/:id/editar',
+    loadComponent:()=> import('./libros/pages/editar-libro/editar-libro')
+  },
 
   //Redirect Libros
   {
