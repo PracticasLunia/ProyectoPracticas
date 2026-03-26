@@ -11,6 +11,8 @@
         <th>Disponibilidad</th>
         <th>Autor Completo</th>
         <th>Generos</th>
+        <th>Editar</th>
+        <th>Eliminar</th>
       </tr>
     </thead>
     <tbody>
@@ -22,7 +24,7 @@
         <td>{{libro()?.sinopsis}}</td>
         <td>{{libro()?.num_paginas}}</td>
         <td>
-          @if(libro()?.disponible==1){
+          @if(libro()?.disponible==true){
             Disponible
           }
           @else {
@@ -34,6 +36,14 @@
         @for (genero of libro()?.generos; track $index) {
           <td>{{genero.nombre}}</td>
         }
+
+        <td>
+          <a [routerLink]="['/libros', libro()?.id, 'editar']" class="text-secondary">Editar</a>
+        </td>
+
+        <td>
+          <a [routerLink]="['/libros', libro()?.id, 'eliminar']" class="text-secondary">Eliminar</a>
+        </td>
       </tr>
     </tbody>
   </table>

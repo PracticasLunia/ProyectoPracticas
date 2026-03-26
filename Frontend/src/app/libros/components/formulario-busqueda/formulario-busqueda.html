@@ -8,6 +8,11 @@
         <input type="text"
           class="form-control"
           formControlName="titulo">
+          @if(formulario.get('titulo')?.errors?.['backend']){
+            <div class="error">
+              {{ formulario.get('titulo')?.errors?.['backend'] }}
+            </div>
+          }
       </div>
 
       <div class="flex flex-col">
@@ -15,6 +20,12 @@
         <input type="text"
           class="form-control"
           formControlName="isbn">
+
+          @if(formulario.get('isbn')?.errors?.['backend']){
+            <div class="error text-red-500">
+              {{ formulario.get('isbn')?.errors?.['backend'] }}
+            </div>
+          }
       </div>
 
       <div class="flex flex-col">
@@ -22,37 +33,73 @@
         <input type="text"
           class="form-control"
           formControlName="anio_publicacion">
+
+          @if(formulario.get('publicacion')?.errors?.['backend']){
+            <div class="error text-red-500 ">
+              {{ formulario.get('publicacion')?.errors?.['backend'] }}
+            </div>
+          }
+      </div>
+
+      <div class="flex flex-col">
+        <label class="text-sm text-gray-600 mb-1">Numero de Páginas</label>
+        <input type="text"
+          class="form-control"
+          formControlName="num_paginas">
+
+          @if(formulario.get('num_paginas')?.errors?.['backend']){
+            <div class="error text-red-500">
+              {{ formulario.get('num_paginas')?.errors?.['backend'] }}
+            </div>
+          }
       </div>
 
       <div class="flex flex-col">
         <label class="text-sm text-gray-600 mb-1">Disponible</label>
-        <input type="checkbox" value="true">Si
-        <input type="checkbox" value="false">No
+        <input type="checkbox" class="form-control" formControlName="disponible" value="true">Si
+        <input type="checkbox" class="form-control"formControlName="disponible" value="false">No
       </div>
 
       <div class="flex flex-col">
         <label class="text-sm text-gray-600 mb-1">Autor</label>
-        <select class="form-control" formControlName="autor">
+        <select class="form-control" formControlName="autor_id">
         @for (autor of autores(); track $index) {
             <option [value]="autor.id" >{{autor.nombre}}</option>
           }
         </select>
+
+          @if(formulario.get('autor_id')?.errors?.['backend']){
+            <div class="error text-red-500">
+              {{ formulario.get('autor_id')?.errors?.['backend'] }}
+            </div>
+          }
       </div>
 
       <div class="flex flex-col">
         <label class="text-sm text-gray-600 mb-1">Genero</label>
-        <select class="form-control" formControlName="autor" multiple>
+        <select class="form-control" formControlName="genero_ids" multiple>
           @for (genero of generos(); track $index) {
             <option [value]="genero.id" >{{genero.nombre}}</option>
           }
         </select>
+
+          @if(formulario.get('genero_ids')?.errors?.['backend']){
+            <div class="error text-red-500">
+              {{ formulario.get('genero_ids')?.errors?.['backend'] }}
+            </div>
+          }
       </div>
 
       <div class="flex items-end">
-          <button
+          <button type="submit"
             class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
-            Crear
+            Finalizar
           </button>
+      </div>
+
+      <div class="flex items-end">
+        <button class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition "
+        [routerLink]="'/libros'">Cancelar</button>
       </div>
 
     </div>

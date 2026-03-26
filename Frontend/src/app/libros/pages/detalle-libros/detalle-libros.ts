@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { LibrosService } from '../../services/libros.service';
 import { Libro } from '../../interfaces/libros.interface';
-import { ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { JsonPipe } from '@angular/common';
 @Component({
   selector: 'app-detalle-libros',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './detalle-libros.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 

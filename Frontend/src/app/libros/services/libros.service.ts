@@ -27,6 +27,20 @@ export class LibrosService {
     (`${environment.urlBackend}/libros/buscar?${urlForm}`)
   }
 
+
+  actualizarLibro(datos:any, id:number){
+    return this.http.put<Libro>(`${environment.urlBackend}/libros/${id}`, datos)
+  }
+
+  nuevoLibro(datos:any){
+    return this.http.post<Libro>(`${environment.urlBackend}/libros`, datos)
+  }
+
+  eliminarLibro(id:number){
+    return this.http.delete(`${environment.urlBackend}/libros/${id}`)
+  }
+
+  //Crear servicios especificos de autor y genero
   cargarAutores(){
     return this.http.get<Autor[]>(`${environment.urlBackend}/autores`)
   }

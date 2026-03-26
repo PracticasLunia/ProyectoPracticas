@@ -17,13 +17,13 @@ class EliminarLibroController extends Controller
         try {
             $libro=Libro::findOrFail($id);
             $libro->delete();
-            return response()->json([
-                "Libro eliminado", 200
-            ]);
+            return response()->json(
+                ["message"=>"Libro eliminado"], 200
+            );
         } catch (\Throwable $th) {
-            return response()->json([
-                "Libro no encontrado", 404
-            ]);
+            return response()->json(
+                ["message"=>"Libro no encontrado"], 404
+            );
         }
     }
 }

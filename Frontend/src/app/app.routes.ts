@@ -23,7 +23,10 @@ export const routes: Routes = [
     path: 'libros/:id/editar',
     loadComponent:()=> import('./libros/pages/editar-libro/editar-libro')
   },
-
+  {
+    path: 'libros/:id/eliminar',
+    loadComponent:()=> import('./libros/pages/eliminar-libro/eliminar-libro')
+  },
   //Redirect Libros
   {
     path: '**',

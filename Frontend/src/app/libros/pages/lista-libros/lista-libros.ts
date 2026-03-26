@@ -3,11 +3,12 @@ import { LibrosService } from '../../services/libros.service';
 import { Libro } from '../../interfaces/libros.interface';
 import { LibroCard } from "../../components/libro-card/libro-card";
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 
 @Component({
   selector: 'app-lista-libros',
-  imports: [LibroCard, ReactiveFormsModule],
+  imports: [LibroCard, ReactiveFormsModule, RouterLink],
   templateUrl: './lista-libros.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -7,4 +7,8 @@ import { FormularioBusqueda } from "../../components/formulario-busqueda/formula
   templateUrl: './editar-libro.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class EditarLibro { }
+export default class EditarLibro {
+
+  
+
+}

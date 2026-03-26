@@ -4,12 +4,12 @@ import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@
 import { LibrosService } from '../../services/libros.service';
 import { Autor } from '../../interfaces/autor.interface';
 import { Genero } from '../../interfaces/genero.interface';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 
 @Component({
   selector: 'app-formulario-busqueda',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './formulario-busqueda.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -32,12 +32,12 @@ export class FormularioBusqueda implements OnInit{
   formulario=this.fb.group({
     titulo: [''],
     isbn: [''],
-    anio_publicacion:[''],
+    anio_publicacion:[0],
     sinopsis: [''],
-    num_paginas:[''],
+    num_paginas:[0],
     disponible:[true],
-    autor_id: [''],
-    genero_id: ['']
+    autor_id: [0],
+    genero_ids: [[]]
   })
 
   //Options pertenecientes al select de autor y generos
@@ -62,31 +62,84 @@ export class FormularioBusqueda implements OnInit{
 
   //Determinar si debe mostrar el formulario para actualizar y cargar datos o crear
   determinarModo(id:number){
-    if(this.idRuta!=null){
+    if(id!=null){
       //Establecer valores del libro
       this.service.cargarLibroById(id)
-      .subscribe((respuesta)=>{
-        this.libro.set(respuesta);
-      })
+        .subscribe((respuesta)=>{
+          this.libro.set(respuesta);
 
-      //Actualizar valores
-      this.formulario.patchValue({
-        titulo: this.libro()?.titulo
+        //Actualizar valores
+        this.formulario.patchValue({
+          titulo: this.libro()?.titulo,
+          isbn: this.libro()?.isbn,
+          anio_publicacion: this.libro()?.publicacion,
+          sinopsis: this.libro()?.sinopsis,
+          num_paginas:this.libro()?.num_paginas,
+          disponible:this.libro()?.disponible,
+        })
       })
-
     }
   }
 
-
   onSubmit(){
-    const urlForm= `titulo=${this.formulario.value.titulo}&ibsn=${this.formulario.value.isbn}&autor=${this.formulario.value.autor_id}&genero_nombre=${this.formulario.value.genero_id}`
-    console.log(urlForm);
+    const datos= {
+      titulo: this.formulario.value.titulo,
+      isbn: this.formulario.value.isbn,
+      publicacion: this.formulario.value.anio_publicacion,
+      sinopsis: this.formulario.value.sinopsis,
+      num_paginas: this.formulario.value.num_paginas,
+      disponible: this.formulario.value.disponible,
+      autor_id: this.formulario.value.autor_id,
+      genero_ids: this.formulario.value.genero_ids
+      //genero_ids:this.generos().values
+      //generos: this.generos()
+    }
 
-      this.service.buscarLibrosFormulario(urlForm).subscribe((respuesta)=>{
-      console.log(respuesta)
+    const datosFormulario=this.formulario;
 
-    })
-    console.log(urlForm)
+    if(this.idRuta!=null){
+      this.service.actualizarLibro(datos, this.idRuta)
+      .subscribe({
+        next: (respuesta)=>{
+          console.log('Actualizado correctamente')
+        },
+        error(err) {
+          if(err.status===422){
+            const errores= err.error.errors;
+            console.log(errores)
+            Object.keys(errores).forEach(campo => {
+              const control = datosFormulario.get(campo);
+              if (control) {
+                control.setErrors({ backend: errores[campo][0] });
+              }
+            });
+          }
+        },
+      })
+
+      console.log('Editado')
+    }
+    else{
+      this.service.nuevoLibro(datos)
+       .subscribe({
+        next: (respuesta)=>{
+          console.log('Creado correctamente')
+        },
+        error(err) {
+          if(err.status===422){
+            const errores= err.error.errors;
+            console.log(errores)
+            Object.keys(errores).forEach(campo => {
+              const control = datosFormulario.get(campo);
+              if (control) {
+                control.setErrors({ backend: errores[campo][0] });
+              }
+            });
+          }
+        },
+      })
+      console.log('Creado');
+    }
   }
 
 }

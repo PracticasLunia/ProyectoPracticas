@@ -45,11 +45,9 @@ class ActualizarLibroController extends Controller
             $libro->generos()->sync($request->genero_ids);
 
             //$libroGeneros= $libro->generos;
-            return response()->json([
-
+            return response()->json(
                 $libro
-
-            ], 200);
+            , 200);
         }
     }
 }

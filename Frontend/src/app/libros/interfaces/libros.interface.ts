@@ -7,7 +7,7 @@ export interface Libro {
   publicacion: number;
   sinopsis:    string;
   num_paginas: number;
-  disponible:  number;
+  disponible:  boolean;
   autor_id: number;
   nombre_autor: string;
   generos:Genero[]
