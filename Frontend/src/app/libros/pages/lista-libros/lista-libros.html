@@ -1,72 +1,86 @@
-<div class="w-full flex flex-col gap-6 p-6">
+<div class="container my-4">
+  <div class="bg-white p-4 rounded shadow border">
 
-<div class="w-full bg-white p-6 rounded-xl shadow-md border">
-<h2>Filtrar por</h2>
+    <h2 class="mb-4">Filtrar Libros por: </h2>
 
-<form autocomplete="off" [formGroup]="formulario" (ngSubmit)="onSubmit()">
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+    <form autocomplete="off" [formGroup]="formulario" (ngSubmit)="onSubmit()">
+      <div class="row g-3 align-items-end">
 
-    <div class="flex gap-4">
+        <div class="col-12 col-sm-6 col-md-4 col-lg">
+          <label class="form-label">Título</label>
+          <input type="text"
+                 class="form-control"
+                 placeholder="Titulo"
+                 formControlName="titulo">
+        </div>
 
-      <div class="flex flex-col">
-        <label class="text-sm text-gray-600 mb-1">Título</label>
-        <input type="text"
-          class="form-control"
-          placeholder="Titulo"
-          formControlName="titulo">
-      </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg">
+          <label class="form-label">Isbn</label>
+          <input type="text"
+                 class="form-control"
+                 placeholder="Isbn"
+                 formControlName="isbn">
+        </div>
 
-      <div class="flex flex-col">
-        <label class="text-sm text-gray-600 mb-1">Isbn</label>
-        <input type="text"
-          class="form-control"
-          placeholder="Isbn"
-          formControlName="isbn">
-      </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg">
+          <label class="form-label">Autor</label>
+          <input type="text"
+                 class="form-control"
+                 placeholder="Autor"
+                 formControlName="autor">
+        </div>
 
-      <div class="flex flex-col">
-        <label class="text-sm text-gray-600 mb-1">Autor</label>
-        <input type="text"
-          class="form-control"
-          placeholder="Autor"
-          formControlName="autor">
-      </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg">
+          <label class="form-label">Genero</label>
+          <input type="text"
+                 class="form-control"
+                 placeholder="Genero"
+                 formControlName="genero_nombre">
+        </div>
 
-      <div class="flex flex-col">
-        <label class="text-sm text-gray-600 mb-1">Genero</label>
-        <input type="text"
-          class="form-control"
-          placeholder="Genero"
-          formControlName="genero_nombre">
-      </div>
-
-      <div class="flex items-end">
-          <button
-            class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+        <div class="col-12 col-sm-6 col-md-2 col-lg-auto">
+          <button type="submit"
+                  class="btn btn-primary w-100">
             Filtrar
           </button>
-      </div>
+        </div>
 
-      <div class="flex items-end">
-          <button class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition "
-          [routerLink]="'/libros/nuevo'">Añadir</button>
-      </div>
+        <div class="col-12 col-sm-6 col-md-2 col-lg-auto">
+          <button type="button"
+                  class="btn btn-success w-100"
+                  [routerLink]="'/libros/nuevo'">
+            Añadir
+          </button>
+        </div>
 
-    </div>
+      </div>
+    </form>
+
   </div>
-</form>
-
 </div>
 
-<div class="w-full">
-
-    <h2 class="text-xl font-semibold mb-4">Resultados</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      @for (libro of libros(); track libro.id) {
+<!--Tabla para cards-->
+<table class="table table-hover">
+  <thead class="table-light">
+    <tr>
+      <th>Título</th>
+      <th>Autor</th>
+      <th>Géneros</th>
+      <th>Año</th>
+      <th>Disponible</th>
+    </tr>
+  </thead>
+  <!--Carga de las cards de libros-->
+  <tbody>
+    @for (libro of libros(); track libro.id) {
         <app-libro-card [libro]="libro"></app-libro-card>
-      }
-    </div>
-
-</div>
-
-</div>
+    }
+    @empty {
+      <tr>
+        <td colspan="5" class="text-center text-muted py-4">
+          No se encontraron libros.
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>

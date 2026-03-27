@@ -1,52 +1,63 @@
-<div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
-  <table class="table">
-    <!-- head -->
-    <thead>
-      <tr>
-        <th>Titulo</th>
-        <th>ISBN</th>
-        <th>AÑo</th>
-        <th>Sinopsis</th>
-        <th>Páginas</th>
-        <th>Disponibilidad</th>
-        <th>Autor Completo</th>
-        <th>Generos</th>
-        <th>Editar</th>
-        <th>Eliminar</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- row 1 -->
-      <tr>
-        <td>{{libro()?.titulo}}</td>
-        <td>{{libro()?.isbn}}</td>
-        <td>{{libro()?.publicacion}}</td>
-        <td>{{libro()?.sinopsis}}</td>
-        <td>{{libro()?.num_paginas}}</td>
-        <td>
-          @if(libro()?.disponible==true){
-            Disponible
-          }
-          @else {
-            No disponible
-          }
-        </td>
-        <td>{{libro()?.nombre_autor}}</td>
+@if(libro()!=null){
+  <a routerLink="/libros" class="text-muted text-decoration-none d-inline-flex align-items-center gap-1 mb-2">
+    <i class="bi bi-arrow-left"></i> Volver al listado
+  </a>
 
-        <td>
-        @for (genero of libro()?.generos; track $index) {
-          {{ genero.nombre }}
+  <h2 class="mb-3">{{ libro()?.titulo}}</h2>
+
+  <div class="row g-3">
+    <div class="col-6">
+      <small class="text-muted text-uppercase fw-semibold">ISBN</small>
+      <p class="mb-0 fw-medium">{{ libro()?.isbn }}</p>
+    </div>
+    <div class="col-6">
+      <small class="text-muted text-uppercase fw-semibold">Año de publicación</small>
+      <p class="mb-0 fw-medium">{{ libro()?.publicacion }}</p>
+    </div>
+    <div class="col-6">
+      <small class="text-muted text-uppercase fw-semibold">Páginas</small>
+      <p class="mb-0 fw-medium">{{ libro()?.num_paginas }}</p>
+    </div>
+    <div class="col-6">
+      <small class="text-muted text-uppercase fw-semibold">Disponible</small>
+      <p class="mb-0">
+        @if (libro()?.disponible==true) {
+          <span class="badge text-bg-success">Sí</span>
+        } @else {
+          <span class="badge text-bg-danger">No</span>
         }
-        </td>
+      </p>
+    </div>
 
-        <td>
-          <a [routerLink]="['/libros', libro()?.id, 'editar']" class="text-secondary">Editar</a>
-        </td>
+      <div class="col-6">
+      <small class="text-muted text-uppercase fw-semibold">Géneros</small>
+      <div>
+        @for (genero of libro()?.generos; track genero.id) {
+          <a [routerLink]="['/generos', genero.id]"
+             class="badge text-bg-primary text-decoration-none me-1">
+            {{ genero.nombre }}
+          </a>
+        }
+      </div>
+    </div>
 
-        <td>
-          <a [routerLink]="['/libros', libro()?.id, 'eliminar']" class="text-secondary">Eliminar</a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+    @if (libro()?.sinopsis) {
+      <div class="col-12">
+        <small class="text-muted text-uppercase fw-semibold">Sinopsis</small>
+        <p class="mb-0">{{ libro()?.sinopsis }}</p>
+      </div>
+    }
+
+  </div>
+
+  <div class="d-flex gap-2 mt-4 pt-3 border-top">
+    <a [routerLink]="['/libros', libro()?.id, 'editar']" class="btn btn-primary">
+      <i class="bi bi-pencil"></i> Editar
+    </a>
+    <a [routerLink]="['/libros', libro()?.id, 'eliminar']" class="btn btn-primary">
+      <i class="bi bi-pencil"></i> Eliminar
+    </a>
+  </div>
+
+}
+
