@@ -16,7 +16,7 @@ class ActualizarLibroController extends Controller
         //validate
         $request->validate([
             "titulo" => "required|string",
-            "isbn" => "required|unique:libros|string",
+            "isbn" => "required|string|unique:libros,isbn,".$id,
             "publicacion"=>"required|integer",
             "sinopsis"=>"nullable|max:255",
             "num_paginas"=>"required|integer",

@@ -1,3 +1,5 @@
+import { Genero } from "./genero.interface";
+
 export interface Libro {
   id:          number;
   created_at:  Date;
@@ -13,7 +15,7 @@ export interface Libro {
   generos:Genero[]
 }
 
-interface Genero{
+/*interface Genero{
   nombre:string;
-}
+}*/
 

@@ -18,11 +18,11 @@ class EliminiarAutorController extends Controller
             $autor=Autor::findOrFail($id);
             $autor->delete();
             return response()->json(
-                ["message"=>"Libro eliminado"], 200
+                ["message"=>"Autor eliminado"], 200
             );
         } catch (\Throwable $th) {
             return response()->json(
-                ["message"=>"Libro no encontrado"], 404
+                ["message"=>"Autor no encontrado"], 404
             );
         }
     }

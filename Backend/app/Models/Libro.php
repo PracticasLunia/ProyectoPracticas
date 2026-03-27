@@ -16,6 +16,10 @@ class Libro extends Model
         "autor_id"
     ];
 
+    protected $casts = [
+        'disponible' => 'bool'
+    ];
+
     //Method relation
     public function autor(){
         return $this->belongsTo(Autor::class);

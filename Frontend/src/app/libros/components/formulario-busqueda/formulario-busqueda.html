@@ -1,8 +1,6 @@
 <form autocomplete="off" [formGroup]="formulario" (ngSubmit)="onSubmit()">
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
 
-    <div class="flex gap-4">
-
       <div class="flex flex-col">
         <label class="text-sm text-gray-600 mb-1">Título</label>
         <input type="text"
@@ -15,7 +13,7 @@
           }
       </div>
 
-      <div class="flex flex-col">
+      <div class="flex flex-col ">
         <label class="text-sm text-gray-600 mb-1">Isbn</label>
         <input type="text"
           class="form-control"
@@ -55,9 +53,22 @@
       </div>
 
       <div class="flex flex-col">
+        <label class="text-sm text-gray-600 mb-1">Sinopsis</label>
+        <textarea type="text"
+          class="form-control"
+          formControlName="sinopsis"></textarea>
+
+          @if(formulario.get('sinopsis')?.errors?.['backend']){
+            <div class="error text-red-500">
+              {{ formulario.get('sinopsis')?.errors?.['backend'] }}
+            </div>
+          }
+      </div>
+
+      <div class="flex flex-col">
         <label class="text-sm text-gray-600 mb-1">Disponible</label>
-        <input type="checkbox" class="form-control" formControlName="disponible" value="true">Si
-        <input type="checkbox" class="form-control"formControlName="disponible" value="false">No
+        <input type="radio" class="form-control" formControlName="disponible" [value]=true>Si
+        <input type="radio" class="form-control"formControlName="disponible" [value]=false>No
       </div>
 
       <div class="flex flex-col">
@@ -92,8 +103,8 @@
 
       <div class="flex items-end">
           <button type="submit"
-            class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
-            Finalizar
+            class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+            >Finalizar
           </button>
       </div>
 
@@ -102,6 +113,5 @@
         [routerLink]="'/libros'">Cancelar</button>
       </div>
 
-    </div>
   </div>
 </form>

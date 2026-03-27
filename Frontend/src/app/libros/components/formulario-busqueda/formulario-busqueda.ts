@@ -4,7 +4,7 @@ import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@
 import { LibrosService } from '../../services/libros.service';
 import { Autor } from '../../interfaces/autor.interface';
 import { Genero } from '../../interfaces/genero.interface';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 
 @Component({
@@ -24,6 +24,7 @@ export class FormularioBusqueda implements OnInit{
   //Inyenccion de servicios y dependencias
   service=inject(LibrosService);
   fb=inject(FormBuilder);
+  router= inject(Router);
   //Ruta activa
   idRuta= inject(ActivatedRoute).snapshot.params['id'];
   libro=signal<Libro|null>(null);
@@ -37,7 +38,7 @@ export class FormularioBusqueda implements OnInit{
     num_paginas:[0],
     disponible:[true],
     autor_id: [0],
-    genero_ids: [[]]
+    genero_ids: [[0]]
   })
 
   //Options pertenecientes al select de autor y generos
@@ -74,6 +75,8 @@ export class FormularioBusqueda implements OnInit{
           isbn: this.libro()?.isbn,
           anio_publicacion: this.libro()?.publicacion,
           sinopsis: this.libro()?.sinopsis,
+          autor_id: this.libro()?.autor_id,
+          genero_ids: this.libro()?.generos.map(g => g.id) ?? [],
           num_paginas:this.libro()?.num_paginas,
           disponible:this.libro()?.disponible,
         })
@@ -140,6 +143,9 @@ export class FormularioBusqueda implements OnInit{
       })
       console.log('Creado');
     }
+
+    //Redirigir automaticamente
+    this.router.navigate(['/libros']);
   }
 
 }

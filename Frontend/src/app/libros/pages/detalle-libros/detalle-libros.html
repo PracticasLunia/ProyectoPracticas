@@ -33,9 +33,11 @@
         </td>
         <td>{{libro()?.nombre_autor}}</td>
 
+        <td>
         @for (genero of libro()?.generos; track $index) {
-          <td>{{genero.nombre}}</td>
+          {{ genero.nombre }}
         }
+        </td>
 
         <td>
           <a [routerLink]="['/libros', libro()?.id, 'editar']" class="text-secondary">Editar</a>
