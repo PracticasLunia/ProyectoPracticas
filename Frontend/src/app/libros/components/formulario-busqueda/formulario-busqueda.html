@@ -1,116 +1,135 @@
-<form autocomplete="off" [formGroup]="formulario" (ngSubmit)="onSubmit()">
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+<a routerLink="/libros" class="text-muted text-decoration-none d-inline-flex align-items-center gap-1 mb-2">
+  <i class="bi bi-arrow-left"></i> Volver al listado
+</a>
 
-      <div class="flex flex-col">
-        <label class="text-sm text-gray-600 mb-1">Título</label>
+<!-- Título cambia según modo -->
+@if (libro() != null) {
+  <h2 class="mb-3">Editar libro</h2>
+} @else {
+  <h2 class="mb-3">Nuevo libro</h2>
+}
+
+<form autocomplete="off" [formGroup]="formulario" (ngSubmit)="onSubmit()">
+  <div class="row g-3">
+
+      <div class="col-6">
+        <label class="form-label">Título</label>
         <input type="text"
           class="form-control"
           formControlName="titulo">
           @if(formulario.get('titulo')?.errors?.['backend']){
-            <div class="error">
+            <div class="invalid-feedback d-block">
               {{ formulario.get('titulo')?.errors?.['backend'] }}
             </div>
           }
       </div>
 
-      <div class="flex flex-col ">
-        <label class="text-sm text-gray-600 mb-1">Isbn</label>
+      <div class="col-6">
+        <label class="form-label">ISBN</label>
         <input type="text"
           class="form-control"
           formControlName="isbn">
 
           @if(formulario.get('isbn')?.errors?.['backend']){
-            <div class="error text-red-500">
+            <div class="invalid-feedback d-block">
               {{ formulario.get('isbn')?.errors?.['backend'] }}
             </div>
           }
       </div>
 
-      <div class="flex flex-col">
-        <label class="text-sm text-gray-600 mb-1">Año de publicacion</label>
+      <div class="col-6">
+        <label class="form-label">Año de publicacion</label>
         <input type="text"
           class="form-control"
           formControlName="anio_publicacion">
 
           @if(formulario.get('publicacion')?.errors?.['backend']){
-            <div class="error text-red-500 ">
+            <div class="invalid-feedback d-block">
               {{ formulario.get('publicacion')?.errors?.['backend'] }}
             </div>
           }
       </div>
 
-      <div class="flex flex-col">
-        <label class="text-sm text-gray-600 mb-1">Numero de Páginas</label>
+      <div class="col-6">
+        <label class="form-label">Número de paginas</label>
         <input type="text"
           class="form-control"
           formControlName="num_paginas">
 
           @if(formulario.get('num_paginas')?.errors?.['backend']){
-            <div class="error text-red-500">
+            <div class="invalid-feedback d-block">
               {{ formulario.get('num_paginas')?.errors?.['backend'] }}
             </div>
           }
       </div>
 
-      <div class="flex flex-col">
-        <label class="text-sm text-gray-600 mb-1">Sinopsis</label>
-        <textarea type="text"
-          class="form-control"
-          formControlName="sinopsis"></textarea>
-
-          @if(formulario.get('sinopsis')?.errors?.['backend']){
-            <div class="error text-red-500">
-              {{ formulario.get('sinopsis')?.errors?.['backend'] }}
-            </div>
-          }
-      </div>
-
-      <div class="flex flex-col">
-        <label class="text-sm text-gray-600 mb-1">Disponible</label>
-        <input type="radio" class="form-control" formControlName="disponible" [value]=true>Si
-        <input type="radio" class="form-control"formControlName="disponible" [value]=false>No
-      </div>
-
-      <div class="flex flex-col">
-        <label class="text-sm text-gray-600 mb-1">Autor</label>
-        <select class="form-control" formControlName="autor_id">
+      <div class="col-6">
+        <label class="form-label">Autor</label>
+        <select class="form-select" formControlName="autor_id">
         @for (autor of autores(); track $index) {
             <option [value]="autor.id" >{{autor.nombre}}</option>
           }
         </select>
 
           @if(formulario.get('autor_id')?.errors?.['backend']){
-            <div class="error text-red-500">
+            <div class="invalid-feedback d-block">
               {{ formulario.get('autor_id')?.errors?.['backend'] }}
             </div>
           }
       </div>
 
-      <div class="flex flex-col">
-        <label class="text-sm text-gray-600 mb-1">Genero</label>
-        <select class="form-control" formControlName="genero_ids" multiple>
+      <div class="col-6">
+        <label class="form-label">Géneros</label>
+        <select class="form-select" formControlName="genero_ids" multiple>
           @for (genero of generos(); track $index) {
             <option [value]="genero.id" >{{genero.nombre}}</option>
           }
         </select>
 
           @if(formulario.get('genero_ids')?.errors?.['backend']){
-            <div class="error text-red-500">
+            <div class="invalid-feedback d-block">
               {{ formulario.get('genero_ids')?.errors?.['backend'] }}
             </div>
           }
       </div>
 
-      <div class="flex items-end">
-          <button type="submit"
-            class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-            >Finalizar
-          </button>
+      <div class="col-12">
+        <label class="form-label">Sinopsis</label>
+        <textarea type="text"
+          class="form-control"
+          formControlName="sinopsis"></textarea>
+
+          @if(formulario.get('sinopsis')?.errors?.['backend']){
+            <div class="invalid-feedback d-block">
+              {{ formulario.get('sinopsis')?.errors?.['backend'] }}
+            </div>
+          }
       </div>
 
-      <div class="flex items-end">
-        <button class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition "
-        [routerLink]="'/libros'">Cancelar</button>
+      <div class="col-12">
+      <label class="form-label">Disponible</label>
+      <div class="d-flex gap-3">
+        <div class="form-check">
+        <input type="radio" class="form-check-label" formControlName="disponible" [value]=true>Si
+        <input type="radio" class="form-check-label" formControlName="disponible" [value]=false>No
+        </div>
+      </div>
+      </div>
+
+      <!--Botones-->
+      <div class="col-12 d-flex gap-2 pt-3 border-top">
+          <button type="submit"
+            class="btn btn-success"
+          >
+          <i class="bi bi-check-lg"></i>
+          Finalizar
+          </button>
+
+        <a class="btn btn-outline-secondary"
+        [routerLink]="'/libros'">
+        <i class="bi bi-check-lg"></i>
+        Cancelar</a>
+
       </div>
 
   </div>

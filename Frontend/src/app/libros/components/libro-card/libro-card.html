@@ -16,7 +16,7 @@
   <td>
     <a [routerLink]="['/libros', libro().id]">
       {{ libro().titulo }}
-     </a>
+    </a>
   </td>
   <td>{{ libro().autor_id }}</td>
   <td>
@@ -25,18 +25,18 @@
         {{ genero.nombre }}
       </span>
     }
-    </td>
-    <td>{{ libro().publicacion}}</td>
-    <td>
-      @if (libro().disponible) {
-        <span class="badge text-bg-success">
-          <i class="bi bi-check-circle-fill"></i> Sí
-        </span>
-      }
-      @else {
-        <span class="badge text-bg-danger">
-          <i class="bi bi-x-circle-fill"></i> No
-        </span>
-      }
-    </td>
+  </td>
+  <td>{{ libro().publicacion}}</td>
+  <td>
+    @if (libro().disponible) {
+      <span class="badge text-bg-success">
+        <i class="bi bi-check-circle-fill"></i> Sí
+      </span>
+    }
+    @else {
+      <span class="badge text-bg-danger">
+        <i class="bi bi-x-circle-fill"></i> No
+      </span>
+    }
+  </td>
 </tr>

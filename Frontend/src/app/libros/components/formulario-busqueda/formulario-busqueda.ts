@@ -85,6 +85,9 @@ export class FormularioBusqueda implements OnInit{
   }
 
   onSubmit(){
+
+    const errores={};
+
     const datos= {
       titulo: this.formulario.value.titulo,
       isbn: this.formulario.value.isbn,
@@ -105,6 +108,8 @@ export class FormularioBusqueda implements OnInit{
       .subscribe({
         next: (respuesta)=>{
           console.log('Actualizado correctamente')
+          //Redirigir automaticamente
+          this.router.navigate(['/libros']);
         },
         error(err) {
           if(err.status===422){
@@ -119,14 +124,14 @@ export class FormularioBusqueda implements OnInit{
           }
         },
       })
-
-      console.log('Editado')
     }
     else{
       this.service.nuevoLibro(datos)
        .subscribe({
         next: (respuesta)=>{
           console.log('Creado correctamente')
+          //Redirigir automaticamente
+          this.router.navigate(['/libros']);
         },
         error(err) {
           if(err.status===422){
@@ -141,11 +146,8 @@ export class FormularioBusqueda implements OnInit{
           }
         },
       })
-      console.log('Creado');
     }
 
-    //Redirigir automaticamente
-    this.router.navigate(['/libros']);
   }
 
 }
