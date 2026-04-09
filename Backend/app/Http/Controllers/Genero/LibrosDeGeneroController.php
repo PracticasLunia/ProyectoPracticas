@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Autor;
+namespace App\Http\Controllers\Genero;
 
 use App\Http\Controllers\Controller;
-use App\Models\Autor;
 use Illuminate\Http\Request;
+use App\Models\Genero;
 
-class LibrosDeAutorController extends Controller
+class LibrosDeGeneroController extends Controller
 {
     /**
      * Handle the incoming request.
@@ -18,13 +18,13 @@ class LibrosDeAutorController extends Controller
 
             //$autor= Autor::findOrFail($id);
             //$libros= $autor->libros;
-            $autorLibros=Autor::with('libros')->findOrFail($id);
+            $generoLibros=Genero::with('libros')->findOrFail($id);
 
-            return response()->json($autorLibros, 200);
+            return response()->json($generoLibros, 200);
 
         } catch (\Throwable $th) {
             return response()->json(
-                ["message"=>"Autor no encontrado"], 400);
+                ["message"=>"Genero no encontrado"], 400);
         }
     }
 }

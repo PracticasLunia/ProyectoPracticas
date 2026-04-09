@@ -49,6 +49,4 @@ export class LibrosService {
     return this.http.get<Genero[]>(`${environment.urlBackend}/generos`)
   }
 
-
-
 }

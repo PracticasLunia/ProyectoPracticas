@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
+  /*Path para libros*/
   {
     path: 'libros',
     loadComponent:()=>import('./libros/pages/lista-libros/lista-libros'),
@@ -27,6 +28,44 @@ export const routes: Routes = [
     path: 'libros/:id/eliminar',
     loadComponent:()=> import('./libros/pages/eliminar-libro/eliminar-libro')
   },
+
+  /*Path para autores */
+  {
+    path: 'autores',
+    loadComponent: ()=>import('./autores/pages/lista-autores/lista-autores')
+  },
+  {
+    path: 'autores/nuevo',
+    loadComponent:()=>import('./autores/pages/nuevo-autor/nuevo-autor')
+  },
+  {
+    path: 'autores/:id',
+    loadComponent: ()=>import('./autores/pages/detalle-autores/detalle-autores')
+  },
+  {
+    path: 'autores/:id/editar',
+    loadComponent: ()=>import('./autores/pages/editar-autor/editar-autor')
+  },
+
+  /**Path para generos*/
+  {
+    path: 'generos',
+    loadComponent: ()=>import('./generos/pages/lista-generos/lista-generos')
+  },
+  {
+    path: 'generos/nuevo',
+    loadComponent: ()=>import('./generos/pages/nuevo-genero/nuevo-genero')
+  },
+  {
+    path: 'generos/:id',
+    loadComponent:()=>import('./generos/pages/detalle-genero/detalle-genero')
+  },
+  {
+    path: 'generos/:id/editar',
+    loadComponent:()=>import('./generos/pages/editar-genero/editar-genero')
+  },
+
+
   //Redirect Libros
   {
     path: '**',

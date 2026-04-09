@@ -9,6 +9,7 @@ use App\Http\Controllers\Autor\VerAutorController;
 use App\Http\Controllers\Genero\ActualizarGeneroController;
 use App\Http\Controllers\Genero\CrearGeneroController;
 use App\Http\Controllers\Genero\EliminarGeneroController;
+use App\Http\Controllers\Genero\LibrosDeGeneroController;
 use App\Http\Controllers\Genero\ListarGenerosController;
 use App\Http\Controllers\Genero\VerGeneroController;
 use Illuminate\Http\Request;
@@ -51,5 +52,6 @@ Route::delete('generos/{id}', EliminarGeneroController::class);
 
 //Libros by autor
 Route::get('autores/{id}/libros', LibrosDeAutorController::class);
+//Libros by genero
+Route::get('generos/{id}/libros', LibrosDeGeneroController::class);
 //Busqueda ampliada
-
