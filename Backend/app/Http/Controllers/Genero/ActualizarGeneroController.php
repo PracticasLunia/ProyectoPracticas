@@ -15,7 +15,7 @@ class ActualizarGeneroController extends Controller
     {
         //
         $request->validate([
-            "nombre" => "required|string",
+            "nombre" => "required|string|unique:generos,nombre".$id,
             "descripcion" => "nullable",
         ]);
 

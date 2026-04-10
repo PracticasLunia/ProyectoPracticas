@@ -1,0 +1,78 @@
+@if (autor()) {
+
+  <a routerLink="/autores" class="text-muted text-decoration-none d-inline-flex align-items-center gap-1 mb-2">
+    <i class="bi bi-arrow-left"></i> Volver al listado
+  </a>
+
+  <h2 class="mb-3">{{ autor()?.nombre }} {{ autor()?.apellidos }}</h2>
+
+  <!-- Campos en cuadrícula (igual que libros) -->
+  <div class="row g-3">
+    <div class="col-6">
+      <small class="text-muted text-uppercase fw-semibold">Nombre</small>
+      <p class="mb-0 fw-medium">{{ autor()?.nombre }}</p>
+    </div>
+    <div class="col-6">
+      <small class="text-muted text-uppercase fw-semibold">Apellidos</small>
+      <p class="mb-0 fw-medium">{{ autor()?.apellidos }}</p>
+    </div>
+    <div class="col-6">
+      <small class="text-muted text-uppercase fw-semibold">Nacionalidad</small>
+      <p class="mb-0 fw-medium">{{ autor()?.nacionalidad ?? '—' }}</p>
+    </div>
+    <div class="col-6">
+      <small class="text-muted text-uppercase fw-semibold">Fecha de nacimiento</small>
+      <p class="mb-0 fw-medium">{{ autor()?.fecha_nacimiento ?? '—' }}</p>
+    </div>
+    @if (autor()?.biografia) {
+      <div class="col-12">
+        <small class="text-muted text-uppercase fw-semibold">Biografía</small>
+        <p class="mb-0">{{ autor()?.biografia }}</p>
+      </div>
+    }
+  </div>
+
+    <!-- Botones -->
+  <div class="d-flex gap-2 mt-4 pt-3 border-top">
+    <a [routerLink]="['/autores', autor()?.id, 'editar']" class="btn btn-primary">
+      <i class="bi bi-pencil"></i> Editar
+    </a>
+    <button class="btn btn-outline-danger" (click)="eliminar()">
+      <i class="bi bi-trash3"></i> Eliminar
+    </button>
+  </div>
+
+    <!-- LIBROS DEL AUTOR -->
+  <div class="mt-4 pt-3 border-top">
+    <h4><i class="bi bi-book"></i> Libros de este autor</h4>
+    @for (libro of librosDeAutor(); track libro.id) {
+      <div class="card mb-2">
+        <div class="card-body py-2 px-3 d-flex justify-content-between align-items-center">
+          <div>
+            <a [routerLink]="['/libros', libro.id]" class="fw-semibold">
+              {{ libro.titulo }}
+            </a>
+            <small class="text-muted ms-2">
+              {{ libro.publicacion}} · {{ libro.num_paginas }} páginas
+            </small>
+          </div>
+          <div>
+            @for (g of libro.generos; track g.id) {
+              <span class="badge text-bg-primary me-1">{{ g.nombre }}</span>
+            }
+          </div>
+        </div>
+      </div>
+    } @empty {
+      <p class="text-muted">Este autor no tiene libros registrados.</p>
+    }
+  </div>
+
+    <!-- ERROR AL ELIMINAR (solo visible si hay error) -->
+  @if (errorEliminar() != '') {
+    <div class="alert alert-danger d-flex align-items-start gap-2 mt-3">
+      <i class="bi bi-exclamation-triangle-fill"></i>
+      <div>{{ errorEliminar() }}</div>
+    </div>
+  }
+}

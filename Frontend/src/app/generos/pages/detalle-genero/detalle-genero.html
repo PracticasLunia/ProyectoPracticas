@@ -1,0 +1,62 @@
+@if (genero()!=null) {
+
+  <a routerLink="/generos" class="text-muted text-decoration-none d-inline-flex align-items-center gap-1 mb-2">
+    <i class="bi bi-arrow-left"></i> Volver al listado
+  </a>
+
+  <h2 class="mb-3">{{ genero()?.nombre }}</h2>
+
+  @if (genero()?.descripcion) {
+    <div class="mb-3">
+      <small class="text-muted text-uppercase fw-semibold">Descripción</small>
+      <p>{{ genero()?.descripcion }}</p>
+    </div>
+  }
+
+  <!-- Botones -->
+  <div class="d-flex gap-2 pt-3 border-top">
+    <a [routerLink]="['/generos', genero()?.id, 'editar']" class="btn btn-primary">
+      <i class="bi bi-pencil"></i> Editar
+    </a>
+    <button class="btn btn-outline-danger" (click)="eliminar()">
+      <i class="bi bi-trash3"></i> Eliminar
+    </button>
+  </div>
+
+  <!-- LIBROS DE ESTE GÉNERO -->
+  <div class="mt-4 pt-3 border-top">
+    <h4><i class="bi bi-book"></i> Libros de este género</h4>
+    @for (libro of librosDeGenero(); track libro.id) {
+      <div class="card mb-2">
+        <div class="card-body py-2 px-3 d-flex justify-content-between align-items-center">
+          <div>
+            <a [routerLink]="['/libros', libro.id]" class="fw-semibold">
+              {{ libro.titulo }}
+            </a>
+            <small class="text-muted ms-2">
+              {{ libro.autor.nombre}} {{libro.autor.apellidos}} ·  {{ libro.publicacion }}
+            </small>
+          </div>
+          <div>
+            @if (libro.disponible) {
+              <span class="badge text-bg-success">Sí</span>
+            } @else {
+              <span class="badge text-bg-danger">No</span>
+            }
+          </div>
+        </div>
+      </div>
+    } @empty {
+      <p class="text-muted">No hay libros en este género.</p>
+    }
+  </div>
+
+  <!-- Error al eliminar -->
+  @if (errorEliminar()!='') {
+    <div class="alert alert-danger d-flex align-items-start gap-2 mt-3">
+      <i class="bi bi-exclamation-triangle-fill"></i>
+      <div>{{ errorEliminar() }}</div>
+    </div>
+  }
+
+}

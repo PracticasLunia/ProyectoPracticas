@@ -12,14 +12,30 @@ import { Libro } from '../../libros/interfaces/libros.interface';
 export class AutorService {
 
 //Inyection depency
-  private http= inject(HttpClient);
+private http= inject(HttpClient);
 
   cargarAutores(): Observable<Autor[]> {
-    return this.http.get<Autor[]>(`${environment.urlBackend}/autores`)
+    return this.http.get<Autor[]>(`${environment.urlBackend}/autores`);
   }
 
-  cargarLibrosPorAutor(autorId: number): Observable<Autor> {
-    return this.http.get<Autor>(`${environment.urlBackend}/autores/${autorId}/libros`)
+  detalleAutor(autorId:number){
+    return this.http.get<Autor>(`${environment.urlBackend}/autores/${autorId}`);
+  }
+
+  cargarLibrosPorAutor(autorId: number) {
+    return this.http.get<Libro[]>(`${environment.urlBackend}/autores/${autorId}/libros`);
+  }
+
+  crearAutor(datos:any){
+    return this.http.post<Libro>(`${environment.urlBackend}/autores`, datos);
+  }
+
+  actualizarAutor(autorId: number, datos: any){
+    return this.http.put<Autor>(`${environment.urlBackend}/autores/${autorId}`,datos);
+  }
+
+  eliminarAutor(idAutor:number){
+    return this.http.delete(`${environment.urlBackend}/autores/${idAutor}`)
   }
 
 }

@@ -18,7 +18,8 @@ class LibrosDeGeneroController extends Controller
 
             //$autor= Autor::findOrFail($id);
             //$libros= $autor->libros;
-            $generoLibros=Genero::with('libros')->findOrFail($id);
+            $generos=Genero::with('libros.autor')->findOrFail($id);
+            $generoLibros=$generos->libros; //Devuelve los libros de aquel genero
 
             return response()->json($generoLibros, 200);
 

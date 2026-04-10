@@ -1,1 +1,96 @@
-<h1>Formulario works!</h1>
+<a routerLink="/autores" class="text-muted text-decoration-none d-inline-flex align-items-center gap-1 mb-2">
+  <i class="bi bi-arrow-left"></i> Volver al listado
+</a>
+
+<!-- Título cambia según modo -->
+@if (autor() != null) {
+  <h2 class="mb-3">Editar Autor</h2>
+} @else {
+  <h2 class="mb-3">Nuevo Autor</h2>
+}
+
+<form autocomplete="off" [formGroup]="formulario" (ngSubmit)="onSubmit()">
+  <div class="row g-3">
+
+      <div class="col-6">
+        <label class="form-label">Nombre <span class="text-danger">*</span> </label>
+        <input type="text"
+          class="form-control"
+          formControlName="nombre">
+          @if(formulario.get('nombre')?.errors?.['backend']){
+            <div class="invalid-feedback d-block">
+              {{ formulario.get('nombre')?.errors?.['backend'] }}
+            </div>
+          }
+      </div>
+
+      <div class="col-6">
+        <label class="form-label">Apellidos <span class="text-danger">*</span> </label>
+        <input type="text"
+          class="form-control"
+          formControlName="apellidos">
+
+          @if(formulario.get('apellidos')?.errors?.['backend']){
+            <div class="invalid-feedback d-block">
+              {{ formulario.get('apellidos')?.errors?.['backend'] }}
+            </div>
+          }
+      </div>
+
+      <div class="col-6">
+        <label class="form-label">Nacionalidad</label>
+        <input type="text"
+          class="form-control"
+          formControlName="nacionalidad">
+
+          @if(formulario.get('nacionalidad')?.errors?.['backend']){
+            <div class="invalid-feedback d-block">
+              {{ formulario.get('nacionalidad')?.errors?.['backend'] }}
+            </div>
+          }
+      </div>
+
+      <div class="col-6">
+        <label class="form-label">Fecha de nacimiento</label>
+        <input type="text"
+          class="form-control"
+          formControlName="fecha_nacimiento">
+
+          @if(formulario.get('fecha_nacimiento')?.errors?.['backend']){
+            <div class="invalid-feedback d-block">
+              {{ formulario.get('fecha_nacimiento')?.errors?.['backend'] }}
+            </div>
+          }
+      </div>
+
+      <div class="col-12">
+        <label class="form-label">Biografia</label>
+        <textarea type="text"
+          class="form-control"
+          formControlName="biografia"></textarea>
+
+          @if(formulario.get('biografia')?.errors?.['backend']){
+            <div class="invalid-feedback d-block">
+              {{ formulario.get('biografia')?.errors?.['backend'] }}
+            </div>
+          }
+      </div>
+
+      <!--Botones-->
+      <div class="col-12 d-flex gap-2 pt-3 border-top">
+          <button type="submit"
+            class="btn btn-success"
+          >
+          <i class="bi bi-check-lg"></i>
+          Finalizar
+          </button>
+
+        <a class="btn btn-outline-secondary"
+        [routerLink]="'/libros'">
+        <i class="bi bi-x-lg"></i>
+        Cancelar</a>
+
+      </div>
+
+  </div>
+</form>

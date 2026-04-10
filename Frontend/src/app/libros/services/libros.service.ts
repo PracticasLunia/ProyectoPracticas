@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Libro } from '../interfaces/libros.interface';
 import { environment } from '../../../environments/environment';
-import { Autor } from '../interfaces/autor.interface';
-import { Genero } from '../interfaces/genero.interface';
+import { Autor } from '../../autores/interfaces/autor.interface';
+import { Genero } from '../../generos/interfaces/genero.interface';
+
 
 @Injectable({
   providedIn: 'root'

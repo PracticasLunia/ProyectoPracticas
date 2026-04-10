@@ -18,7 +18,9 @@ class LibrosDeAutorController extends Controller
 
             //$autor= Autor::findOrFail($id);
             //$libros= $autor->libros;
-            $autorLibros=Autor::with('libros')->findOrFail($id);
+            $autor=Autor::with('libros')->findOrFail($id);
+
+            $autorLibros=$autor->libros()->with('generos')->get();
 
             return response()->json($autorLibros, 200);
 

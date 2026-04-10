@@ -1,4 +1,6 @@
-import { Genero } from "./genero.interface";
+import { Autor } from "../../autores/interfaces/autor.interface";
+import { Genero } from "../../generos/interfaces/genero.interface";
+
 
 export interface Libro {
   id:          number;
@@ -12,7 +14,8 @@ export interface Libro {
   disponible:  boolean;
   autor_id: number;
   nombre_autor: string;
-  generos:Genero[]
+  generos:Genero[];
+  autor:Autor;
 }
 
 /*interface Genero{

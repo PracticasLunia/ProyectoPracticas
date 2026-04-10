@@ -2,10 +2,10 @@ import { Libro } from './../../interfaces/libros.interface';
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LibrosService } from '../../services/libros.service';
-import { Autor } from '../../interfaces/autor.interface';
-import { Genero } from '../../interfaces/genero.interface';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
+import { Autor } from '../../../autores/interfaces/autor.interface';
+import { Genero } from '../../../generos/interfaces/genero.interface';
 
 @Component({
   selector: 'app-formulario-busqueda',

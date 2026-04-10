@@ -6,7 +6,7 @@ import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-lista-autores',
-  imports: [RouterLink, JsonPipe],
+  imports: [RouterLink],
   templateUrl: './lista-autores.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -24,17 +24,23 @@ export default class ListaAutores implements OnInit {
     .subscribe((respuesta)=>{
       this.autores.set(respuesta);
 
+      //Por cada autor modificar su propiedad de Libro[], con un peticion para cada de estos
       respuesta.forEach((autor: Autor) => {
         this.service.cargarLibrosPorAutor(autor.id).subscribe({
           next: (librosAutor) => {
-            console.log();
-            autor.libros = librosAutor.libros;
+            //Actualizar señal
+            this.autores.update(lista =>
+              lista.map(a =>
+                a.id === autor.id
+                  ? { ...a, libros: librosAutor }
+                  : a
+              )
+            );
           }
         })
       });
-       this.autores.set(respuesta);
+
     });
   }
-
 
 }

@@ -15,7 +15,7 @@ class CrearGeneroController extends Controller
     {
         //
         $request->validate([
-            "nombre" => "required|string",
+            "nombre" => "required|string|unique",
             "descripcion" => "nullable",
         ]);
 
