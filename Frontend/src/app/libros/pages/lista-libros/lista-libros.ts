@@ -5,6 +5,7 @@ import { LibroCard } from "../../components/libro-card/libro-card";
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { JsonPipe } from '@angular/common';
+import { environment } from '../../../../environments/environment';
 
 
 @Component({
@@ -21,6 +22,7 @@ export default class ListaLibros implements OnInit{
 
   service= inject(LibrosService);
   libros= signal<Libro[]>([]);
+  urlBackend = environment.urlBackend; //Acceso a la url del backend
 
   //Mostrar todos los libros
   mostrarLibros(){

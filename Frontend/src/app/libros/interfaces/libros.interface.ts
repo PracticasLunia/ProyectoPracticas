@@ -12,6 +12,7 @@ export interface Libro {
   sinopsis:    string;
   num_paginas: number;
   disponible:  boolean;
+  tiene_portada:boolean;
   autor_id: number;
   nombre_autor: string;
   generos:Genero[];

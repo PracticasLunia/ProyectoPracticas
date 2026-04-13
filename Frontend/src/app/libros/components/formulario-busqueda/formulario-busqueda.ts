@@ -38,12 +38,13 @@ export class FormularioBusqueda implements OnInit{
     num_paginas:[0],
     disponible:[true],
     autor_id: [0],
-    genero_ids: [[0]]
+    genero_ids: [[0]],
   })
 
   //Options pertenecientes al select de autor y generos
   autores= signal<Autor[]>([]);
   generos= signal<Genero[]>([]);
+  portadaFile = signal<File | null>(null); //Contiene el archivo seleccionado
 
   //Cargar select de autores
   cargarAutoresSelect(){
@@ -97,9 +98,28 @@ export class FormularioBusqueda implements OnInit{
       disponible: this.formulario.value.disponible,
       autor_id: this.formulario.value.autor_id,
       genero_ids: this.formulario.value.genero_ids
-      //genero_ids:this.generos().values
-      //generos: this.generos()
     }
+
+    //Enviar datos con formData para envio de archivos, este solo admite strings
+    const datos2 = new FormData();
+    datos2.append('titulo',      this.formulario.value.titulo ?? '');
+    datos2.append('isbn',        this.formulario.value.isbn ?? '');
+    datos2.append('publicacion', String(this.formulario.value.anio_publicacion ?? ''));
+    datos2.append('sinopsis',    this.formulario.value.sinopsis ?? '');
+    datos2.append('num_paginas', String(this.formulario.value.num_paginas ?? ''));
+    datos2.append('disponible',  this.formulario.value.disponible ? '1' : '0');
+    datos2.append('autor_id',    String(this.formulario.value.autor_id ?? ''));
+
+    // Los géneros son un array. FormData no acepta arrays directamente:
+    // hay que hacer append uno a uno con el nombre "genero_ids[]".
+    const generos = this.formulario.value.genero_ids ?? [];
+    generos.forEach(id => datos2.append('genero_ids[]', String(id)));
+    // La portada, si la hay
+    if (this.portadaFile()) {
+      datos2.append('portada', this.portadaFile()!);
+    }
+
+
 
     const datosFormulario=this.formulario;
 
@@ -126,7 +146,7 @@ export class FormularioBusqueda implements OnInit{
       })
     }
     else{
-      this.service.nuevoLibro(datos)
+      this.service.nuevoLibro(datos2)
        .subscribe({
         next: (respuesta)=>{
           console.log('Creado correctamente')
@@ -148,6 +168,13 @@ export class FormularioBusqueda implements OnInit{
       })
     }
 
+  }
+
+  onPortadaSeleccionada(event: Event) {
+    //Casteo del tipo de dato
+    const input = event.target as HTMLInputElement;
+    const fichero = input.files?.[0] ?? null; //Seleccionar el unico archivo posible
+    this.portadaFile.set(fichero); //Guarda el archivo
   }
 
 }

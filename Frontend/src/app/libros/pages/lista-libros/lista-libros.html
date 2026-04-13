@@ -60,9 +60,10 @@
 </div>
 
 <!--Tabla para cards-->
-<table class="table table-hover">
+<table class="table table-hover align-middle ">
   <thead class="table-light">
     <tr>
+      <th style="width: 60px">Portada</th>
       <th>Título</th>
       <th>Autor</th>
       <th>Géneros</th>
@@ -75,6 +76,23 @@
     @for (libro of libros(); track libro.id) {
         <!--<app-libro-card [libro]="libro"></app-libro-card>-->
       <tr>
+
+        <td>
+          @if (libro.tiene_portada) {
+            <img
+              [src]="urlBackend + '/libros/' + libro.id + '/portada'"
+              style="width: 40px; height: 56px; object-fit: cover"
+              class="rounded"
+              alt="Portada">
+          } @else {
+            <div
+              class="d-flex align-items-center justify-content-center bg-light text-muted rounded"
+              style="width: 40px; height: 56px">
+              <i class="bi bi-image"></i>
+            </div>
+          }
+      </td>
+
         <td>
           <a [routerLink]="['/libros', libro.id]">
             {{ libro.titulo }}

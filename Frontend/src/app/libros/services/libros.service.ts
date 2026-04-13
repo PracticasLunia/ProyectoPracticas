@@ -33,7 +33,7 @@ export class LibrosService {
     return this.http.put<Libro>(`${environment.urlBackend}/libros/${id}`, datos)
   }
 
-  nuevoLibro(datos:any){
+  nuevoLibro(datos:FormData){
     return this.http.post<Libro>(`${environment.urlBackend}/libros`, datos)
   }
 

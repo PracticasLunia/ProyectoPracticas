@@ -13,7 +13,8 @@ class Libro extends Model
         "sinopsis",
         "num_paginas",
         "disponible",
-        "autor_id"
+        "autor_id",
+        "portada_path",
     ];
 
     protected $casts = [
@@ -29,4 +30,14 @@ class Libro extends Model
         return $this->belongsToMany(Genero::class);
     }
 
+
+    protected $appends = ['tiene_portada'];
+
+    public function getTienePortadaAttribute(): bool
+    {
+        return !is_null($this->portada_path);
+    }
+
 }
+
+
