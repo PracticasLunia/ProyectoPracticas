@@ -29,7 +29,7 @@
       </td>
       <td>{{ autor.nacionalidad }}</td>
 
-      <td>{{ autor.fecha_nacimiento}}</td>
+      <td>{{ autor.fecha_nacimiento | date:'fullDate' }}</td>
 
     <td>
       @for (libro of autor.libros; track libro.id) {

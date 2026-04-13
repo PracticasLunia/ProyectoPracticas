@@ -4,11 +4,12 @@ import { Libro } from '../../interfaces/libros.interface';
 import { LibroCard } from "../../components/libro-card/libro-card";
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { JsonPipe } from '@angular/common';
 
 
 @Component({
   selector: 'app-lista-libros',
-  imports: [LibroCard, ReactiveFormsModule, RouterLink],
+  imports: [LibroCard, ReactiveFormsModule, RouterLink, JsonPipe],
   templateUrl: './lista-libros.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -26,8 +27,31 @@ export default class ListaLibros implements OnInit{
     this.service.cargarLibros()
     .subscribe((respuesta)=>{
       this.libros.set(respuesta)
+
+      //Por cada libro obtener su autor y genero
+      respuesta.forEach((libro: Libro) => {
+        this.service.cargarLibroById(libro.id).subscribe({
+          next: (libroCompleto) => {
+
+            this.libros.update(lista =>
+              lista.map(a =>
+                a.id === libro.id
+                  ? {
+                      ...a,
+                      autor: libroCompleto.autor,
+                      generos: libroCompleto.generos
+                    }
+                  : a
+              )
+            );
+          }
+        })
+      });
+
     });
   }
+
+
 
   mostrarLibrosFiltrados(){
     this.service.buscarLibrosFormulario('')

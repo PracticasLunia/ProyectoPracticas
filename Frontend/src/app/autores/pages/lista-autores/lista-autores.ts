@@ -2,11 +2,11 @@ import { ChangeDetectionStrategy, signal, Component, inject, OnInit } from '@ang
 import { AutorService } from '../../services/autor.service';
 import { Autor } from '../../interfaces/autor.interface';
 import { RouterLink } from '@angular/router';
-import { JsonPipe } from '@angular/common';
+import { DatePipe, JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-lista-autores',
-  imports: [RouterLink],
+  imports: [RouterLink, DatePipe],
   templateUrl: './lista-autores.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

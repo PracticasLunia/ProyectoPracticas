@@ -22,7 +22,11 @@
     </div>
     <div class="col-6">
       <small class="text-muted text-uppercase fw-semibold">Fecha de nacimiento</small>
-      <p class="mb-0 fw-medium">{{ autor()?.fecha_nacimiento ?? '—' }}</p>
+      <p class="mb-0 fw-medium">
+        {{ autor()?.fecha_nacimiento
+          ? (autor()?.fecha_nacimiento | date:'fullDate')
+          : '—' }}
+      </p>
     </div>
     @if (autor()?.biografia) {
       <div class="col-12">

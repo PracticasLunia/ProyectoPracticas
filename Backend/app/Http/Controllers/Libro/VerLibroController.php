@@ -19,7 +19,7 @@ class VerLibroController extends Controller
             $libro = Libro::with('autor', 'generos')
                 ->findOrFail($id);
 
-            $respuesta = [
+            /*$respuesta = [
                 'id' => $libro['id'],
                 'created_at' => $libro['created_at'],
                 'updated_at' => $libro['updated_at'],
@@ -32,10 +32,10 @@ class VerLibroController extends Controller
                 'disponible' => $libro['disponible'],
                 'nombre_autor' => $libro['autor']['nombre'],
                 'generos'=>$libro['generos']
-            ];
+            ];*/
 
             return response()->json(
-                $respuesta , 200
+                $libro , 200
             );
         } catch (\Throwable $th) {
             return response()->json(

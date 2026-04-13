@@ -7,7 +7,7 @@ export interface Autor {
   nombre:           string;
   apellidos:        string;
   nacionalidad:     string;
-  fecha_nacimiento: Date;
+  fecha_nacimiento: string;
   biografia:        string;
   libros: Libro[]
 }

@@ -4,10 +4,11 @@ import { Autor } from '../../interfaces/autor.interface';
 import { AutorService } from '../../services/autor.service';
 import { Libro } from '../../../libros/interfaces/libros.interface';
 import { Observable } from 'rxjs';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-detalle-autores',
-  imports: [RouterLink],
+  imports: [RouterLink, DatePipe],
   templateUrl: './detalle-autores.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

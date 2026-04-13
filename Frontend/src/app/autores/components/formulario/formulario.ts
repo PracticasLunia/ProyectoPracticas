@@ -3,10 +3,11 @@ import { AutorService } from '../../services/autor.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Autor } from '../../interfaces/autor.interface';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-formulario',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, DatePipe],
   templateUrl: './formulario.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -49,7 +50,7 @@ export class Formulario implements OnInit {
         nombre: this.autor()?.nombre,
         apellidos: this.autor()?.apellidos,
         nacionalidad: this.autor()?.nacionalidad,
-        //fecha_nacimiento: this.autor()?.fecha_nacimiento? new Date(this.autor()?.fecha_nacimiento).toISOString().split('T')[0]: ''
+        fecha_nacimiento: this.autor()?.fecha_nacimiento,
         biografia: this.autor()?.biografia,
         })
 
