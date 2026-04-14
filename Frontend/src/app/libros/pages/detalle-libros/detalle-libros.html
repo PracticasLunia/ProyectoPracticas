@@ -5,59 +5,92 @@
 
   <h2 class="mb-3">{{ libro()?.titulo}}</h2>
 
-  <div class="row g-3">
-    <div class="col-6">
-      <small class="text-muted text-uppercase fw-semibold">ISBN</small>
-      <p class="mb-0 fw-medium">{{ libro()?.isbn }}</p>
+  <div class="row g-4">
+
+    <div class="col-md-3">
+      @if (libro()?.tiene_portada) {
+        <img [src]="urlBackend + '/libros/' + libro()?.id + '/portada?v=' + libro()?.updated_at"
+        class="img-fluid rounded shadow-sm"
+        style="width: 100%; aspect-ratio: 5/7; object-fit: cover"
+        alt="Portada de {{ libro()?.titulo }}">
+      }
+      @else {
+        <div
+          class="d-flex align-items-center justify-content-center rounded"
+          style="
+            width: 100%;
+            aspect-ratio: 5/7;
+            background-color: #e9ecef;
+            border: 1px solid #ced4da;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.12);
+            color: #adb5bd;
+          "
+        >
+          <i class="bi bi-image" style="font-size: 3rem; opacity: 0.8;"></i>
+        </div>
+      }
     </div>
-    <div class="col-6">
-      <small class="text-muted text-uppercase fw-semibold">Año de publicación</small>
-      <p class="mb-0 fw-medium">{{ libro()?.publicacion }}</p>
-    </div>
-    <div class="col-6">
-      <small class="text-muted text-uppercase fw-semibold">Páginas</small>
-      <p class="mb-0 fw-medium">{{ libro()?.num_paginas }}</p>
-    </div>
-    <div class="col-6">
-      <small class="text-muted text-uppercase fw-semibold">Disponible</small>
-      <p class="mb-0">
-        @if (libro()?.disponible==true) {
-          <span class="badge text-bg-success">Sí</span>
-        } @else {
-          <span class="badge text-bg-danger">No</span>
+
+    <div class="col-md-9">
+        <div class="col-6">
+          <small class="text-muted text-uppercase fw-semibold">ISBN</small>
+          <p class="mb-0 fw-medium">{{ libro()?.isbn }}</p>
+        </div>
+        <div class="col-6">
+          <small class="text-muted text-uppercase fw-semibold">Año de publicación</small>
+          <p class="mb-0 fw-medium">{{ libro()?.publicacion }}</p>
+        </div>
+        <div class="col-6">
+          <small class="text-muted text-uppercase fw-semibold">Páginas</small>
+          <p class="mb-0 fw-medium">{{ libro()?.num_paginas }}</p>
+        </div>
+        <div class="col-6">
+          <small class="text-muted text-uppercase fw-semibold">Disponible</small>
+          <p class="mb-0">
+            @if (libro()?.disponible==true) {
+              <span class="badge text-bg-success">Sí</span>
+            } @else {
+              <span class="badge text-bg-danger">No</span>
+            }
+          </p>
+        </div>
+
+        <div class="col-6">
+          <small class="text-muted text-uppercase fw-semibold">Géneros</small>
+          <div>
+            @for (genero of libro()?.generos; track genero.id) {
+              <a [routerLink]="['/generos', genero.id]"
+                class="badge text-bg-primary text-decoration-none me-1">
+                {{ genero.nombre }}
+              </a>
+            }
+          </div>
+        </div>
+
+        @if (libro()?.sinopsis) {
+          <div class="col-12">
+            <small class="text-muted text-uppercase fw-semibold">Sinopsis</small>
+            <p class="mb-0">{{ libro()?.sinopsis }}</p>
+          </div>
         }
-      </p>
-    </div>
 
-      <div class="col-6">
-      <small class="text-muted text-uppercase fw-semibold">Géneros</small>
-      <div>
-        @for (genero of libro()?.generos; track genero.id) {
-          <a [routerLink]="['/generos', genero.id]"
-             class="badge text-bg-primary text-decoration-none me-1">
-            {{ genero.nombre }}
-          </a>
-        }
+      <div class="d-flex gap-2 mt-4 pt-3 border-top">
+        <a [routerLink]="['/libros', libro()?.id, 'editar']" class="btn btn-primary">
+          <i class="bi bi-pencil"></i> Editar
+        </a>
+    <button class="btn btn-outline-danger" (click)="eliminar()">
+      <i class="bi bi-trash3"></i> Eliminar
+    </button>
       </div>
+
     </div>
-
-    @if (libro()?.sinopsis) {
-      <div class="col-12">
-        <small class="text-muted text-uppercase fw-semibold">Sinopsis</small>
-        <p class="mb-0">{{ libro()?.sinopsis }}</p>
-      </div>
-    }
-
   </div>
-
-  <div class="d-flex gap-2 mt-4 pt-3 border-top">
-    <a [routerLink]="['/libros', libro()?.id, 'editar']" class="btn btn-primary">
-      <i class="bi bi-pencil"></i> Editar
-    </a>
-    <a [routerLink]="['/libros', libro()?.id, 'eliminar']" class="btn btn-primary">
-      <i class="bi bi-pencil"></i> Eliminar
-    </a>
-  </div>
-
 }
 
+  <!-- Error al eliminar -->
+  @if (errorEliminar()!='') {
+    <div class="alert alert-danger d-flex align-items-start gap-2 mt-3">
+      <i class="bi bi-exclamation-triangle-fill"></i>
+      <div>{{ errorEliminar() }}</div>
+    </div>
+  }

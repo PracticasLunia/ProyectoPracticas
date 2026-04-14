@@ -108,27 +108,62 @@
 
       <div class="col-12">
       <label class="form-label">Disponible</label>
-      <div class="d-flex gap-3">
-        <div class="form-check">
-        <input type="radio" class="form-check-label" formControlName="disponible" [value]=true>Si
-        <input type="radio" class="form-check-label" formControlName="disponible" [value]=false>No
+        <div class="d-flex gap-3">
+          <div class="form-check">
+          <input type="radio" class="form-check-label" formControlName="disponible" [value]=true>Si
+          <input type="radio" class="form-check-label" formControlName="disponible" [value]=false>No
+          </div>
         </div>
       </div>
-      </div>
+
+
 
       <div class="mb-3">
         <label for="portada" class="form-label">
           Portada del libro
         </label>
-        <input
-          type="file"
-          id="portada"
-          class="form-control"
-          accept="image/jpeg,image/png,image/webp"
-          (change)="onPortadaSeleccionada($event)"
-        >
-        <div class="form-text">JPG, PNG o WEBP. Máximo 2 MB.</div>
+
+  <!-- Solo en modo editar: mostrar portada actual o estado vacío -->
+  @if (idRuta != null) {
+    @if (libro()?.tiene_portada && !eliminarPortadaFlag()) {
+      <div class="d-flex gap-3 align-items-start p-3 bg-light border rounded mb-2">
+        <img [src]="urlBackend + '/libros/' + libro()?.id + '/portada?v=' + libro()?.updated_at"
+             style="width: 90px; height: 126px; object-fit: cover"
+             class="rounded shadow-sm"
+             alt="Portada actual">
+        <div class="flex-grow-1">
+          <div class="fw-semibold small">Portada actual</div>
+          <div class="small text-muted mb-2">
+            Si no eliges una nueva imagen, se mantiene esta al guardar.
+          </div>
+          <button type="button"
+                  class="btn btn-sm btn-outline-danger"
+                  (click)="eliminarPortadaActual()">
+            <i class="bi bi-trash3"></i> Eliminar portada actual
+          </button>
+        </div>
       </div>
+    } @else if (!libro()?.tiene_portada) {
+      <div class="d-flex gap-3 align-items-center p-3 bg-light border border-dashed rounded mb-2 small text-muted">
+        <div class="bg-secondary bg-opacity-25 rounded d-flex align-items-center justify-content-center"
+             style="width:60px;height:84px;color:#94a3b8">
+          <i class="bi bi-image fs-4"></i>
+        </div>
+        <div>Este libro no tiene portada. Puedes añadirla ahora si quieres.</div>
+      </div>
+    }
+
+  }
+
+  <input
+    type="file"
+    id="portada"
+    class="form-control"
+    accept="image/jpeg,image/png,image/webp"
+    (change)="onPortadaSeleccionada($event)"
+  >
+  <div class="form-text">JPG, PNG o WEBP. Máximo 2 MB.</div>
+  </div>
 
       <!--Botones-->
       <div class="col-12 d-flex gap-2 pt-3 border-top">
@@ -145,6 +180,5 @@
         Cancelar</a>
 
       </div>
-
-  </div>
+    </div>
 </form>

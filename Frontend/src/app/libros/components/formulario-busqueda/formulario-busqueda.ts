@@ -6,6 +6,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 import { Autor } from '../../../autores/interfaces/autor.interface';
 import { Genero } from '../../../generos/interfaces/genero.interface';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-formulario-busqueda',
@@ -14,6 +15,7 @@ import { Genero } from '../../../generos/interfaces/genero.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormularioBusqueda implements OnInit{
+
 
   ngOnInit(): void {
     this.cargarAutoresSelect()
@@ -25,6 +27,7 @@ export class FormularioBusqueda implements OnInit{
   service=inject(LibrosService);
   fb=inject(FormBuilder);
   router= inject(Router);
+  urlBackend=environment.urlBackend;
   //Ruta activa
   idRuta= inject(ActivatedRoute).snapshot.params['id'];
   libro=signal<Libro|null>(null);
@@ -44,7 +47,13 @@ export class FormularioBusqueda implements OnInit{
   //Options pertenecientes al select de autor y generos
   autores= signal<Autor[]>([]);
   generos= signal<Genero[]>([]);
+  eliminarPortadaFlag = signal<boolean>(false); //Señal para indicar la eliminacion de portada
   portadaFile = signal<File | null>(null); //Contiene el archivo seleccionado
+
+  //Metodo para cambiar el valor de la señal de eliminar portada
+  eliminarPortadaActual() {
+    this.eliminarPortadaFlag.set(true);
+  }
 
   //Cargar select de autores
   cargarAutoresSelect(){
@@ -89,7 +98,7 @@ export class FormularioBusqueda implements OnInit{
 
     const errores={};
 
-    const datos= {
+    /*const datos= {
       titulo: this.formulario.value.titulo,
       isbn: this.formulario.value.isbn,
       publicacion: this.formulario.value.anio_publicacion,
@@ -98,7 +107,7 @@ export class FormularioBusqueda implements OnInit{
       disponible: this.formulario.value.disponible,
       autor_id: this.formulario.value.autor_id,
       genero_ids: this.formulario.value.genero_ids
-    }
+    }*/
 
     //Enviar datos con formData para envio de archivos, este solo admite strings
     const datos2 = new FormData();
@@ -118,13 +127,16 @@ export class FormularioBusqueda implements OnInit{
     if (this.portadaFile()) {
       datos2.append('portada', this.portadaFile()!);
     }
-
+    // Si el usuario ha pulsado "Eliminar portada actual"
+    if (this.eliminarPortadaFlag()) {
+      datos2.append('eliminar_portada', '1');
+    }
 
 
     const datosFormulario=this.formulario;
 
     if(this.idRuta!=null){
-      this.service.actualizarLibro(datos, this.idRuta)
+      this.service.actualizarLibro(datos2, this.idRuta)
       .subscribe({
         next: (respuesta)=>{
           console.log('Actualizado correctamente')

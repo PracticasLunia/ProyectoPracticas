@@ -29,8 +29,9 @@ export class LibrosService {
   }
 
 
-  actualizarLibro(datos:any, id:number){
-    return this.http.put<Libro>(`${environment.urlBackend}/libros/${id}`, datos)
+  actualizarLibro(datos:FormData, id:number){
+    datos.append('_method', 'PUT');
+    return this.http.post<Libro>(`${environment.urlBackend}/libros/${id}`, datos)
   }
 
   nuevoLibro(datos:FormData){
