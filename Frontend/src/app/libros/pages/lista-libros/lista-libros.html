@@ -113,7 +113,7 @@
           </a>
         </td>
         <!--<pre>{{ libro | json }}</pre>-->
-        <td><a [routerLink]="['/autores', libro?.autor?.id ]" >{{libro?.autor?.nombre}}</a></td>
+        <td><a [routerLink]="['/autores', libro?.autor?.id ]" >{{libro?.autor?.nombre}} {{libro?.autor?.apellidos}}</a></td>
 
         <td>
           @for (genero of libro.generos; track genero.id) {

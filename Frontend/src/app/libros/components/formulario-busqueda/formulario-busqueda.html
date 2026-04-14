@@ -67,7 +67,7 @@
         <label class="form-label">Autor</label>
         <select class="form-select" formControlName="autor_id">
         @for (autor of autores(); track $index) {
-            <option [value]="autor.id" >{{autor.nombre}}</option>
+            <option [value]="autor.id" >{{autor.nombre}} {{autor.apellidos}}</option>
           }
         </select>
 

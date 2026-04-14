@@ -20,7 +20,7 @@ class ActualizarLibroController extends Controller
             "isbn" => "required|string|unique:libros,isbn,".$id,
             "publicacion"=>"required|integer",
             "sinopsis"=>"nullable|max:255",
-            "num_paginas"=>"required|integer",
+            "num_paginas"=>"required|integer|min:1|max:1000",
             "disponible" => "boolean",
             "autor_id"=> "required|exists:autores,id",
             "genero_ids" => "required|array",
