@@ -25,6 +25,7 @@ use App\Http\Controllers\Libro\BuscarLibrosController;
 use App\Http\Controllers\Libro\VerLibroController;
 use App\Http\Controllers\Libro\CrearLibroController;
 use App\Http\Controllers\Libro\ActualizarLibroController;
+use App\Http\Controllers\Libro\ContenidoLibroController;
 use App\Http\Controllers\Libro\EliminarLibroController;
 use App\Http\Controllers\Libro\PortadaLibroController;
 
@@ -36,6 +37,7 @@ Route::post('/libros', CrearLibroController::class);
 Route::put('/libros/{id}', ActualizarLibroController::class);
 Route::delete('/libros/{id}', EliminarLibroController::class);
 Route::get('libros/{id}/portada', PortadaLibroController::class);
+Route::get('libros/{id}/contenido', ContenidoLibroController::class);
 
 //Routes Autores
 Route::get('/autores', ListarAutoresController::class);

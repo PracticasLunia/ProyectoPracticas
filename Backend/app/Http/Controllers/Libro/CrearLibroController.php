@@ -24,13 +24,27 @@ class CrearLibroController extends Controller
             "disponible" => "boolean",
             "autor_id"=> "required|exists:autores,id",
             "genero_ids" => "required|array",
+            //Validaciones archivos
             "portada" => "nullable|image|mimes:jpg,jpeg,png,webp|max:2048",
+            "contenido"=>"nullable|file|mimes:pdf|max:20480",
         ]);
 
         // Si viene un fichero de portada, lo guardamos en disco y obtenemos el path
         $portadaPath = null;
         if ($request->hasFile('portada')) {
             $portadaPath = $request->file('portada')->store('portadas', 'local');
+        }
+
+        //Guardar un documento adjunto en el disco, y obtener su path en donde fue guardado, nombre y tamaño
+        $contenidoPath=null;
+        $contenidoNombre=null;
+        $contenidoTamano=null;
+
+        if($request->hasFile('contenido')){
+            $file=$request->file('contenido');
+            $contenidoPath= $file->store('contenidos', 'local');
+            $contenidoNombre= $file->getClientOriginalName();
+            $contenidoTamano= $file->getSize();
         }
 
         $libro= Libro::create([
@@ -41,11 +55,16 @@ class CrearLibroController extends Controller
             "num_paginas"=>$request->num_paginas,
             "disponible"=>$request->disponible,
             "autor_id"=>$request->autor_id,
+
             "portada_path" => $portadaPath,
+
+            "contenido_path"   => $contenidoPath,
+            "contenido_nombre" => $contenidoNombre,
+            "contenido_tamano" => $contenidoTamano,
         ]);
         //Create relations to generos
         $libro->generos()->attach($request->genero_ids);
 
-        response()->json($libro, 200);
+        return response()->json($libro, 200);
     }
 }

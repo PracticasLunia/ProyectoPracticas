@@ -155,6 +155,7 @@
 
   }
 
+  <!--Input para portada-->
   <input
     type="file"
     id="portada"
@@ -163,6 +164,38 @@
     (change)="onPortadaSeleccionada($event)"
   >
   <div class="form-text">JPG, PNG o WEBP. Máximo 2 MB.</div>
+  </div>
+
+  <div class="mb-3">
+  <label for="contenido" class="form-label">Contenido del libro (PDF)</label>
+
+  <!--Input para documento-->
+  <input
+    type="file"
+    id="contenido"
+    class="form-control"
+    accept="application/pdf"
+    (change)="onContenidoSeleccionado($event)">
+
+  @if (contenidoFile()!=null) {
+    <div class="d-flex align-items-center gap-3 p-2 bg-light border rounded mt-2"
+         style="max-width: 480px">
+      <div class="bg-danger text-white rounded d-flex flex-column align-items-center justify-content-center"
+           style="width: 38px; height: 48px; font-size: .6rem; font-weight: 700">
+        <i class="bi bi-file-earmark-fill fs-5"></i>PDF
+      </div>
+      <div class="flex-grow-1">
+        <div class="fw-semibold small text-truncate">{{ contenidoFile()?.name }}</div>
+        <div class="small text-muted">{{ formatearTamano(contenidoFile()?.size) }}</div>
+      </div>
+    </div>
+  }
+
+  <div class="form-text">Solo PDF. Máximo 20 MB.</div>
+
+    @if (errorContenido()) {
+      <div class="text-danger small mt-1">{{ errorContenido() }}</div>
+    }
   </div>
 
       <!--Botones-->

@@ -47,8 +47,13 @@ export class FormularioBusqueda implements OnInit{
   //Options pertenecientes al select de autor y generos
   autores= signal<Autor[]>([]);
   generos= signal<Genero[]>([]);
+
+  //Señales para manejo de archivos
   eliminarPortadaFlag = signal<boolean>(false); //Señal para indicar la eliminacion de portada
   portadaFile = signal<File | null>(null); //Contiene el archivo seleccionado
+  errorPortada = signal<String|null>(null);
+  contenidoFile = signal<File | null>(null);//Contiene al documento
+  errorContenido = signal<string | null>(null);
 
   //Metodo para cambiar el valor de la señal de eliminar portada
   eliminarPortadaActual() {
@@ -96,7 +101,10 @@ export class FormularioBusqueda implements OnInit{
 
   onSubmit(){
 
+    //Resetear errores
     const errores={};
+    this.errorPortada.set(null);
+    this.errorContenido.set(null);
 
     /*const datos= {
       titulo: this.formulario.value.titulo,
@@ -123,11 +131,17 @@ export class FormularioBusqueda implements OnInit{
     // hay que hacer append uno a uno con el nombre "genero_ids[]".
     const generos = this.formulario.value.genero_ids ?? [];
     generos.forEach(id => datos2.append('genero_ids[]', String(id)));
-    // La portada, si la hay
+
+    //Agregar la portada y/o el documento si los a proporcionado el usuario
     if (this.portadaFile()) {
       datos2.append('portada', this.portadaFile()!);
     }
-    // Si el usuario ha pulsado "Eliminar portada actual"
+    if(this.contenidoFile()){
+      datos2.append('contenido', this.contenidoFile()!)
+    }
+
+
+    //Eliminar la portada y/o el documento si lo ha seleccionado el usuario
     if (this.eliminarPortadaFlag()) {
       datos2.append('eliminar_portada', '1');
     }
@@ -143,7 +157,8 @@ export class FormularioBusqueda implements OnInit{
           //Redirigir automaticamente
           this.router.navigate(['/libros']);
         },
-        error(err) {
+        //Arrow function para el uso de propiedades del this.
+        error:(err)=>{
           if(err.status===422){
             const errores= err.error.errors;
             console.log(errores)
@@ -153,6 +168,8 @@ export class FormularioBusqueda implements OnInit{
                 control.setErrors({ backend: errores[campo][0] });
               }
             });
+              this.errorContenido.set(errores['contenido']?.[0] ?? null);
+              this.errorPortada.set(errores['portada']?.[0] ?? null);
           }
         },
       })
@@ -165,7 +182,7 @@ export class FormularioBusqueda implements OnInit{
           //Redirigir automaticamente
           this.router.navigate(['/libros']);
         },
-        error(err) {
+        error:(err)=>{
           if(err.status===422){
             const errores= err.error.errors;
             console.log(errores)
@@ -175,6 +192,8 @@ export class FormularioBusqueda implements OnInit{
                 control.setErrors({ backend: errores[campo][0] });
               }
             });
+            this.errorContenido.set(errores['contenido']?.[0] ?? null);
+            this.errorPortada.set(errores['portada']?.[0] ?? null);
           }
         },
       })
@@ -187,6 +206,21 @@ export class FormularioBusqueda implements OnInit{
     const input = event.target as HTMLInputElement;
     const fichero = input.files?.[0] ?? null; //Seleccionar el unico archivo posible
     this.portadaFile.set(fichero); //Guarda el archivo
+  }
+
+  onContenidoSeleccionado(event: Event) {
+    //Casteo tipo de dato
+    const input = event.target as HTMLInputElement;
+    const fichero = input.files?.[0] ?? null;//Seleccionar el unico archivo posible
+    this.contenidoFile.set(fichero);//Guarda el archivo
+  }
+
+  //Casteo de tamaño en diferentes valores
+  formatearTamano(bytes: number | null | undefined): string {
+    if (!bytes) return '';
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   }
 
 }

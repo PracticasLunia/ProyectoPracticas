@@ -4,13 +4,17 @@ import { Libro } from '../../interfaces/libros.interface';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { JsonPipe } from '@angular/common';
 import { environment } from '../../../../environments/environment';
+import { PdfViewerComponent, PdfViewerModule } from 'ng2-pdf-viewer';
+import { NgModule } from '@angular/core';
+
 @Component({
   selector: 'app-detalle-libros',
-  imports: [RouterLink],
+  imports: [RouterLink, PdfViewerModule],
   templateUrl: './detalle-libros.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 
 })
+
 export default class DetalleLibros implements OnInit {
 
   ngOnInit(): void{
@@ -22,6 +26,9 @@ export default class DetalleLibros implements OnInit {
   urlBackend=environment.urlBackend;
   //Contendra mensaje debido al posible error del backend de fk
   errorEliminar=signal('');
+  //Paginacion
+  paginaActual = signal(1);
+  totalPaginas = signal(0);
 
   //Tomar el id de la ruta
   id= inject(ActivatedRoute).snapshot.params['id'];
@@ -41,7 +48,7 @@ export default class DetalleLibros implements OnInit {
     })
   }
 
-    eliminar(){
+  eliminar(){
     if(!confirm('¿Seguro que quieres eliminar a este género?')) return;
 
     this.service.eliminarLibro(this.id)
@@ -54,6 +61,21 @@ export default class DetalleLibros implements OnInit {
       },
     })
 
+  }
+
+  urlContenido(id: number): string {
+    return `${this.urlBackend}/libros/${id}/contenido`;
+  }
+
+  onPdfCargado(pdf: any) {
+    this.totalPaginas.set(pdf.numPages);
+  }
+
+  formatearTamano(bytes: number | null | undefined): string {
+    if (!bytes) return '';
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   }
 
 }

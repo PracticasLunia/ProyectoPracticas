@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+use function PHPUnit\Framework\isNull;
+
 class Libro extends Model
 {
     protected $fillable = [
@@ -14,9 +16,17 @@ class Libro extends Model
         "num_paginas",
         "disponible",
         "autor_id",
-        "portada_path",
+        "portada_path", //Acceso a datos de la portada
+        //Acceso a datos del documento pdf
+        "contenido_path",
+        "contenido_nombre",
+        "contenido_tamano",
     ];
 
+    //Valores que no existen en la bd, y se calculan dinamicamente a patir de otros
+    protected $appends = ['tiene_portada', 'tiene_contenido'];
+
+    //Casteo a tipo admitido para Mysql number->boolean
     protected $casts = [
         'disponible' => 'bool'
     ];
@@ -30,12 +40,14 @@ class Libro extends Model
         return $this->belongsToMany(Genero::class);
     }
 
-
-    protected $appends = ['tiene_portada'];
-
+    //Funciones para asignarles valor a los atributos $appends
     public function getTienePortadaAttribute(): bool
     {
         return !is_null($this->portada_path);
+    }
+
+    public function getTieneContenidoAttribute(): bool{
+        return !is_null($this->contenido_path);
     }
 
 }
