@@ -48,16 +48,23 @@ export class FormularioBusqueda implements OnInit{
   autores= signal<Autor[]>([]);
   generos= signal<Genero[]>([]);
 
-  //Señales para manejo de archivos
+  //Señales imagen
   eliminarPortadaFlag = signal<boolean>(false); //Señal para indicar la eliminacion de portada
   portadaFile = signal<File | null>(null); //Contiene el archivo seleccionado
   errorPortada = signal<String|null>(null);
+
+  //Señales documento
+  eliminarContenidoFlag = signal(false);
   contenidoFile = signal<File | null>(null);//Contiene al documento
   errorContenido = signal<string | null>(null);
 
-  //Metodo para cambiar el valor de la señal de eliminar portada
+  //Metodos para cambiar el valor de la señal de eliminar portada o contenido
   eliminarPortadaActual() {
     this.eliminarPortadaFlag.set(true);
+  }
+
+  eliminarContenidoActual(){
+    this.eliminarContenidoFlag.set(true);
   }
 
   //Cargar select de autores
@@ -146,6 +153,9 @@ export class FormularioBusqueda implements OnInit{
       datos2.append('eliminar_portada', '1');
     }
 
+    if(this.eliminarContenidoFlag()){
+      datos2.append('eliminar_contenido', '1');
+    }
 
     const datosFormulario=this.formulario;
 

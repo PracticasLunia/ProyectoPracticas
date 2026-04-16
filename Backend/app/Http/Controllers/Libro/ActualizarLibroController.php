@@ -24,7 +24,8 @@ class ActualizarLibroController extends Controller
             "disponible" => "boolean",
             "autor_id"=> "required|exists:autores,id",
             "genero_ids" => "required|array",
-            "portada" => "nullable|image|mimes:jpg,jpeg,png,webp|max:2048"
+            "portada" => "nullable|image|mimes:jpg,jpeg,png,webp|max:2048",
+            "contenido"=>"nullable|file|mimes:pdf|max:20480",
         ]);
 
         $libro= Libro::find($id);
@@ -72,9 +73,25 @@ class ActualizarLibroController extends Controller
             $libro->portada_path = null;
         }
 
-        // Caso 3: el usuario no ha tocado la portada → no se hace nada con portada_path
+        //Gestion de contenido
+        if($request->hasFile('contenido')){
+            if($libro->contenido_path){
+                Storage::disk('local')->delete($libro->contenido_path);
+            }
+            
+            $libro->contenido_path=$request->file('contenido')->store('contenidos', 'local');
+            $libro->contenido_nombre=$request->file('contenido')->getClientOriginalName();
+            $libro->contenido_tamano=$request->file('contenido')->getSize();
+        }
+        elseif($request->input('eliminar_contenido')==='1'){
+            if($libro->portada_path){
+                Storage::disk('local')->delete($libro->contenido_path);
+            }
+        }
 
-        // --- Actualización del resto de campos ---
+        //Caso 3: el usuario no ha tocado la portada o contenido
+
+        //Actualización del resto de campos
         $libro->update([
             "titulo"       => $request->titulo,
             "isbn"         => $request->isbn,
@@ -84,6 +101,9 @@ class ActualizarLibroController extends Controller
             "disponible"   => $request->disponible,
             "autor_id"     => $request->autor_id,
             "portada_path" => $libro->portada_path, // el valor resultante de los if de arriba
+            "contenido_path" => $libro->contenido_path,
+            "contenido_nombre" => $libro->contenido_nombre,
+            "contenido_tamano" => $libro->contenido_tamano,
         ]);
 
         $libro->generos()->sync($request->genero_ids);
