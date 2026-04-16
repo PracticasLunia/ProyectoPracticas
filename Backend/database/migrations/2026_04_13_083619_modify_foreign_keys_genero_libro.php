@@ -17,7 +17,7 @@ return new class extends Migration
             $table->dropForeign(['genero_id']);
             $table->dropForeign(['libro_id']);
 
-            //Volver a crearlas con NO ACTION
+            //Volver a crearlas con NO ACTION Y CASCADE
             $table->foreign('genero_id')
                   ->references('id')
                   ->on('generos')
@@ -26,7 +26,7 @@ return new class extends Migration
             $table->foreign('libro_id')
                   ->references('id')
                   ->on('libros')
-                  ->onDelete('no action');
+                  ->onDelete('cascade');
         });
     }
 

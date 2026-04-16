@@ -164,6 +164,9 @@
     (change)="onPortadaSeleccionada($event)"
   >
   <div class="form-text">JPG, PNG o WEBP. Máximo 2 MB.</div>
+      @if (errorPortada()) {
+      <div class="text-danger small mt-1">{{ errorPortada() }}</div>
+    }
   </div>
 
   <div class="mb-3">

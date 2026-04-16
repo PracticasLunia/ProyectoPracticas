@@ -49,7 +49,7 @@ export default class DetalleLibros implements OnInit {
   }
 
   eliminar(){
-    if(!confirm('¿Seguro que quieres eliminar a este género?')) return;
+    if(!confirm('¿Seguro que quieres eliminar a este libro?')) return;
 
     this.service.eliminarLibro(this.id)
     .subscribe({
