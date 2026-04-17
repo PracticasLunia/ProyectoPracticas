@@ -144,7 +144,7 @@ export class FormularioBusqueda implements OnInit{
       datos2.append('portada', this.portadaFile()!);
     }
     if(this.contenidoFile()){
-      datos2.append('contenido', this.contenidoFile()!)
+      datos2.append('contenido', this.contenidoFile()!);
     }
 
 

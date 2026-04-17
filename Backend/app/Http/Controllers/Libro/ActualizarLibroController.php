@@ -78,7 +78,7 @@ class ActualizarLibroController extends Controller
             if($libro->contenido_path){
                 Storage::disk('local')->delete($libro->contenido_path);
             }
-            
+
             $libro->contenido_path=$request->file('contenido')->store('contenidos', 'local');
             $libro->contenido_nombre=$request->file('contenido')->getClientOriginalName();
             $libro->contenido_tamano=$request->file('contenido')->getSize();
@@ -87,6 +87,7 @@ class ActualizarLibroController extends Controller
             if($libro->portada_path){
                 Storage::disk('local')->delete($libro->contenido_path);
             }
+            $libro->contenido_path=null;
         }
 
         //Caso 3: el usuario no ha tocado la portada o contenido
