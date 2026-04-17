@@ -11,11 +11,10 @@ import { Genero } from '../../generos/interfaces/genero.interface';
 })
 export class LibrosService {
 
-  //Inyection depency
+  //Inyeccion de dependencias
   private http= inject(HttpClient);
 
   cargarLibros(){
-    //Peticion
     return this.http.get<Libro[]>(`${environment.urlBackend}/libros`)
   }
 
@@ -27,7 +26,6 @@ export class LibrosService {
     return this.http.get<Libro[]>
     (`${environment.urlBackend}/libros/buscar?${urlForm}`)
   }
-
 
   actualizarLibro(datos:FormData, id:number){
     datos.append('_method', 'PUT');
@@ -42,7 +40,7 @@ export class LibrosService {
     return this.http.delete(`${environment.urlBackend}/libros/${id}`)
   }
 
-  //Crear servicios especificos de autor y genero
+  //Uso de servicios externos
   cargarAutores(){
     return this.http.get<Autor[]>(`${environment.urlBackend}/autores`)
   }

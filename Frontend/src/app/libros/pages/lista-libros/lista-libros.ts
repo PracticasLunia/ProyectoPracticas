@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { LibrosService } from '../../services/libros.service';
 import { Libro } from '../../interfaces/libros.interface';
-import { LibroCard } from "../../components/libro-card/libro-card";
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { environment } from '../../../../environments/environment';
@@ -9,7 +8,7 @@ import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-lista-libros',
-  imports: [LibroCard, ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './lista-libros.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -19,11 +18,24 @@ export default class ListaLibros implements OnInit{
     this.mostrarLibros();
   }
 
+  //Inyeccion de servicios-----
   service= inject(LibrosService);
+  fb=inject(FormBuilder);
+
+  //Variables-----
   libros= signal<Libro[]>([]);
   urlBackend = environment.urlBackend; //Acceso a la url del backend
 
-  //Mostrar todos los libros
+  formulario=this.fb.group({
+    titulo: [''],
+    isbn: [''],
+    autor: [''],
+    genero_nombre: ['']
+  })
+
+  //Metodos-----
+
+  //Metodo para mostrar todos los libros junto cargando tambien sus datos relacionados de autor y generos
   mostrarLibros(){
     this.service.cargarLibros()
     .subscribe((respuesta)=>{
@@ -33,7 +45,7 @@ export default class ListaLibros implements OnInit{
       respuesta.forEach((libro: Libro) => {
         this.service.cargarLibroById(libro.id).subscribe({
           next: (libroCompleto) => {
-
+            //Actualizar señal
             this.libros.update(lista =>
               lista.map(a =>
                 a.id === libro.id
@@ -52,33 +64,11 @@ export default class ListaLibros implements OnInit{
     });
   }
 
-
-
-  mostrarLibrosFiltrados(){
-    this.service.buscarLibrosFormulario('')
-    .subscribe((respuesta)=>{
-      //this.libros.set(respuesta)
-    });
-  }
-
-  /*Formulario*/
-  fb=inject(FormBuilder);
-  //formUtils= FormUtils;
-
-  formulario=this.fb.group({
-    titulo: [''],
-    isbn: [''],
-    autor: [''],
-    genero_nombre: ['']
-  })
-
+  //Metodo que se ejecuta al subir el formulario para filtrar libros por campos de este
   onSubmit(){
     const urlForm= `titulo=${this.formulario.value.titulo}&ibsn=${this.formulario.value.isbn}&autor=${this.formulario.value.autor}&genero_nombre=${this.formulario.value.genero_nombre}`
-    console.log(urlForm);
         this.service.buscarLibrosFormulario(urlForm).subscribe((respuesta)=>{
-        console.log(respuesta)
         this.libros.set(respuesta);
     })
-    console.log(urlForm)
   }
 }

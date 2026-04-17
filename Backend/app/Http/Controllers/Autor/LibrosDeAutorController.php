@@ -16,12 +16,10 @@ class LibrosDeAutorController extends Controller
         //findOrFail return exception
         try {
 
-            //$autor= Autor::findOrFail($id);
-            //$libros= $autor->libros;
             $autor=Autor::with('libros')->findOrFail($id);
-
             $autorLibros=$autor->libros()->with('generos')->get();
 
+            //Devuelve unicamente los libros, con sus generos relacionados, de aquel autor
             return response()->json($autorLibros, 200);
 
         } catch (\Throwable $th) {

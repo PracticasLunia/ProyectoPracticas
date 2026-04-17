@@ -2,10 +2,8 @@ import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@ang
 import { LibrosService } from '../../services/libros.service';
 import { Libro } from '../../interfaces/libros.interface';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { JsonPipe } from '@angular/common';
 import { environment } from '../../../../environments/environment';
-import { PdfViewerComponent, PdfViewerModule } from 'ng2-pdf-viewer';
-import { NgModule } from '@angular/core';
+import {PdfViewerModule } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-detalle-libros',
@@ -44,7 +42,6 @@ export default class DetalleLibros implements OnInit {
     this.service.cargarLibroById(id)
     .subscribe((respuesta)=>{
       this.libro.set(respuesta)
-      console.log(respuesta);
     })
   }
 

@@ -16,11 +16,10 @@ class LibrosDeGeneroController extends Controller
         //findOrFail return exception
         try {
 
-            //$autor= Autor::findOrFail($id);
-            //$libros= $autor->libros;
             $generos=Genero::with('libros.autor')->findOrFail($id);
-            $generoLibros=$generos->libros; //Devuelve los libros de aquel genero
+            $generoLibros=$generos->libros;
 
+            //Devuelve unicamente los libros de aquel genero
             return response()->json($generoLibros, 200);
 
         } catch (\Throwable $th) {

@@ -30,21 +30,5 @@ class GeneroLibroSeeder extends Seeder
         $libro=Libro::find(5);
         $libro->generos()->attach([1,5]);
 
-        /*$genero=Genero::find(1);
-        $genero->libros()->attach([1,5]);
-
-        $genero=Genero::find(2);
-        $genero->libros()->attach([1,2]);
-
-        $genero=Genero::find(3);
-        $genero->libros()->attach([2,3]);
-
-        $genero=Genero::find(4);
-        $genero->libros()->attach([3,4]);
-
-        $genero=Genero::find(5);
-        $genero->libros()->attach([3,4]);*/
-
-
     }
 }

@@ -16,8 +16,8 @@ class Libro extends Model
         "num_paginas",
         "disponible",
         "autor_id",
-        "portada_path", //Acceso a datos de la portada
-        //Acceso a datos del documento pdf
+        //Acceso a datos de archivos
+        "portada_path",
         "contenido_path",
         "contenido_nombre",
         "contenido_tamano",

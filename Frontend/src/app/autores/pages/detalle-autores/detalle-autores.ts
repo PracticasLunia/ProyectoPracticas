@@ -37,7 +37,6 @@ export default class DetalleAutores implements OnInit{
     this.service.cargarLibrosPorAutor(id)
     .subscribe((respuesta)=>{
       this.librosDeAutor.set(respuesta)
-      console.log(respuesta);
     })
   }
 
@@ -45,7 +44,6 @@ export default class DetalleAutores implements OnInit{
     this.service.detalleAutor(id)
     .subscribe((respuesta)=>{
       this.autor.set(respuesta)
-      console.log(respuesta)
     })
   }
 

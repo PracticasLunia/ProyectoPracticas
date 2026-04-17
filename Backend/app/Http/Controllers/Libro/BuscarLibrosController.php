@@ -26,54 +26,33 @@ class BuscarLibrosController extends Controller
             'genero_nombre' => $request->input('genero_nombre'),
         ];
 
-        //Evaluacion
-            /*if(empty(array_filter($parametros))){
-                return  response() ->json(Libro::all(), 200) ;
-            }
-            if (!empty($parametros['titulo']) && empty($parametros['isbn'])&& empty($parametros['publicacion'])
-                && empty($parametros['sinopsis']) && empty($parametros['numero_paginas']) && empty($parametros['disponible'])){
-                $libros= Libro::where('titulo', 'LIKE', '%'.$parametros['titulo'].'%')->get();
-                return response()->json($libros, 200);
-            }
-            if (!empty($parametros['titulo']) && !empty($parametros['isbn'])&& empty($parametros['publicacion'])
-                && empty($parametros['sinopsis']) && empty($parametros['numero_paginas']) && empty($parametros['disponible'])){
-                $libros= Libro::where('titulo', 'LIKE', '%'.$parametros['titulo'].'%')
-                                ->where('isbn', 'LIKE', '%'.$parametros['isbn'].'%')
-                                ->get();
-                return response()->json($libros, 200);
-            }
-            else{
-                return response()->json('Formato no compatible', 200);
-            }*/
 
+        $libros =
+        Libro::where('titulo', 'LIKE', '%'.$parametros['titulo'].'%')
+            ->where('isbn', 'LIKE', '%'.$parametros['isbn'].'%')
+            ->where('publicacion', 'LIKE', '%'.$parametros['publicacion'].'%')
+            ->where('sinopsis', 'LIKE', '%'.$parametros['sinopsis'].'%')
+            ->where('num_paginas', 'LIKE', '%'.$parametros['num_paginas'].'%')
+            ->where('disponible', 'LIKE', '%'.$parametros['disponible'].'%')
 
-            $libros =
-            Libro::where('titulo', 'LIKE', '%'.$parametros['titulo'].'%')
-                ->where('isbn', 'LIKE', '%'.$parametros['isbn'].'%')
-                ->where('publicacion', 'LIKE', '%'.$parametros['publicacion'].'%')
-                ->where('sinopsis', 'LIKE', '%'.$parametros['sinopsis'].'%')
-                ->where('num_paginas', 'LIKE', '%'.$parametros['num_paginas'].'%')
-                ->where('disponible', 'LIKE', '%'.$parametros['disponible'].'%')
-                //->where('autor', '=', $parametros['autor'])
+            ->whereHas('autor', function(Builder $query) use ($parametros){
+                if(is_array($parametros['autor'])){
+                    $query->whereIn('autores.nombre', $parametros['autor']);
+                }
+                elseif(!empty($parametros['autor'])){
+                    $query->where('autores.nombre', 'LIKE', '%'.$parametros['autor'].'%');
+                }
+            })
 
-                ->whereHas('autor', function(Builder $query) use ($parametros){
-                    if(is_array($parametros['autor'])){
-                        $query->whereIn('autores.nombre', $parametros['autor']);
+            ->whereHas('generos', function(Builder $query) use($parametros){
+                if(is_array($parametros['genero_nombre']))
+                    {
+                        $query->whereIn('generos.nombre',$parametros['genero_nombre']);
+                    }elseif(!empty($parametros['genero_nombre'])){
+                        $query->where('generos.nombre', $parametros['genero_nombre']);
                     }
-                    elseif(!empty($parametros['autor'])){
-                        $query->where('autores.nombre', 'LIKE', '%'.$parametros['autor'].'%');
-                    }
-                })
-
-                ->whereHas('generos', function(Builder $query) use($parametros){
-                    if(is_array($parametros['genero_nombre']))
-                        {
-                            $query->whereIn('generos.nombre',$parametros['genero_nombre']);
-                        }elseif(!empty($parametros['genero_nombre'])){
-                            $query->where('generos.nombre', $parametros['genero_nombre']);
-                        }
-                })
-                ->get();
-            return response()->json($libros, 200);
+            })
+            ->get();
+        return response()->json($libros, 200);
     }
 }

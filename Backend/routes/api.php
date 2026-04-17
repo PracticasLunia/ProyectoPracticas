@@ -1,6 +1,6 @@
 <?php
 //imports
-use App\Http\Controllers\Autor\ActualiarAutorController;
+use App\Http\Controllers\Autor\ActualizarAutorController;
 use App\Http\Controllers\Autor\CrearAutorController;
 use App\Http\Controllers\Autor\EliminiarAutorController;
 use App\Http\Controllers\Autor\LibrosDeAutorController;
@@ -43,7 +43,7 @@ Route::get('libros/{id}/contenido', ContenidoLibroController::class);
 Route::get('/autores', ListarAutoresController::class);
 Route::get('autores/{id}', VerAutorController::class);
 Route::post('autores', CrearAutorController::class);
-Route::put('autores/{id}', ActualiarAutorController::class);
+Route::put('autores/{id}', ActualizarAutorController::class);
 Route::delete('autores/{id}', EliminiarAutorController::class);
 
 //Routes Generos

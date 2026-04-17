@@ -46,10 +46,10 @@ return new class extends Migration
                 ->on('generos')
                 ->onDelete('cascade');
 
-            $table->foreign('libro_id')
-                ->references('id')
-                ->on('libros')
-                ->onDelete('cascade');
+        $table->foreign('libro_id')
+            ->references('id')
+            ->on('libros')
+            ->onDelete('cascade');
         });
     }
 };

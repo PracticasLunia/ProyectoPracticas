@@ -29,6 +29,9 @@ class CrearLibroController extends Controller
             "contenido"=>"nullable|file|mimes:pdf|max:20480",
         ]);
 
+        //GESTIÓN DE ARCHIVOS-----------------------------
+
+        //Gestion de portada------------------------------
         // Si viene un fichero de portada, lo guardamos en disco y obtenemos el path
         $portadaPath = null;
         if ($request->hasFile('portada')) {
@@ -40,6 +43,7 @@ class CrearLibroController extends Controller
         $contenidoNombre=null;
         $contenidoTamano=null;
 
+        //Gestion de documento-----------------------------
         if($request->hasFile('contenido')){
             $file=$request->file('contenido');
             $contenidoPath= $file->store('contenidos', 'local');
@@ -55,16 +59,14 @@ class CrearLibroController extends Controller
             "num_paginas"=>$request->num_paginas,
             "disponible"=>$request->disponible,
             "autor_id"=>$request->autor_id,
-
+            //Crear con valores con lo resultante de los condicionantes anteriores
             "portada_path" => $portadaPath,
-
             "contenido_path"   => $contenidoPath,
             "contenido_nombre" => $contenidoNombre,
             "contenido_tamano" => $contenidoTamano,
         ]);
         //Create relations to generos
         $libro->generos()->attach($request->genero_ids);
-
-        return response()->json($libro, 200);
+        return response()->json($libro, 201);
     }
 }

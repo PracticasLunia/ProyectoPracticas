@@ -22,7 +22,6 @@ class PortadaLibroController extends Controller
             return response()->json("Portada no encontrada", 404);
         }
 
-
         //Selecciona el disco (Privado storage/app), lee el archivo, detecta el tipo,
         //crea una respuesta http, envia el archivo al navegador
         return Storage::disk('local')->response($libro->portada_path);

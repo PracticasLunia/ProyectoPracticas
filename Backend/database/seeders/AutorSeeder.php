@@ -24,7 +24,7 @@ class AutorSeeder extends Seeder
         Autor::create([
             "nombre"=>"Victor Marie",
             "apellidos"=>"Hugo",
-            "nacionalidad"=>"Paris",
+            "nacionalidad"=>"Francesa",
             "fecha_nacimiento"=>"1802-02-26",
             "biografia"=> "fue un poeta, dramaturgo y novelista romántico francés, considerado como uno de los más importantes en lengua francesa."
         ]);

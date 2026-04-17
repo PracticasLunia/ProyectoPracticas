@@ -16,7 +16,10 @@ export default class ListaAutores implements OnInit {
     this.mostrarGeneros()
   }
 
+  //Inyeccion de servicio
   service= inject(AutorService);
+
+  //Variable propias
   autores= signal<Autor[]>([]);
 
   mostrarGeneros(){

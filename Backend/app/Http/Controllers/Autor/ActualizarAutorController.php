@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Autor;
 use Illuminate\Http\Request;
 
-class ActualiarAutorController extends Controller
+class ActualizarAutorController extends Controller
 {
     /**
      * Handle the incoming request.

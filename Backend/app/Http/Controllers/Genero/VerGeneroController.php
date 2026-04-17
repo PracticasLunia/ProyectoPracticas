@@ -20,7 +20,7 @@ class VerGeneroController extends Controller
                 $genero , 200);
         } catch (\Throwable $th) {
             return response()->json(
-                ["message"=>"Genero no encontrado"], 400);
+                ["message"=>"Genero no encontrado"], 404);
         }
     }
 }

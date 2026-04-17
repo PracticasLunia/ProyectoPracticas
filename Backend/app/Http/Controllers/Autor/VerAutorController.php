@@ -20,7 +20,7 @@ class VerAutorController extends Controller
                 $autor , 200);
         } catch (\Throwable $th) {
             return response()->json(
-                ["message"=>"Autor no encontrado"], 400);
+                ["message"=>"Autor no encontrado"], 404);
         }
     }
 }

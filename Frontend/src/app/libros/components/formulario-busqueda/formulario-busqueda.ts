@@ -1,12 +1,13 @@
 import { Libro } from './../../interfaces/libros.interface';
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
-import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { LibrosService } from '../../services/libros.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { map } from 'rxjs';
 import { Autor } from '../../../autores/interfaces/autor.interface';
 import { Genero } from '../../../generos/interfaces/genero.interface';
 import { environment } from '../../../../environments/environment';
+import { AutorService } from '../../../autores/services/autor.service';
+import { GeneroService } from '../../../generos/services/genero.service';
 
 @Component({
   selector: 'app-formulario-busqueda',
@@ -16,18 +17,37 @@ import { environment } from '../../../../environments/environment';
 })
 export class FormularioBusqueda implements OnInit{
 
-
   ngOnInit(): void {
     this.cargarAutoresSelect()
     this.cargarGenerosSelect()
     this.determinarModo(this.idRuta);
   }
 
-  //Inyenccion de servicios y dependencias
+  //Inyeccion de servicios y dependencias-------------
   service=inject(LibrosService);
+  serviceAutor=inject(AutorService);
+  serviceGenero=inject(GeneroService);
   fb=inject(FormBuilder);
   router= inject(Router);
+
+  //Variables------------------------------------------
+
   urlBackend=environment.urlBackend;
+
+  //Options pertenecientes al select de autor y generos
+  autores= signal<Autor[]>([]);
+  generos= signal<Genero[]>([]);
+
+  //Señales imagen
+  eliminarPortadaFlag = signal<boolean>(false); //Señal para indicar la eliminacion de portada
+  portadaFile = signal<File | null>(null); //Contiene el archivo seleccionado
+  errorPortada = signal<String|null>(null);
+
+  //Señales documento
+  eliminarContenidoFlag = signal(false);
+  contenidoFile = signal<File | null>(null);//Contiene al documento
+  errorContenido = signal<string | null>(null);
+
   //Ruta activa
   idRuta= inject(ActivatedRoute).snapshot.params['id'];
   libro=signal<Libro|null>(null);
@@ -44,19 +64,7 @@ export class FormularioBusqueda implements OnInit{
     genero_ids: [[0]],
   })
 
-  //Options pertenecientes al select de autor y generos
-  autores= signal<Autor[]>([]);
-  generos= signal<Genero[]>([]);
-
-  //Señales imagen
-  eliminarPortadaFlag = signal<boolean>(false); //Señal para indicar la eliminacion de portada
-  portadaFile = signal<File | null>(null); //Contiene el archivo seleccionado
-  errorPortada = signal<String|null>(null);
-
-  //Señales documento
-  eliminarContenidoFlag = signal(false);
-  contenidoFile = signal<File | null>(null);//Contiene al documento
-  errorContenido = signal<string | null>(null);
+  //Metodos---------------------------------------------------------
 
   //Metodos para cambiar el valor de la señal de eliminar portada o contenido
   eliminarPortadaActual() {
@@ -67,17 +75,16 @@ export class FormularioBusqueda implements OnInit{
     this.eliminarContenidoFlag.set(true);
   }
 
-  //Cargar select de autores
+  //Metodos para carga de selects
   cargarAutoresSelect(){
-    this.service.cargarAutores()
+    this.serviceAutor.cargarAutores()
     .subscribe((respuesta)=>{
       this.autores.set(respuesta)
     })
   }
 
-  //Cargar select de generos
   cargarGenerosSelect(){
-    this.service.cargarGeneros()
+    this.serviceGenero.cargarGeneros()
     .subscribe((respuesta)=>{
       this.generos.set(respuesta)
     })
@@ -88,9 +95,8 @@ export class FormularioBusqueda implements OnInit{
     if(id!=null){
       //Establecer valores del libro
       this.service.cargarLibroById(id)
-        .subscribe((respuesta)=>{
-          this.libro.set(respuesta);
-
+      .subscribe((respuesta)=>{
+        this.libro.set(respuesta);
         //Actualizar valores
         this.formulario.patchValue({
           titulo: this.libro()?.titulo,
@@ -112,17 +118,6 @@ export class FormularioBusqueda implements OnInit{
     const errores={};
     this.errorPortada.set(null);
     this.errorContenido.set(null);
-
-    /*const datos= {
-      titulo: this.formulario.value.titulo,
-      isbn: this.formulario.value.isbn,
-      publicacion: this.formulario.value.anio_publicacion,
-      sinopsis: this.formulario.value.sinopsis,
-      num_paginas: this.formulario.value.num_paginas,
-      disponible: this.formulario.value.disponible,
-      autor_id: this.formulario.value.autor_id,
-      genero_ids: this.formulario.value.genero_ids
-    }*/
 
     //Enviar datos con formData para envio de archivos, este solo admite strings
     const datos2 = new FormData();
@@ -147,7 +142,6 @@ export class FormularioBusqueda implements OnInit{
       datos2.append('contenido', this.contenidoFile()!);
     }
 
-
     //Eliminar la portada y/o el documento si lo ha seleccionado el usuario
     if (this.eliminarPortadaFlag()) {
       datos2.append('eliminar_portada', '1');
@@ -157,23 +151,21 @@ export class FormularioBusqueda implements OnInit{
       datos2.append('eliminar_contenido', '1');
     }
 
-    const datosFormulario=this.formulario;
+    //const datosFormulario=this.formulario;
 
     if(this.idRuta!=null){
       this.service.actualizarLibro(datos2, this.idRuta)
       .subscribe({
         next: (respuesta)=>{
-          console.log('Actualizado correctamente')
           //Redirigir automaticamente
           this.router.navigate(['/libros']);
         },
-        //Arrow function para el uso de propiedades del this.
+        //Arrow function para el uso de propiedades del this.formulario
         error:(err)=>{
           if(err.status===422){
             const errores= err.error.errors;
-            console.log(errores)
             Object.keys(errores).forEach(campo => {
-              const control = datosFormulario.get(campo);
+              const control = this.formulario.get(campo);
               if (control) {
                 control.setErrors({ backend: errores[campo][0] });
               }
@@ -188,16 +180,14 @@ export class FormularioBusqueda implements OnInit{
       this.service.nuevoLibro(datos2)
        .subscribe({
         next: (respuesta)=>{
-          console.log('Creado correctamente')
           //Redirigir automaticamente
           this.router.navigate(['/libros']);
         },
         error:(err)=>{
           if(err.status===422){
             const errores= err.error.errors;
-            console.log(errores)
             Object.keys(errores).forEach(campo => {
-              const control = datosFormulario.get(campo);
+              const control = this.formulario.get(campo);
               if (control) {
                 control.setErrors({ backend: errores[campo][0] });
               }

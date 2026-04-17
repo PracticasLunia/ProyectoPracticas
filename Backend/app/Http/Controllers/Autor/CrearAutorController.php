@@ -22,11 +22,10 @@ class CrearAutorController extends Controller
             "biografia"=>"nullable|string",
         ]);
 
-        Autor::create($request->all());
+        $autor = Autor::create($request->all());
 
         return response()->json(
-            ["message"=>"Autor creado"],
-            200
+            $autor,200
         );
     }
 }

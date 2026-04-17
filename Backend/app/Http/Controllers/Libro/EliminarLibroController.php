@@ -16,20 +16,22 @@ class EliminarLibroController extends Controller
     {
         //findOrFail return exception
         try {
+            //Eliminar el libro
             $libro=Libro::findOrFail($id);
-            // Borrar el fichero de portada, si existe
             $rutaPortada = $libro->portada_path;
             $libro->delete();
 
+            //Eliminar la ruta de la portada asociada, si la tiene
             if ($rutaPortada) {
                 Storage::disk('local')->delete($rutaPortada);
             }
             return response()->json(
-                ["message"=>"Libro eliminado"], 200
+                ["message"=>"Libro eliminado"], 204
             );
+        //Manejo de excepcion
         } catch (\Throwable $th) {
             return response()->json(
-                ["message"=>$th->getMessage()], 400
+                ["message"=>"Libro no encontrado"], 400
             );
         }
     }

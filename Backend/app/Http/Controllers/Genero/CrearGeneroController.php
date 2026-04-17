@@ -19,11 +19,10 @@ class CrearGeneroController extends Controller
             "descripcion" => "nullable",
         ]);
 
-        Genero::create($request->all());
+        $genero=Genero::create($request->all());
 
         return response()->json(
-            ["message"=>"Genero creado"],
-            200
+            $genero, 200
         );
     }
 }

@@ -70,13 +70,11 @@ export default class Formulario implements OnInit {
       this.service.actualizarGenero(this.idRuta, datos)
       .subscribe({
         next: (respuesta)=>{
-          console.log('Actualizado correctamente');
           this.router.navigate(['/generos']);
         },
         error(err) {
           if(err.status===422){
             const errores= err.error.errors;
-            console.log(errores)
             Object.keys(errores).forEach(campo => {
               const control = datosFormulario.get(campo);
               if (control) {
@@ -92,13 +90,11 @@ export default class Formulario implements OnInit {
       this.service.crearGenero(datos)
       .subscribe({
         next: (respuesta)=>{
-          console.log('Creado correctamente');
           this.router.navigate(['/generos']);
         },
         error(err) {
           if(err.status===422){
             const errores= err.error.errors;
-            console.log(errores)
             Object.keys(errores).forEach(campo => {
               const control = datosFormulario.get(campo);
               if (control) {

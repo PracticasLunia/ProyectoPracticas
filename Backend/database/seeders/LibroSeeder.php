@@ -22,7 +22,6 @@ class LibroSeeder extends Seeder
             "disponible" => true,
             "autor_id" =>1
         ]);
-        //$libro->generos()->attach([1,2]);
 
         $libro= Libro::create([
             "titulo" => "Don Quijote de la Mancha",
@@ -33,7 +32,6 @@ class LibroSeeder extends Seeder
             "disponible" => true,
             "autor_id"=>2
         ]);
-        //$libro->generos()->attach([2,3]);
 
         $libro=Libro::create([
             "titulo" => "El señor de los anillos",
@@ -44,7 +42,6 @@ class LibroSeeder extends Seeder
             "disponible" => false,
             "autor_id"=>3
         ]);
-        //$libro->generos()->attach([3,4]);
 
         $libro=Libro::create([
             "titulo" => "Cien años de soledad",
@@ -55,7 +52,6 @@ class LibroSeeder extends Seeder
             "disponible" => true,
             "autor_id"=>3
         ]);
-        //$libro->generos()->attach([3,4]);
 
         $libro=Libro::create([
             "titulo" => "El guardian entre el centeno",
@@ -66,6 +62,5 @@ class LibroSeeder extends Seeder
             "disponible" => true,
             "autor_id"=>2
         ]);
-        //$libro->generos()->attach([1,5]);
     }
 }

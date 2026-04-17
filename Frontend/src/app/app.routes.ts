@@ -5,12 +5,6 @@ export const routes: Routes = [
   {
     path: 'libros',
     loadComponent:()=>import('./libros/pages/lista-libros/lista-libros'),
-    /*children: [
-      {
-        path: ':id',
-        loadComponent: ()=> import('./libros/pages/detalle-libros/detalle-libros'),
-      },
-    ]*/
   },
   {
     path: 'libros/nuevo',
@@ -23,10 +17,6 @@ export const routes: Routes = [
   {
     path: 'libros/:id/editar',
     loadComponent:()=> import('./libros/pages/editar-libro/editar-libro')
-  },
-  {
-    path: 'libros/:id/eliminar',
-    loadComponent:()=> import('./libros/pages/eliminar-libro/eliminar-libro')
   },
 
   /*Path para autores */
@@ -66,7 +56,7 @@ export const routes: Routes = [
   },
 
 
-  //Redirect Libros
+  //Redigire a /libros para cualquier ruta no definida anteriormente
   {
     path: '**',
     redirectTo: 'libros',

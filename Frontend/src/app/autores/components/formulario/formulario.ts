@@ -3,11 +3,10 @@ import { AutorService } from '../../services/autor.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Autor } from '../../interfaces/autor.interface';
-import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-formulario',
-  imports: [ReactiveFormsModule, RouterLink, DatePipe],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './formulario.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -79,13 +78,11 @@ export class Formulario implements OnInit {
       this.service.actualizarAutor(this.idRuta, datos)
       .subscribe({
         next: (respuesta)=>{
-          console.log('Actualizado correctamente');
           this.router.navigate(['/autores']);
         },
         error(err) {
           if(err.status===422){
             const errores= err.error.errors;
-            console.log(errores)
             Object.keys(errores).forEach(campo => {
               const control = datosFormulario.get(campo);
               if (control) {
@@ -101,13 +98,11 @@ export class Formulario implements OnInit {
       this.service.crearAutor(datos)
       .subscribe({
         next: (respuesta)=>{
-          console.log('Creado correctamente');
           this.router.navigate(['/autores']);
         },
         error(err) {
           if(err.status===422){
             const errores= err.error.errors;
-            console.log(errores)
             Object.keys(errores).forEach(campo => {
               const control = datosFormulario.get(campo);
               if (control) {

@@ -34,7 +34,7 @@ class VerLibroController extends Controller
                 'generos'=>$libro['generos'],
                 'autor'=>$libro['autor'],
                 'tiene_portada'=>$libro['tiene_portada'],
-                //'portada_path'=>$libro['portada_path'],
+                'tiene_contenido'=>$libro['tiene_contenido'],
             ];
 
             return response()->json(

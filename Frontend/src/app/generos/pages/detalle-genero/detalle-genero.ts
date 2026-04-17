@@ -46,7 +46,6 @@ export default class DetalleGenero implements OnInit {
     .subscribe({
       next:(respuesta)=>{
         this.librosDeGenero.set(respuesta);
-        console.log(respuesta);
       },
     })
   }

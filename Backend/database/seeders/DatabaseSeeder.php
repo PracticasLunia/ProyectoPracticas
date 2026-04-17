@@ -16,17 +16,12 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
+        //Orden de llamada respentado las relaciones entre tablas
         $this->call([
             GeneroSeeder::class,
             AutorSeeder::class,
             LibroSeeder::class,
             GeneroLibroSeeder::class,
         ]);
-        /*// User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);*/
     }
 }

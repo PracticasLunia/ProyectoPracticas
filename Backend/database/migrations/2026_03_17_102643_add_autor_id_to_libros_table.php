@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('libros', function (Blueprint $table) {
-            $table->foreignId("autor_id")->constrained("autores")->onDelete('no action');
+            $table->dropForeign(['autor_id']);
         });
     }
 };
