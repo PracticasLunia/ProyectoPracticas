@@ -11,9 +11,9 @@ class CrearLibroController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request)
-    {
+    public function __invoke(Request $request){
         //
+        try {
 
         $request->validate([
             "titulo" => "required|string",
@@ -67,6 +67,17 @@ class CrearLibroController extends Controller
         ]);
         //Create relations to generos
         $libro->generos()->attach($request->genero_ids);
-        return response()->json($libro, 201);
+        return response()->json([
+            'data'=>$libro,
+            'message'=>'Libro creado exitosamente',
+        ], 201);
+
+        }
+        catch (\Throwable $th) {
+            return response()->json([
+                'data'=>null,
+                'message'=>'Error al intentar crear el libro'
+            ], 400 );
+        }
     }
 }

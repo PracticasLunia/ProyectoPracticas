@@ -151,8 +151,6 @@ export class FormularioBusqueda implements OnInit{
       datos2.append('eliminar_contenido', '1');
     }
 
-    //const datosFormulario=this.formulario;
-
     if(this.idRuta!=null){
       this.service.actualizarLibro(datos2, this.idRuta)
       .subscribe({

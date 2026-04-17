@@ -4,6 +4,8 @@ import { Libro } from '../interfaces/libros.interface';
 import { environment } from '../../../environments/environment';
 import { Autor } from '../../autores/interfaces/autor.interface';
 import { Genero } from '../../generos/interfaces/genero.interface';
+import { Observable } from 'rxjs';
+import { LibroResponse } from '../interfaces/librosResponse';
 
 
 @Injectable({
@@ -32,8 +34,8 @@ export class LibrosService {
     return this.http.post<Libro>(`${environment.urlBackend}/libros/${id}`, datos)
   }
 
-  nuevoLibro(datos:FormData){
-    return this.http.post<Libro>(`${environment.urlBackend}/libros`, datos)
+  nuevoLibro(datos:FormData): Observable<LibroResponse>{
+    return this.http.post<LibroResponse>(`${environment.urlBackend}/libros`, datos)
   }
 
   eliminarLibro(id:number){
