@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Genero;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Genero;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class LibrosDeGeneroController extends Controller
 {
@@ -20,11 +21,18 @@ class LibrosDeGeneroController extends Controller
             $generoLibros=$generos->libros;
 
             //Devuelve unicamente los libros de aquel genero
-            return response()->json($generoLibros, 200);
+            return response()->json([
+                "data" => $generoLibros,
+                "message" => "Libros de género",
+                "errors" => []
+            ], 200);
 
-        } catch (\Throwable $th) {
-            return response()->json(
-                ["message"=>"Genero no encontrado"], 400);
+        } catch (ModelNotFoundException) {
+            return response()->json([
+                "data" => null,
+                "message" => "Genero no encontrado",
+                "errors" => []
+            ], 400);
         }
     }
 }

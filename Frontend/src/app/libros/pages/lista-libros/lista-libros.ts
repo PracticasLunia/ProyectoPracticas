@@ -39,10 +39,10 @@ export default class ListaLibros implements OnInit{
   mostrarLibros(){
     this.service.cargarLibros()
     .subscribe((respuesta)=>{
-      this.libros.set(respuesta)
+      this.libros.set(respuesta.data!)
 
       //Por cada libro obtener su autor y genero
-      respuesta.forEach((libro: Libro) => {
+      respuesta.data!.forEach((libro: Libro) => {
         this.service.cargarLibroById(libro.id).subscribe({
           next: (libroCompleto) => {
             //Actualizar señal
@@ -51,8 +51,8 @@ export default class ListaLibros implements OnInit{
                 a.id === libro.id
                   ? {
                       ...a,
-                      autor: libroCompleto.autor,
-                      generos: libroCompleto.generos
+                       autor: libroCompleto.data?.autor!,
+                      generos: libroCompleto.data?.generos!,
                     }
                   : a
               )

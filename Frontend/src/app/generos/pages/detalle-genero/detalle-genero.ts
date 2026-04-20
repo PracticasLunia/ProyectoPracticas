@@ -36,7 +36,7 @@ export default class DetalleGenero implements OnInit {
     this.service.detalleGenero(id)
     .subscribe({
       next:(respuesta)=>{
-        this.genero.set(respuesta);
+        this.genero.set(respuesta.data!);
       },
     })
   }
@@ -45,7 +45,7 @@ export default class DetalleGenero implements OnInit {
     this.service.cargarLibrosPorGenero(id)
     .subscribe({
       next:(respuesta)=>{
-        this.librosDeGenero.set(respuesta);
+        this.librosDeGenero.set(respuesta.data!);
       },
     })
   }

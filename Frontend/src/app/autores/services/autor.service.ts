@@ -4,6 +4,8 @@ import { environment } from '../../../environments/environment';
 import { Autor } from '../interfaces/autor.interface';
 import { Observable } from 'rxjs';
 import { Libro } from '../../libros/interfaces/libros.interface';
+import { AutoresResponse, AutorResponse } from '../interfaces/autorResponse';
+import { LibroResponse, LibrosResponse } from '../../libros/interfaces/librosResponse';
 @Injectable({
   providedIn: 'root'
 })
@@ -14,24 +16,24 @@ export class AutorService {
 //Inyection depency
 private http= inject(HttpClient);
 
-  cargarAutores(): Observable<Autor[]> {
-    return this.http.get<Autor[]>(`${environment.urlBackend}/autores`);
+  cargarAutores(): Observable<AutoresResponse> {
+    return this.http.get<AutoresResponse>(`${environment.urlBackend}/autores`);
   }
 
-  detalleAutor(autorId:number){
-    return this.http.get<Autor>(`${environment.urlBackend}/autores/${autorId}`);
+  detalleAutor(autorId:number): Observable<AutorResponse>{
+    return this.http.get<AutorResponse>(`${environment.urlBackend}/autores/${autorId}`);
   }
 
-  cargarLibrosPorAutor(autorId: number) {
-    return this.http.get<Libro[]>(`${environment.urlBackend}/autores/${autorId}/libros`);
+  cargarLibrosPorAutor(autorId: number):Observable<LibrosResponse>{
+    return this.http.get<LibrosResponse>(`${environment.urlBackend}/autores/${autorId}/libros`);
   }
 
-  crearAutor(datos:any){
-    return this.http.post<Libro>(`${environment.urlBackend}/autores`, datos);
+  crearAutor(datos:any): Observable<LibroResponse>{
+    return this.http.post<LibroResponse>(`${environment.urlBackend}/autores`, datos);
   }
 
-  actualizarAutor(autorId: number, datos: any){
-    return this.http.put<Autor>(`${environment.urlBackend}/autores/${autorId}`,datos);
+  actualizarAutor(autorId: number, datos: any): Observable<AutorResponse>{
+    return this.http.put<AutorResponse>(`${environment.urlBackend}/autores/${autorId}`,datos);
   }
 
   eliminarAutor(idAutor:number){

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Autor;
 use App\Http\Controllers\Controller;
 use App\Models\Autor;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class LibrosDeAutorController extends Controller
 {
@@ -20,11 +21,18 @@ class LibrosDeAutorController extends Controller
             $autorLibros=$autor->libros()->with('generos')->get();
 
             //Devuelve unicamente los libros, con sus generos relacionados, de aquel autor
-            return response()->json($autorLibros, 200);
+            return response()->json([
+                "data" => $autorLibros,
+                "message" => "Libros del Autor",
+                "errors" => [],
+            ], 200);
 
-        } catch (\Throwable $th) {
-            return response()->json(
-                ["message"=>"Autor no encontrado"], 400);
+        }catch (ModelNotFoundException) {
+             return response()->json([
+                'data'=>null,
+                'message'=>'Autor no encontrado',
+                'errors'=>[]
+            ], 404 );
         }
     }
 }

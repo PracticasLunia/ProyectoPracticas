@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Libro;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Libro;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class VerLibroController extends Controller
 {
@@ -37,12 +38,18 @@ class VerLibroController extends Controller
                 'tiene_contenido'=>$libro['tiene_contenido'],
             ];
 
-            return response()->json(
-                $libro, 200
+            return response()->json([
+                'data' => $libro,
+                'message' => 'Detalle del libro',
+                'errors' => []
+                ]
             );
-        } catch (\Throwable $th) {
-            return response()->json(
-                ["message"=>"Libro no encontrado"], 404);
+        } catch (ModelNotFoundException) {
+             return response()->json([
+                'data'=>null,
+                'message'=>'Libro no encontrado',
+                'errors'=>[]
+            ], 404 );
         }
     }
 }

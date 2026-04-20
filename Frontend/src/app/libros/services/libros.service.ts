@@ -5,7 +5,7 @@ import { environment } from '../../../environments/environment';
 import { Autor } from '../../autores/interfaces/autor.interface';
 import { Genero } from '../../generos/interfaces/genero.interface';
 import { Observable } from 'rxjs';
-import { LibroResponse } from '../interfaces/librosResponse';
+import { LibroResponse, LibrosResponse } from '../interfaces/librosResponse';
 
 
 @Injectable({
@@ -16,12 +16,12 @@ export class LibrosService {
   //Inyeccion de dependencias
   private http= inject(HttpClient);
 
-  cargarLibros(){
-    return this.http.get<Libro[]>(`${environment.urlBackend}/libros`)
+  cargarLibros(): Observable<LibrosResponse>{
+    return this.http.get<LibrosResponse>(`${environment.urlBackend}/libros`)
   }
 
-  cargarLibroById(id:number){
-    return this.http.get<Libro>(`${environment.urlBackend}/libros/${id}`)
+  cargarLibroById(id:number): Observable<LibroResponse>{
+    return this.http.get<LibroResponse>(`${environment.urlBackend}/libros/${id}`)
   }
 
   buscarLibrosFormulario(urlForm:string){
@@ -29,9 +29,9 @@ export class LibrosService {
     (`${environment.urlBackend}/libros/buscar?${urlForm}`)
   }
 
-  actualizarLibro(datos:FormData, id:number){
+  actualizarLibro(datos:FormData, id:number): Observable<LibroResponse>{
     datos.append('_method', 'PUT');
-    return this.http.post<Libro>(`${environment.urlBackend}/libros/${id}`, datos)
+    return this.http.post<LibroResponse>(`${environment.urlBackend}/libros/${id}`, datos)
   }
 
   nuevoLibro(datos:FormData): Observable<LibroResponse>{

@@ -36,14 +36,14 @@ export default class DetalleAutores implements OnInit{
   librosDelAutor(id:number){
     this.service.cargarLibrosPorAutor(id)
     .subscribe((respuesta)=>{
-      this.librosDeAutor.set(respuesta)
+      this.librosDeAutor.set(respuesta.data!)
     })
   }
 
   detalleAutor(id:number){
     this.service.detalleAutor(id)
     .subscribe((respuesta)=>{
-      this.autor.set(respuesta)
+      this.autor.set(respuesta.data!)
     })
   }
 

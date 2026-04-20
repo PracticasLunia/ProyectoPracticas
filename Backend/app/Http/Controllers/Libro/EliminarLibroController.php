@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Libro;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Libro;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Storage;
 
 class EliminarLibroController extends Controller
@@ -26,13 +27,18 @@ class EliminarLibroController extends Controller
                 Storage::disk('local')->delete($rutaPortada);
             }
             return response()->json(
-                ["message"=>"Libro eliminado"], 204
+                [   "data"=>$libro,
+                    "message"=>"Libro eliminado",
+                    "errors"=>[],
+                ], 204
             );
         //Manejo de excepcion
-        } catch (\Throwable $th) {
-            return response()->json(
-                ["message"=>"Libro no encontrado"], 400
-            );
+        } catch (ModelNotFoundException) {
+             return response()->json([
+                'data'=>null,
+                'message'=>'Libro no encontrado',
+                'errors'=>[]
+            ], 404 );
         }
     }
 }

@@ -79,14 +79,14 @@ export class FormularioBusqueda implements OnInit{
   cargarAutoresSelect(){
     this.serviceAutor.cargarAutores()
     .subscribe((respuesta)=>{
-      this.autores.set(respuesta)
+      this.autores.set(respuesta.data!)
     })
   }
 
   cargarGenerosSelect(){
     this.serviceGenero.cargarGeneros()
     .subscribe((respuesta)=>{
-      this.generos.set(respuesta)
+      this.generos.set(respuesta.data!)
     })
   }
 
@@ -96,7 +96,8 @@ export class FormularioBusqueda implements OnInit{
       //Establecer valores del libro
       this.service.cargarLibroById(id)
       .subscribe((respuesta)=>{
-        this.libro.set(respuesta);
+        if(respuesta.data)
+          this.libro.set(respuesta.data);
         //Actualizar valores
         this.formulario.patchValue({
           titulo: this.libro()?.titulo,

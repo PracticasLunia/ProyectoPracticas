@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Libro;
 use App\Http\Controllers\Controller;
 use App\Models\Libro;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class CrearLibroController extends Controller
 {
@@ -28,6 +29,15 @@ class CrearLibroController extends Controller
             "portada" => "nullable|image|mimes:jpg,jpeg,png,webp|max:2048",
             "contenido"=>"nullable|file|mimes:pdf|max:20480",
         ]);
+
+        }
+        catch (ValidationException $e) {
+            return response()->json([
+                'data'=>null,
+                'message'=>'Error al intentar crear el libro',
+                'errors'=>$e->errors(),
+            ], 422 );
+        }
 
         //GESTIÓN DE ARCHIVOS-----------------------------
 
@@ -70,14 +80,8 @@ class CrearLibroController extends Controller
         return response()->json([
             'data'=>$libro,
             'message'=>'Libro creado exitosamente',
+            'errors' => [],
         ], 201);
 
-        }
-        catch (\Throwable $th) {
-            return response()->json([
-                'data'=>null,
-                'message'=>'Error al intentar crear el libro'
-            ], 400 );
-        }
     }
 }

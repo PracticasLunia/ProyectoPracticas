@@ -15,6 +15,10 @@ class ListarGenerosController extends Controller
     {
         //
         $listadoGeneros= Genero::all();
-        return response()->json($listadoGeneros, 200);
+        return response()->json([
+            "data" => $listadoGeneros,
+            "message" => "Listado de generos",
+            "errors" => [],
+        ], 200);
     }
 }

@@ -15,6 +15,11 @@ class ListarAutoresController extends Controller
     {
         //
         $listadoAutores= Autor::all();
-        return response()->json($listadoAutores, 200);
+        return response()->json([
+                "data" => $listadoAutores,
+                "message" => "Listado de libros",
+                "errors" => [],
+            ]
+        , 200);
     }
 }

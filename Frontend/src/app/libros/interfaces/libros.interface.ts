@@ -21,8 +21,3 @@ export interface Libro {
   generos:Genero[];
   autor:Autor;
 }
-
-/*interface Genero{
-  nombre:string;
-}*/
-

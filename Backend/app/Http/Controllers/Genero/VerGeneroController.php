@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Genero;
 use App\Http\Controllers\Controller;
 use App\Models\Genero;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class VerGeneroController extends Controller
 {
@@ -16,11 +17,16 @@ class VerGeneroController extends Controller
         //findOrFail return exception
         try {
             $genero=Genero::findOrFail($id);
-            return response()->json(
-                $genero , 200);
-        } catch (\Throwable $th) {
-            return response()->json(
-                ["message"=>"Genero no encontrado"], 404);
+            return response()->json([
+                "data" => $genero,
+                "message" => "Detalle del género"
+            ], 200);
+        } catch (ModelNotFoundException) {
+            return response()->json([
+                "data"=> null,
+                "message"=>"Genero no encontrado",
+                "errors" => []
+            ], 404);
         }
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Autor;
 use App\Http\Controllers\Controller;
 use App\Models\Autor;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class CrearAutorController extends Controller
 {
@@ -13,7 +14,8 @@ class CrearAutorController extends Controller
      */
     public function __invoke(Request $request)
     {
-        //
+        try {
+
         $request->validate([
             "nombre" => "required|string",
             "apellidos" => "required|string",
@@ -22,10 +24,21 @@ class CrearAutorController extends Controller
             "biografia"=>"nullable|string",
         ]);
 
+        }catch (ValidationException $e) {
+             return response()->json([
+                'data'=>null,
+                'message'=>'Autor no encontrado',
+                'errors'=>$e->errors(),
+            ], 404 );
+        }
+
         $autor = Autor::create($request->all());
 
-        return response()->json(
-            $autor,200
+        return response()->json([
+                "data" => $autor,
+                "message" => "Autor creado correctamente",
+                "errors" => []
+            ],200
         );
     }
 }

@@ -42,7 +42,7 @@ export class Formulario implements OnInit {
       //Obtener valores del mismo
       this.service.detalleAutor(id)
       .subscribe((respuesta)=>{
-        this.autor.set(respuesta);
+        this.autor.set(respuesta.data!);
 
         //Establecer valores por defecto en el formulario
         this.formulario.patchValue({

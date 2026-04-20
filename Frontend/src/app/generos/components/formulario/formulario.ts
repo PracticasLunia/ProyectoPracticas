@@ -39,7 +39,7 @@ export default class Formulario implements OnInit {
       //Obtener valores del mismo
       this.service.detalleGenero(id)
       .subscribe((respuesta)=>{
-        this.genero.set(respuesta);
+        this.genero.set(respuesta.data!);
 
         //Establecer por defecto en los campos del formulario
         this.formulario.patchValue({

@@ -23,7 +23,7 @@ export default class ListaGeneros implements OnInit {
     this.service.cargarGeneros()
     .subscribe({
       next: (respuesta)=>{
-        this.generos.set(respuesta);
+        this.generos.set(respuesta.data!);
       },
     })
   }

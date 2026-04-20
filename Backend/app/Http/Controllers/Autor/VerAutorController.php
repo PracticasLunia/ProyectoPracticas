@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Autor;
 use App\Http\Controllers\Controller;
 use App\Models\Autor;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class VerAutorController extends Controller
 {
@@ -16,11 +17,17 @@ class VerAutorController extends Controller
         //findOrFail return exception
         try {
             $autor=Autor::findOrFail($id);
-            return response()->json(
-                $autor , 200);
-        } catch (\Throwable $th) {
-            return response()->json(
-                ["message"=>"Autor no encontrado"], 404);
+            return response()->json([
+                "data" => $autor,
+                "message" => "Detalle del Autor",
+                "errors" => [],
+            ] , 200);
+        } catch (ModelNotFoundException) {
+             return response()->json([
+                'data'=>null,
+                'message'=>'Autor no encontrado',
+                'errors'=>[]
+            ], 404 );
         }
     }
 }

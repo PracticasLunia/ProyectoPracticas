@@ -25,17 +25,17 @@ export default class ListaAutores implements OnInit {
   mostrarGeneros(){
     this.service.cargarAutores()
     .subscribe((respuesta)=>{
-      this.autores.set(respuesta);
+      this.autores.set(respuesta.data!);
 
       //Por cada autor modificar su propiedad de Libro[], con un peticion para cada de estos
-      respuesta.forEach((autor: Autor) => {
+      respuesta.data!.forEach((autor: Autor) => {
         this.service.cargarLibrosPorAutor(autor.id).subscribe({
           next: (librosAutor) => {
             //Actualizar señal
             this.autores.update(lista =>
               lista.map(a =>
                 a.id === autor.id
-                  ? { ...a, libros: librosAutor }
+                  ? { ...a, libros: librosAutor.data!}
                   : a
               )
             );

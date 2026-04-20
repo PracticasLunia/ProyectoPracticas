@@ -41,7 +41,10 @@ export default class DetalleLibros implements OnInit {
   detalleLibro(id:number){
     this.service.cargarLibroById(id)
     .subscribe((respuesta)=>{
-      this.libro.set(respuesta)
+      if(respuesta.data)
+        {
+          this.libro.set(respuesta.data)
+        }
     })
   }
 

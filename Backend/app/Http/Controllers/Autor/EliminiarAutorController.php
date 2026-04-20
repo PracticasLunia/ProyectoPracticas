@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Autor;
 use App\Http\Controllers\Controller;
 use App\Models\Autor;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class EliminiarAutorController extends Controller
 {
@@ -17,13 +18,18 @@ class EliminiarAutorController extends Controller
         try {
             $autor=Autor::findOrFail($id);
             $autor->delete();
-            return response()->json(
-                ["message"=>"Autor eliminado"], 200
-            );
-        } catch (\Throwable $th) {
-            return response()->json(
-                ["message"=>"Autor no encontrado"], 404
-            );
+            return response()->json([
+                "data" => $autor,
+                "message" => "Autor eliminado",
+                "errors"=>[],
+            ], 200);
+
+        }catch (ModelNotFoundException) {
+             return response()->json([
+                'data'=>null,
+                'message'=>'Autor no encontrado',
+                'errors'=>[]
+            ], 404 );
         }
     }
 }
