@@ -28,6 +28,11 @@ use App\Http\Controllers\Libro\ActualizarLibroController;
 use App\Http\Controllers\Libro\ContenidoLibroController;
 use App\Http\Controllers\Libro\EliminarLibroController;
 use App\Http\Controllers\Libro\PortadaLibroController;
+use App\Http\Controllers\Prestamo\CrearPrestamoController;
+use App\Http\Controllers\Prestamo\DevolverPrestamoController;
+use App\Http\Controllers\Prestamo\ListarPrestamosController;
+use App\Http\Controllers\Prestamo\PrestamosDeLibroController;
+use App\Http\Controllers\Prestamo\VerPrestamoController;
 
 //Routes Libros
 Route::get('/libros/buscar', BuscarLibrosController::class);
@@ -52,6 +57,13 @@ Route::get('generos/{id}', VerGeneroController::class);
 Route::post('generos', CrearGeneroController::class);
 Route::put('generos/{id}', ActualizarGeneroController::class);
 Route::delete('generos/{id}', EliminarGeneroController::class);
+
+//Routes prestamos
+Route::post('/prestamos', CrearPrestamoController::class);
+Route::get('/prestamos', ListarPrestamosController::class);
+Route::get('prestamos/{id}', VerPrestamoController::class);
+Route::put('prestamos/{id}', DevolverPrestamoController::class);
+Route::get('prestamos/{id}/libro', PrestamosDeLibroController::class);
 
 //Libros by autor
 Route::get('autores/{id}/libros', LibrosDeAutorController::class);

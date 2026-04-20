@@ -1,0 +1,46 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>Préstamos</h2>
+  <a routerLink="/prestamos/nuevo" class="btn btn-primary">
+    <i class="bi bi-plus-lg"></i> Nuevo préstamo
+  </a>
+</div>
+
+<table class="table table-hover align-middle">
+  <thead class="table-light">
+    <tr>
+      <th>Libro</th>
+      <th>Lector</th>
+      <th>Fecha préstamo</th>
+      <th>Fecha prevista</th>
+      <th>Estado</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (prestamo of prestamos(); track prestamo.id) {
+      <tr>
+        <td>
+          <!---
+          <a [routerLink]="['/prestamos', prestamo.id]">{{ prestamo.libro.titulo }}</a>
+          <div class="small text-muted">{{ prestamo.libro.autor.nombre }} {{ prestamo.libro.autor.apellidos }}</div>
+        --></td>
+        <td>
+          {{ prestamo.nombre_lector }}
+          <div class="small text-muted">{{ prestamo.email_lector || 'Sin email' }}</div>
+        </td>
+        <td>{{ prestamo.fecha_prestamo | date:'shortDate' }}</td>
+        <td>{{ prestamo.fecha_devolucion_prevista | date:'shortDate' }}</td>
+        <td>
+          @if (!prestamo.fecha_devolucion_real) {
+            <span class="badge text-bg-warning">Prestado</span>
+          } @else {
+            <span class="badge text-bg-success">Devuelto</span>
+          }
+        </td>
+      </tr>
+    } @empty {
+      <tr>
+        <td colspan="5" class="text-center text-muted py-4">No hay préstamos registrados.</td>
+      </tr>
+    }
+  </tbody>
+</table>

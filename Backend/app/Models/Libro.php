@@ -40,6 +40,10 @@ class Libro extends Model
         return $this->belongsToMany(Genero::class);
     }
 
+    public function prestamo(){
+        return $this->hasMany(Prestamo::class);
+    }
+
     //Funciones para asignarles valor a los atributos $appends
     public function getTienePortadaAttribute(): bool
     {
