@@ -19,16 +19,15 @@
     @for (prestamo of prestamos(); track prestamo.id) {
       <tr>
         <td>
-          <!---
-          <a [routerLink]="['/prestamos', prestamo.id]">{{ prestamo.libro.titulo }}</a>
+          <a [routerLink]="['/prestamos', prestamo.id]">{{ prestamo.libro.titulo}}</a>
           <div class="small text-muted">{{ prestamo.libro.autor.nombre }} {{ prestamo.libro.autor.apellidos }}</div>
-        --></td>
+        </td>
         <td>
           {{ prestamo.nombre_lector }}
           <div class="small text-muted">{{ prestamo.email_lector || 'Sin email' }}</div>
         </td>
-        <td>{{ prestamo.fecha_prestamo | date:'shortDate' }}</td>
-        <td>{{ prestamo.fecha_devolucion_prevista | date:'shortDate' }}</td>
+        <td>{{ prestamo.fecha_prestamo | date:'longDate' }}</td>
+        <td>{{ prestamo.fecha_devolucion_prevista | date:'longDate' }}</td>
         <td>
           @if (!prestamo.fecha_devolucion_real) {
             <span class="badge text-bg-warning">Prestado</span>

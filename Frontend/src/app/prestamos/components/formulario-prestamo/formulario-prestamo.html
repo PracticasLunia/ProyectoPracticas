@@ -1,0 +1,80 @@
+<a routerLink="/prestamos" class="text-muted text-decoration-none d-inline-flex align-items-center gap-1 mb-2">
+  <i class="bi bi-arrow-left"></i> Volver al listado
+</a>
+
+<h2 class="mb-3">Nuevo préstamo</h2>
+
+<form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+  <div class="row g-3">
+    <div class="col-12">
+      <label class="form-label">Libro <span class="text-danger">*</span></label>
+      <select class="form-select" formControlName="libro_id">
+        <option [value]="0" disabled >Por favor, escoga un libro</option>
+        @for(libro of libros(); track libro.id){
+          <option [value]=libro.id>{{ libro.titulo}}</option>
+        }
+        @empty{
+          <option>No hay libros disponibles</option>
+        }
+      </select>
+      @if (formulario.get('libro_id')?.errors?.['backend']) {
+        <div class="invalid-feedback d-block">{{ formulario.get('libro_id')?.errors?.['backend'] }}</div>
+      }
+    </div>
+
+    <div class="col-6">
+      <small class="text-muted fw-semibold">Nombre del Lector <span class="text-danger">*</span> </small>
+      <input type="text" class="form-control" formControlName="nombre_lector">
+      @if(formulario.get('nombre_lector')?.errors?.['backend']){
+        <div class="invalid-feedback d-block">
+          {{ formulario.get('nombre_lector')?.errors?.['backend'] }}
+        </div>
+      }
+    </div>
+
+    <div class="col-6">
+      <small class="text-muted fw-semibold">Email del lector</small>
+      <input type="email" class="form-control" formControlName="email_lector">
+      @if(formulario.get('email_lector')?.errors?.['backend']){
+        <div class="invalid-feedback d-block">
+          {{ formulario.get('email_lector')?.errors?.['backend'] }}
+        </div>
+      }
+    </div>
+
+    <div class="col-6">
+      <small class="text-muted fw-semibold">Fecha de Prestamo <span class="text-danger">*</span> </small>
+      <input type="date" class="form-control" formControlName="fecha_prestamo">
+      @if(formulario.get('fecha_prestamo')?.errors?.['backend']){
+        <div class="invalid-feedback d-block">
+          {{ formulario.get('fecha_prestamo')?.errors?.['backend'] }}
+        </div>
+      }
+    </div>
+
+    <div class="col-6">
+      <small class="text-muted fw-semibold">Fecha Prevista de Devolución <span class="text-danger">*</span> </small>
+      <input type="date" class="form-control" formControlName="fecha_devolucion_prevista">
+      @if(formulario.get('fecha_devolucion_prevista')?.errors?.['backend']){
+        <div class="invalid-feedback d-block">
+          {{ formulario.get('fecha_devolucion_prevista')?.errors?.['backend'] }}
+        </div>
+      }
+    </div>
+
+    <div class="col-12">
+      <small class="text-muted fw-semibold">Observaciones</small>
+      <input type="text" class="form-control" formControlName="observaciones">
+      @if(formulario.get('observaciones')?.errors?.['backend']){
+        <div class="invalid-feedback d-block">
+          {{ formulario.get('observaciones')?.errors?.['backend'] }}
+        </div>
+      }
+    </div>
+
+    <div class="col-12 d-flex gap-2 pt-3 border-top">
+      <button type="submit" class="btn btn-primary">Guardar préstamo</button>
+      <a routerLink="/prestamos" class="btn btn-outline-secondary">Cancelar</a>
+    </div>
+  </div>
+</form>

@@ -59,10 +59,10 @@ Route::put('generos/{id}', ActualizarGeneroController::class);
 Route::delete('generos/{id}', EliminarGeneroController::class);
 
 //Routes prestamos
-Route::post('/prestamos', CrearPrestamoController::class);
-Route::get('/prestamos', ListarPrestamosController::class);
+Route::get('prestamos', ListarPrestamosController::class);
 Route::get('prestamos/{id}', VerPrestamoController::class);
-Route::put('prestamos/{id}', DevolverPrestamoController::class);
+Route::post('prestamos', CrearPrestamoController::class);
+Route::put('prestamos/{id}/devolver', DevolverPrestamoController::class);
 Route::get('prestamos/{id}/libro', PrestamosDeLibroController::class);
 
 //Libros by autor

@@ -60,15 +60,16 @@ export const routes: Routes = [
     path: 'prestamos',
     loadComponent:()=>import('./prestamos/pages/lista-prestamos/lista-prestamos')
   },
+    {
+    path: 'prestamos/nuevo',
+    loadComponent:()=>import('./prestamos/pages/nuevo-prestamo/nuevo-prestamo')
+  },
   {
     path: 'prestamos/:id',
     loadComponent:()=>import('./prestamos/pages/detalle-prestamo/detalle-prestamo')
   },
-  /*
-  {
 
-  },*/
-
+  
   //Redigire a /libros para cualquier ruta no definida anteriormente
   {
     path: '**',

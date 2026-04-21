@@ -1,3 +1,4 @@
+import { Prestamo } from './../interfaces/prestamo.interface';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { PrestamoResponse } from '../interfaces/prestamoResponse';
@@ -15,7 +16,19 @@ export class PrestamoService {
 
 
   cargarPrestamos(): Observable<PrestamosResponse>{
-    return this.http.get<PrestamosResponse>(`${environment.urlBackend}/prestamos`)
+    return this.http.get<PrestamosResponse>(`${environment.urlBackend}/prestamos`);
+  }
+
+  cargarPrestamoPorId(id:number): Observable<PrestamoResponse>{
+    return this.http.get<PrestamoResponse>(`${environment.urlBackend}/prestamos/${id}`);
+  }
+
+  crearPrestamo(datos:any): Observable<PrestamoResponse>{
+    return this.http.post<PrestamoResponse>(`${environment.urlBackend}/prestamos`, datos);
+  }
+
+  devolverPrestamo(id:number): Observable<PrestamoResponse>{
+    return this.http.put<PrestamoResponse>(`${environment.urlBackend}/prestamos/${id}/devolver`,{});
   }
 
 }

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->foreignId('libro_id')->onDelete('no action');
             $table->string('nombre_lector');
-            $table->string('email_lector');
+            $table->string('email_lector')->nullable();
             $table->date('fecha_prestamo');
             $table->date('fecha_devolucion_prevista');
             $table->date('fecha_devolucion_real')->nullable();

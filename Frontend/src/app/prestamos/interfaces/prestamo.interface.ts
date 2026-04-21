@@ -1,3 +1,5 @@
+import { Libro } from "../../libros/interfaces/libros.interface";
+
 export interface Prestamo {
   id:                        number;
   created_at:                Date;
@@ -7,7 +9,8 @@ export interface Prestamo {
   email_lector:              string;
   fecha_prestamo:            Date;
   fecha_devolucion_prevista: Date;
-  fecha_devolucion_real:     Date;
+  fecha_devolucion_real:     Date|null;
   observaciones:             string;
   esta_disponible:           boolean;
+  libro:                     Libro
 }

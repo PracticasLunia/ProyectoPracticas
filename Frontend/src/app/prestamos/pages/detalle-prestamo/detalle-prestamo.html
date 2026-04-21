@@ -1,1 +1,60 @@
-<h1>Hello world</h1>
+@if (prestamo(); as p) {
+  <a routerLink="/prestamos" class="text-muted text-decoration-none d-inline-flex align-items-center gap-1 mb-2">
+    <i class="bi bi-arrow-left"></i> Volver al listado
+  </a>
+
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+    <h2 class="mb-0">Préstamo #{{ p.id }}</h2>
+    @if (!p.fecha_devolucion_real) {
+      <span class="badge text-bg-warning">Prestado</span>
+    } @else {
+      <span class="badge text-bg-success">Devuelto</span>
+    }
+  </div>
+
+  <div class="row g-3">
+    <div class="col-12">
+      <small class="text-muted text-uppercase fw-semibold">Libro</small>
+      <p class="mb-0 fw-medium">{{libro()?.titulo}} - {{libro()?.autor?.nombre}} {{libro()?.autor?.apellidos}}</p>
+    </div>
+    <div class="col-6">
+      <small class="text-muted text-uppercase fw-semibold">Lector</small>
+      <p class="mb-0">{{ p.nombre_lector }}</p>
+    </div>
+    <div class="col-6">
+      <small class="text-muted text-uppercase fw-semibold">Email</small>
+      <p class="mb-0">{{ p.email_lector }}</p>
+    </div>
+    <div class="col-6">
+      <small class="text-muted text-uppercase fw-semibold">Fecha de Prestamo</small>
+      <p class="mb-0">{{ p.fecha_prestamo | date: 'longDate'}}</p>
+    </div>
+    <div class="col-6">
+      <small class="text-muted text-uppercase fw-semibold">Fecha Prevista de Devolución</small>
+      <p class="mb-0">{{ p.fecha_devolucion_prevista | date: 'longDate' }}</p>
+    </div>
+    <div class="col-6">
+      <small class="text-muted text-uppercase fw-semibold">Fecha de Devolución Real</small>
+      <p class="mb-0">
+        @if(p.fecha_devolucion_real != null){
+          {{p.fecha_devolucion_real | date: 'longDate' }}
+        }
+        @else{
+          ---
+        }
+      </p>
+    </div>
+    <div class="col-12">
+      <small class="text-muted text-uppercase fw-semibold">Observaciones</small>
+      <p class="mb-0">{{ p.observaciones }}</p>
+    </div>
+  </div>
+
+  @if (!p.fecha_devolucion_real) {
+    <div class="d-flex gap-2 mt-4 pt-3 border-top">
+      <button class="btn btn-warning" (click)="marcarDevuelto()">
+        <i class="bi bi-check2-circle"></i> Marcar como devuelto
+      </button>
+    </div>
+  }
+}

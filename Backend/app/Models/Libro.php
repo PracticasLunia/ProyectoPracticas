@@ -40,7 +40,7 @@ class Libro extends Model
         return $this->belongsToMany(Genero::class);
     }
 
-    public function prestamo(){
+    public function prestamos(){
         return $this->hasMany(Prestamo::class);
     }
 
