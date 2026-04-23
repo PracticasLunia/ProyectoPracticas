@@ -38,6 +38,15 @@ class VerLibroController extends Controller
                 'tiene_contenido'=>$libro['tiene_contenido'],
             ];
 
+            $libro->esta_prestado = $libro->prestamos()
+                ->whereNull('fecha_devolucion_real')
+                ->exists();
+
+            $libro->prestamo_activo= $libro->prestamos()
+            ->whereNull('fecha_devolucion_real')
+            ->first();
+
+
             return response()->json([
                 'data' => $libro,
                 'message' => 'Detalle del libro',

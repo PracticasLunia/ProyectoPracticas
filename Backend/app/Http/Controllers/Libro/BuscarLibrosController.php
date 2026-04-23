@@ -53,6 +53,21 @@ class BuscarLibrosController extends Controller
                     }
             })
             ->get();
-        return response()->json($libros, 200);
+
+            foreach ($libros as $libro) {
+                $libro->esta_prestado = $libro->prestamos()
+                    ->whereNull('fecha_devolucion_real')
+                    ->exists();
+
+                // if($libro->esta_preparado){
+                //     $libro->prestamos();
+                // }
+            }
+
+        return response()->json([
+            'data' => $libros,
+            'messsage' => 'Listado de libros',
+            'errors' => [],
+        ],200);
     }
 }

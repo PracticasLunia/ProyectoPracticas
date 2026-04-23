@@ -31,4 +31,8 @@ export class PrestamoService {
     return this.http.put<PrestamoResponse>(`${environment.urlBackend}/prestamos/${id}/devolver`,{});
   }
 
+  prestamosDelLibro(id:number): Observable<PrestamosResponse>{
+    return this.http.get<PrestamosResponse>(`${environment.urlBackend}/prestamos/${id}/libro`);
+  }
+
 }

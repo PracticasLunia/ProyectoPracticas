@@ -22,7 +22,7 @@ class CrearPrestamoController extends Controller
             "nombre_lector" => "required|string",
             "email_lector" => "nullable|email",
             'fecha_prestamo' => "required|date",
-            "fecha_devolucion_prevista" => "required|date",
+            "fecha_devolucion_prevista" => "required|date|after_or_equal:fecha_prestamo",
             "fecha_devolucion_real" => "nullable|date",
             "observaciones" => "nullable|string"
         ]);
@@ -32,7 +32,7 @@ class CrearPrestamoController extends Controller
             "data" => null,
             "message" => "No se pudo crear el prestamo",
             "errors" => $e->errors()
-        ], 404);
+        ], 422);
     }
 
     $prestamo= Prestamo::create($request->all());

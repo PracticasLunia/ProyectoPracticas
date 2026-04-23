@@ -58,7 +58,7 @@ export default class DetallePrestamo implements OnInit{
     this.service.devolverPrestamo(this.id)
     .subscribe({
       next:(value)=> {
-
+        this.router.navigate(['/prestamos']);
       },
     })
   }

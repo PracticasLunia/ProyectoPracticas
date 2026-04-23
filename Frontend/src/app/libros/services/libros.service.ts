@@ -24,8 +24,8 @@ export class LibrosService {
     return this.http.get<LibroResponse>(`${environment.urlBackend}/libros/${id}`)
   }
 
-  buscarLibrosFormulario(urlForm:string){
-    return this.http.get<Libro[]>
+  buscarLibrosFormulario(urlForm:string): Observable<LibrosResponse>{
+    return this.http.get<LibrosResponse>
     (`${environment.urlBackend}/libros/buscar?${urlForm}`)
   }
 

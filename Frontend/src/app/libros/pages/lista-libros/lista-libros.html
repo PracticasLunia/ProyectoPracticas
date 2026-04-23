@@ -124,7 +124,7 @@
         </td>
         <td>{{ libro.publicacion}}</td>
         <td>
-          @if (libro.disponible) {
+          @if (libro.esta_prestado==false) {
             <span class="badge text-bg-success">
               <i class="bi bi-check-circle-fill"></i> Sí
             </span>

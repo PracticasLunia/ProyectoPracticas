@@ -1,5 +1,6 @@
 import { Autor } from "../../autores/interfaces/autor.interface";
 import { Genero } from "../../generos/interfaces/genero.interface";
+import { Prestamo } from "../../prestamos/interfaces/prestamo.interface";
 
 
 export interface Libro {
@@ -20,4 +21,6 @@ export interface Libro {
   nombre_autor: string;
   generos:Genero[];
   autor:Autor;
+  prestamo_activo:Prestamo;
+  esta_prestado:boolean;
 }

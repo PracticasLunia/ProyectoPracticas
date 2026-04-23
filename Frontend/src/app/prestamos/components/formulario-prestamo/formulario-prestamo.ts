@@ -4,7 +4,7 @@ import { PrestamoService } from '../../services/prestamo.service';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { Libro } from '../../../libros/interfaces/libros.interface';
 import { LibrosService } from '../../../libros/services/libros.service';
-import { map } from 'rxjs';
+import { catchError, EMPTY, map, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-formulario-prestamo',
@@ -27,7 +27,7 @@ export default class FormularioPrestamo implements OnInit{
   activatedRoute= inject(ActivatedRoute);
 
   //Variables
-
+  errorEliminar=signal('');
   idRuta=this.activatedRoute.snapshot.params['id'];
   libros=signal<Libro[]|null>(null); //Carga de select de libros
 
@@ -63,28 +63,47 @@ export default class FormularioPrestamo implements OnInit{
       observaciones: this.formulario.value.observaciones
     }
 
-    if(this.idRuta!=null){
-      //Actualizar
-    }
-    else{
-      //Crear
-      this.service.crearPrestamo(datos)
+    if (this.idRuta != null) {
+      // Actualizar
+    } else {
+
+      this.service.prestamosDelLibro(datos.libro_id!)
+      .pipe(
+        map(res => res.data ?? []),
+
+        map(respuestas =>
+          respuestas.filter(r => r.esta_disponible === false)
+        ),
+
+        switchMap(prestamosActivos => {
+          if (prestamosActivos.length > 0) {
+            this.errorEliminar.set('El libro ya tiene un préstamo activo');
+            return EMPTY;
+          }
+
+          return this.service.crearPrestamo(datos);
+        }),
+      )
       .subscribe({
-        next: (respuesta)=>{
+        next: () => {
           this.router.navigate(['/prestamos']);
         },
-        error:(err)=>{
-          if(err.status===422){
-            const errores= err.error.errors;
+
+        error: (err) => {
+          if (err.status === 422) {
+            const errores = err.error.errors;
+
             Object.keys(errores).forEach(campo => {
               const control = this.formulario.get(campo);
               if (control) {
                 control.setErrors({ backend: errores[campo][0] });
               }
             });
+          } else {
+            console.error(err);
           }
-        },
-      })
+        }
+      });
     }
 
   }

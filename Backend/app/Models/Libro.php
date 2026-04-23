@@ -23,8 +23,8 @@ class Libro extends Model
         "contenido_tamano",
     ];
 
-    //Valores que no existen en la bd, y se calculan dinamicamente a patir de otros
-    protected $appends = ['tiene_portada', 'tiene_contenido'];
+    //Valores que no existen en la bd, y se calculan dinamicamente apartir de otros
+    protected $appends = ['tiene_portada', 'tiene_contenido', 'tiene_prestamo_activo'];
 
     //Casteo a tipo admitido para Mysql number->boolean
     protected $casts = [
@@ -52,6 +52,13 @@ class Libro extends Model
 
     public function getTieneContenidoAttribute(): bool{
         return !is_null($this->contenido_path);
+    }
+
+    public function getTienePrestamoActivoAttribute()
+    {
+        return $this->prestamos()
+            ->whereNull('fecha_devolucion_real')
+            ->exists();
     }
 
 }

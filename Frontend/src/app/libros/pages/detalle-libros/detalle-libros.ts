@@ -1,13 +1,15 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { LibrosService } from '../../services/libros.service';
 import { Libro } from '../../interfaces/libros.interface';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import {PdfViewerModule } from 'ng2-pdf-viewer';
+import { DatePipe } from '@angular/common';
+import { PrestamoService } from '../../../prestamos/services/prestamo.service';
 
 @Component({
   selector: 'app-detalle-libros',
-  imports: [RouterLink, PdfViewerModule],
+  imports: [RouterLink, PdfViewerModule, DatePipe],
   templateUrl: './detalle-libros.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 
@@ -19,6 +21,13 @@ export default class DetalleLibros implements OnInit {
     this.detalleLibro(this.id);
   }
 
+  //Inyeccion de dependencias
+
+  service= inject(LibrosService);
+  servicePrestamos=inject(PrestamoService);
+
+  //Variables
+
   activateRoute= inject(ActivatedRoute);
   router= inject(Router);
   urlBackend=environment.urlBackend;
@@ -27,15 +36,13 @@ export default class DetalleLibros implements OnInit {
   //Paginacion
   paginaActual = signal(1);
   totalPaginas = signal(0);
-
   //Tomar el id de la ruta
   id= inject(ActivatedRoute).snapshot.params['id'];
-
   //Informacion del libro, valor inicial nulo
   libro= signal<Libro|null>(null);
+  prestamoActivo = computed(() => this.libro()?.prestamo_activo ?? null);
 
-  //Inyection dependency
-  service= inject(LibrosService);
+  //Metodos
 
   //Detalle de un solo libro
   detalleLibro(id:number){
@@ -76,6 +83,15 @@ export default class DetalleLibros implements OnInit {
     if (bytes < 1024) return `${bytes} B`;
     if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  }
+
+  marcarDevuelto(id:number){
+    this.servicePrestamos.devolverPrestamo(id)
+    .subscribe({
+      next:(value)=> {
+        this.router.navigate(['/prestamos']);
+      },
+    })
   }
 
 }

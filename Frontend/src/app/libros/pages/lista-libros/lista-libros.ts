@@ -37,7 +37,7 @@ export default class ListaLibros implements OnInit{
 
   //Metodo para mostrar todos los libros junto cargando tambien sus datos relacionados de autor y generos
   mostrarLibros(){
-    this.service.cargarLibros()
+    this.service.buscarLibrosFormulario(this.contruirUrlBuscar())
     .subscribe((respuesta)=>{
       this.libros.set(respuesta.data!)
 
@@ -66,9 +66,14 @@ export default class ListaLibros implements OnInit{
 
   //Metodo que se ejecuta al subir el formulario para filtrar libros por campos de este
   onSubmit(){
-    const urlForm= `titulo=${this.formulario.value.titulo}&ibsn=${this.formulario.value.isbn}&autor=${this.formulario.value.autor}&genero_nombre=${this.formulario.value.genero_nombre}`
+        const urlForm= this.contruirUrlBuscar();
         this.service.buscarLibrosFormulario(urlForm).subscribe((respuesta)=>{
-        this.libros.set(respuesta);
+        this.libros.set(respuesta.data!);
+        console.log(respuesta)
     })
+  }
+
+  private contruirUrlBuscar() {
+    return `titulo=${this.formulario.value.titulo}&ibsn=${this.formulario.value.isbn}&autor=${this.formulario.value.autor}&genero_nombre=${this.formulario.value.genero_nombre}`
   }
 }
