@@ -1,14 +1,26 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './auth/guards/authGuard.guard';
 
 export const routes: Routes = [
+
+  /*Path de autenticacion*/
+  {
+    path: 'login',
+    loadComponent:()=>import('./auth/pages/login-page/login-page'),
+  },
+
   /*Path para libros*/
   {
     path: 'libros',
     loadComponent:()=>import('./libros/pages/lista-libros/lista-libros'),
+    children: [
+      //Por implementar guard a rutas hijas
+    ]
   },
   {
     path: 'libros/nuevo',
     loadComponent:()=>import('./libros/pages/nuevo-libro/nuevo-libro'),
+    canActivate: [authGuard], //Uso de guard de autenticacion
   },
   {
     path: 'libros/:id',
@@ -69,7 +81,7 @@ export const routes: Routes = [
     loadComponent:()=>import('./prestamos/pages/detalle-prestamo/detalle-prestamo')
   },
 
-  
+
   //Redigire a /libros para cualquier ruta no definida anteriormente
   {
     path: '**',

@@ -1,5 +1,7 @@
 <?php
 //imports
+
+use App\Http\Controllers\AuthAuthentication\LoginController;
 use App\Http\Controllers\Autor\ActualizarAutorController;
 use App\Http\Controllers\Autor\CrearAutorController;
 use App\Http\Controllers\Autor\EliminiarAutorController;
@@ -15,11 +17,7 @@ use App\Http\Controllers\Genero\VerGeneroController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
-
-//Controllers
+//Controllers-----------------------------------------
 use App\Http\Controllers\Libro\ListarLibrosController;
 use App\Http\Controllers\Libro\BuscarLibrosController;
 use App\Http\Controllers\Libro\VerLibroController;
@@ -34,31 +32,44 @@ use App\Http\Controllers\Prestamo\ListarPrestamosController;
 use App\Http\Controllers\Prestamo\PrestamosDeLibroController;
 use App\Http\Controllers\Prestamo\VerPrestamoController;
 
-//Routes Libros
+//Routes Authentication----------------------
+Route::get('/user', function (Request $request) {
+    return $request->user();
+})->middleware('auth:sanctum');
+
+Route::post('/login', LoginController::class);
+
+
+
+//Routes Libros---------------------------------------------
 Route::get('/libros/buscar', BuscarLibrosController::class);
 Route::get('/libros', ListarLibrosController::class);
 Route::get('/libros/{id}', VerLibroController::class);
-Route::post('/libros', CrearLibroController::class);
-Route::put('/libros/{id}', ActualizarLibroController::class);
-Route::delete('/libros/{id}', EliminarLibroController::class);
-Route::get('libros/{id}/portada', PortadaLibroController::class);
-Route::get('libros/{id}/contenido', ContenidoLibroController::class);
 
-//Routes Autores
+//Proteccion de rutas con middleware para usuarios auntenticados
+Route::middleware('auth:sanctum')->group(function(){
+    Route::post('/libros', CrearLibroController::class);
+    Route::put('/libros/{id}', ActualizarLibroController::class);
+    Route::delete('/libros/{id}', EliminarLibroController::class);
+    Route::get('libros/{id}/portada', PortadaLibroController::class);
+    Route::get('libros/{id}/contenido', ContenidoLibroController::class);
+});
+
+//Routes Autores--------------------------------------
 Route::get('/autores', ListarAutoresController::class);
 Route::get('autores/{id}', VerAutorController::class);
 Route::post('autores', CrearAutorController::class);
 Route::put('autores/{id}', ActualizarAutorController::class);
 Route::delete('autores/{id}', EliminiarAutorController::class);
 
-//Routes Generos
+//Routes Generos--------------------------------------
 Route::get('/generos', ListarGenerosController::class);
 Route::get('generos/{id}', VerGeneroController::class);
 Route::post('generos', CrearGeneroController::class);
 Route::put('generos/{id}', ActualizarGeneroController::class);
 Route::delete('generos/{id}', EliminarGeneroController::class);
 
-//Routes prestamos
+//Routes prestamos---------------------------------------
 Route::get('prestamos', ListarPrestamosController::class);
 Route::get('prestamos/{id}', VerPrestamoController::class);
 Route::post('prestamos', CrearPrestamoController::class);
