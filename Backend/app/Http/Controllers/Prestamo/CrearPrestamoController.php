@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Prestamo;
 
 use App\Http\Controllers\Controller;
-use App\Models\Libro;
 use App\Models\Prestamo;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -32,6 +31,21 @@ class CrearPrestamoController extends Controller
             "data" => null,
             "message" => "No se pudo crear el prestamo",
             "errors" => $e->errors()
+        ], 422);
+    }
+
+    $libroId = $request->input('libro_id');
+
+    // Verificar si ya existe un préstamo activo
+    $prestamoActivo = Prestamo::where('libro_id', $libroId)
+        ->whereNull('fecha_devolucion_real')
+        ->exists();
+
+    if ($prestamoActivo) {
+        return response()->json([
+            'data' => null,
+            'message' => 'Este libro ya tiene un préstamo activo',
+            'errors' => []
         ], 422);
     }
 

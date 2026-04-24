@@ -69,7 +69,27 @@ export default class ListaLibros implements OnInit{
         const urlForm= this.contruirUrlBuscar();
         this.service.buscarLibrosFormulario(urlForm).subscribe((respuesta)=>{
         this.libros.set(respuesta.data!);
-        console.log(respuesta)
+
+        //Por cada libro obtener su autor y genero
+        respuesta.data!.forEach((libro: Libro) => {
+          this.service.cargarLibroById(libro.id).subscribe({
+            next: (libroCompleto) => {
+              //Actualizar señal
+              this.libros.update(lista =>
+                lista.map(a =>
+                  a.id === libro.id
+                    ? {
+                        ...a,
+                        autor: libroCompleto.data?.autor!,
+                        generos: libroCompleto.data?.generos!,
+                      }
+                    : a
+                )
+              );
+            }
+          })
+        });
+
     })
   }
 
