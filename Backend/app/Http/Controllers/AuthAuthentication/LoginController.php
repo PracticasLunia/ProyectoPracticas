@@ -19,7 +19,11 @@ class LoginController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json(['message' => 'Credenciales inválidas'], 401);
+            return response()->json([
+                'user' => null,
+                'token' => null,
+                'message' => 'Credenciales inválidas'
+            ], 401);
         }
 
         //Respuesta con creacion de token
@@ -27,7 +31,8 @@ class LoginController extends Controller
 
         return response()->json([
             'user' => $user,
-            'token' => $token
-        ]);
+            'token' => $token,
+            'message' => 'Sesion iniciada correctamente'
+        ], 200);
     }
 }

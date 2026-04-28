@@ -8,7 +8,7 @@ export function authInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn) 
 
   //Añade en la cabezera de la peticion el token para la autenticacion
   const newReq = req.clone({
-    headers: req.headers.append('Authorization', `Bearer ${authToken} `),
+    headers: req.headers.append('Authorization', `Bearer ${authToken}`),
   });
   return next(newReq);
 }

@@ -21,6 +21,14 @@ export class AuthService {
     });
   }
 
+  logout() {
+    return this.http.post(`${environment.urlBackend}/logout`, {});
+  }
+
+   usuarioActual(){
+     return this.http.get<AuthResponse>(`${environment.urlBackend}/user`);
+   }
+
   devolverToken() {
     return localStorage.getItem('token');
   }
@@ -34,6 +42,7 @@ export class AuthService {
   }
 
   estaLogueado(): boolean {
+    console.log(this.devolverToken())
     return !!this.devolverToken(); //Convierte a boolean
   }
 

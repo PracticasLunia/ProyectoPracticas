@@ -2,6 +2,8 @@
 //imports
 
 use App\Http\Controllers\AuthAuthentication\LoginController;
+use App\Http\Controllers\AuthAuthentication\LogoutController;
+use App\Http\Controllers\AuthAuthentication\UserController;
 use App\Http\Controllers\Autor\ActualizarAutorController;
 use App\Http\Controllers\Autor\CrearAutorController;
 use App\Http\Controllers\Autor\EliminiarAutorController;
@@ -33,12 +35,16 @@ use App\Http\Controllers\Prestamo\PrestamosDeLibroController;
 use App\Http\Controllers\Prestamo\VerPrestamoController;
 
 //Routes Authentication----------------------
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+// Route::get('/user', function (Request $request) {
+//     return $request->user();
+// })->middleware('auth:sanctum');
 
 Route::post('/login', LoginController::class);
 
+Route::middleware('auth:sanctum')->group(function(){
+    Route::get('/user', UserController::class);
+    Route::post('/logout', LogoutController::class);
+});
 
 
 //Routes Libros---------------------------------------------

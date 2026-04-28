@@ -4,10 +4,11 @@ import { authGuard } from './auth/guards/authGuard.guard';
 export const routes: Routes = [
 
   /*Path de autenticacion*/
-  {
-    path: 'login',
-    loadComponent:()=>import('./auth/pages/login-page/login-page'),
-  },
+  // {
+  //   path: 'login',
+  //   loadComponent:()=>import('./auth/pages/login-page/login-page'),
+  // },
+  
 
   /*Path para libros*/
   {

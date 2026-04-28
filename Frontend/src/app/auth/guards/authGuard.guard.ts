@@ -1,9 +1,14 @@
 import { inject } from '@angular/core';
-import type { CanActivateFn } from '@angular/router';
+import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/authService.service';
 
-//Guard para verificar si un usuario esta logueado
 export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
-  return authService.estaLogueado();
+  const router = inject(Router);
+
+  if (authService.estaLogueado()) {
+    return true;
+  }
+  //Los guards no ejecutan navegación directamente. Solo pueden decidir el resultado de la navegación actual.
+  return router.createUrlTree(['/login']);
 };
