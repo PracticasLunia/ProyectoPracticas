@@ -15,11 +15,10 @@ export const publicRoutes: Routes = [
         path: 'login',
         loadComponent: () => import('./auth/pages/login-page/login-page'),
       },
-      // TODO: cuando llegue la fase de registro, descomentar y crear el componente.
-      // {
-      //   path: 'register',
-      //   loadComponent: () => import('./auth/pages/register-page/register-page'),
-      // },
+      {
+         path: 'register',
+         loadComponent: () => import('./auth/pages/register-page/register-page'),
+      },
       {
         path: '',
         redirectTo: 'login',

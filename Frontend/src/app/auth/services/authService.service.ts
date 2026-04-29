@@ -25,6 +25,15 @@ export class AuthService {
     return this.http.post(`${environment.urlBackend}/logout`, {});
   }
 
+  register(name: string, email: string, password: string, passwordConfirmation: string): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${environment.urlBackend}/register`, {
+      name,
+      email,
+      password,
+      password_confirmation: passwordConfirmation,
+    });
+  }
+
    usuarioActual(){
      return this.http.get<AuthResponse>(`${environment.urlBackend}/user`);
    }

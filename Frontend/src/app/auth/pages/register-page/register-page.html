@@ -1,0 +1,46 @@
+
+<div class="card-body p-4">
+  <h2 class="h4 mb-1">Crear cuenta</h2>
+  <p class="text-muted mb-4">Registrate para empezar a gestionar la biblioteca.</p>
+
+  <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+
+    <div class="mb-3">
+      <label class="form-label">Nombre</label>
+      <input type="text" class="form-control" formControlName="name">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input type="email" class="form-control" formControlName="email">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Password</label>
+      <input type="password" class="form-control" formControlName="password">
+      <div class="form-text">Minimo 8 caracteres.</div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Repite el password</label>
+      <input type="password" class="form-control" formControlName="password_confirmation">
+      @if (formulario.errors?.['noCoincide'] && formulario.get('password_confirmation')?.touched) {
+        <div class="form-text text-danger">Las contraseñas no coinciden.</div>
+      }
+    </div>
+
+    @if (errorRegistro()) {
+      <div class="alert alert-danger py-2">{{ errorRegistro() }}</div>
+    }
+
+    <button type="submit" class="btn btn-primary w-100" [disabled]="formulario.invalid">
+      Crear cuenta
+    </button>
+  </form>
+
+  <hr class="my-4">
+  <p class="text-center mb-0">
+    <small class="text-muted">¿Ya tienes cuenta?</small>
+    <a routerLink="/auth/login" class="ms-1">Inicia sesion</a>
+  </p>
+</div>
