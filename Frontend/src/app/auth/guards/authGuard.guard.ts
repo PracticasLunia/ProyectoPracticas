@@ -10,5 +10,5 @@ export const authGuard: CanActivateFn = (route, state) => {
     return true;
   }
   //Los guards no ejecutan navegación directamente. Solo pueden decidir el resultado de la navegación actual.
-  return router.createUrlTree(['/login']);
+  return router.createUrlTree(['/auth/login']);
 };

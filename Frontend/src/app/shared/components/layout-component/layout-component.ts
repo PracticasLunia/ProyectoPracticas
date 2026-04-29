@@ -5,28 +5,29 @@ import { User } from '../../../auth/interfaces/user.interface';
 
 @Component({
   selector: 'app-layout-component',
-  imports: [RouterLinkActive, RouterLinkWithHref, RouterLink],
+  imports: [RouterLinkActive, RouterLinkWithHref, RouterLink, RouterOutlet],
   templateUrl: './layout-component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class LayoutComponent implements OnInit{
 
+
   service= inject(AuthService);
   router= inject(Router);
-  //email:string='';
+
   user:User|undefined;
 
+
   ngOnInit(): void {
+    if (!this.service.estaLogueado()) {
+      return;
+    }
     this.service.usuarioActual().subscribe({
-      next:(value)=>{
-        this.user=value.user;
-        console.log(this.user)
-
+      next: (value) => {
+        this.user = value.user;
       },
-    })
+    });
   }
-
-
 
   cerrarSesion(){
     this.service.logout().subscribe({
@@ -37,7 +38,7 @@ export default class LayoutComponent implements OnInit{
 
   finishLogout() {
     this.service.eliminarToken();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/auth/login']);
   }
 
 }
