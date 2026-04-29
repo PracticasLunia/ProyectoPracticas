@@ -6,6 +6,7 @@ import { PrestamoService } from '../../services/prestamo.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Libro } from '../../../libros/interfaces/libros.interface';
 import { DatePipe } from '@angular/common';
+import { AuthService } from '../../../auth/services/authService.service';
 
 @Component({
   selector: 'app-detalle-prestamo',
@@ -24,6 +25,7 @@ export default class DetallePrestamo implements OnInit{
 
   service= inject(PrestamoService)
   serviceLibro= inject(LibrosService);
+  serviceAuth = inject(AuthService);
   activateRoute= inject(ActivatedRoute);
   router= inject(Router);
 

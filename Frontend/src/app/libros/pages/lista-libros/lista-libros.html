@@ -45,13 +45,15 @@
           </button>
         </div>
 
-        <div class="col-12 col-sm-6 col-md-2 col-lg-auto">
-          <button type="button"
-                  class="btn btn-success w-100"
-                  [routerLink]="'/libros/nuevo'">
-            Añadir
-          </button>
-        </div>
+        @if(serviceAuth.estaLogueado()){
+          <div class="col-12 col-sm-6 col-md-2 col-lg-auto">
+            <button type="button"
+                    class="btn btn-success w-100"
+                    [routerLink]="'/libros/nuevo'">
+              Añadir
+            </button>
+          </div>
+        }
 
       </div>
     </form>

@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@ang
 import { GeneroService } from '../../services/genero.service';
 import { Genero } from '../../interfaces/genero.interface';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../../../auth/services/authService.service';
 
 @Component({
   selector: 'app-lista-generos',
@@ -17,6 +18,7 @@ export default class ListaGeneros implements OnInit {
   }
 
   service=inject(GeneroService);
+  serviceAuth= inject(AuthService);
   generos=signal<Genero[]>([]);
 
   mostrarLibros(){

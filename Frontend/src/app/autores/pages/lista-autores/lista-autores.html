@@ -1,10 +1,12 @@
-
-
 <div class="d-flex justify-content-between align-items-center mb-3">
   <h2>Autores</h2>
-  <a [routerLink]="'/autores/nuevo'" class="btn btn-primary">
-    <i class="bi bi-plus-lg"></i> Nuevo autor
-  </a>
+
+  @if(serviceAuth.estaLogueado()){
+    <a [routerLink]="'/autores/nuevo'" class="btn btn-primary">
+      <i class="bi bi-plus-lg"></i> Nuevo autor
+    </a>
+  }
+
 </div>
 
 

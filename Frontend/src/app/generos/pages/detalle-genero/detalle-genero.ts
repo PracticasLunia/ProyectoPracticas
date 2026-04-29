@@ -3,6 +3,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { GeneroService } from '../../services/genero.service';
 import { Genero } from '../../interfaces/genero.interface';
 import { Libro } from '../../../libros/interfaces/libros.interface';
+import { AuthService } from '../../../auth/services/authService.service';
 
 @Component({
   selector: 'app-detalle-genero',
@@ -19,6 +20,7 @@ export default class DetalleGenero implements OnInit {
 
   //Inyeccion de dependencias
   service=inject(GeneroService)
+  serviceAuth= inject(AuthService);
   activateRoute= inject(ActivatedRoute);
   router= inject(Router);
 

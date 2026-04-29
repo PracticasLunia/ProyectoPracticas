@@ -42,7 +42,6 @@ export class AuthService {
   }
 
   estaLogueado(): boolean {
-    console.log(this.devolverToken())
     return !!this.devolverToken(); //Convierte a boolean
   }
 

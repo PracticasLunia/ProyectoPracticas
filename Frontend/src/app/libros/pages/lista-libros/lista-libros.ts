@@ -4,6 +4,7 @@ import { Libro } from '../../interfaces/libros.interface';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { environment } from '../../../../environments/environment';
+import { AuthService } from '../../../auth/services/authService.service';
 
 
 @Component({
@@ -20,6 +21,7 @@ export default class ListaLibros implements OnInit{
 
   //Inyeccion de servicios-----
   service= inject(LibrosService);
+  serviceAuth= inject(AuthService);
   fb=inject(FormBuilder);
 
   //Variables-----

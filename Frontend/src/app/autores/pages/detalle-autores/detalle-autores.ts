@@ -5,6 +5,7 @@ import { AutorService } from '../../services/autor.service';
 import { Libro } from '../../../libros/interfaces/libros.interface';
 import { Observable } from 'rxjs';
 import { DatePipe } from '@angular/common';
+import { AuthService } from '../../../auth/services/authService.service';
 
 @Component({
   selector: 'app-detalle-autores',
@@ -24,6 +25,7 @@ export default class DetalleAutores implements OnInit{
 
   //Inyection dependency
   service= inject(AutorService);
+  serviceAuth= inject(AuthService);
   activateRoute= inject(ActivatedRoute);
   router= inject(Router);
 

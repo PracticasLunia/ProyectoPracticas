@@ -3,6 +3,7 @@ import { AutorService } from '../../services/autor.service';
 import { Autor } from '../../interfaces/autor.interface';
 import { RouterLink } from '@angular/router';
 import { DatePipe, JsonPipe } from '@angular/common';
+import { AuthService } from '../../../auth/services/authService.service';
 
 @Component({
   selector: 'app-lista-autores',
@@ -18,6 +19,7 @@ export default class ListaAutores implements OnInit {
 
   //Inyeccion de servicio
   service= inject(AutorService);
+  serviceAuth= inject(AuthService);
 
   //Variable propias
   autores= signal<Autor[]>([]);

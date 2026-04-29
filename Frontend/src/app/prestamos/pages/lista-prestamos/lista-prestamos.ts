@@ -5,6 +5,7 @@ import { environment } from '../../../../environments/environment';
 import { RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { LibrosService } from '../../../libros/services/libros.service';
+import { AuthService } from '../../../auth/services/authService.service';
 
 @Component({
   selector: 'app-lista-prestamos',
@@ -21,6 +22,7 @@ export default class ListaPrestamos implements OnInit{
   //Inyeccion de servicios y dependencias
   service= inject(PrestamoService)
   serviceLibro= inject(LibrosService);
+  serviceAuth=inject(AuthService);
 
   //Variables
   prestamos= signal<Prestamo[]>([]);

@@ -6,6 +6,7 @@ import { environment } from '../../../../environments/environment';
 import {PdfViewerModule } from 'ng2-pdf-viewer';
 import { DatePipe } from '@angular/common';
 import { PrestamoService } from '../../../prestamos/services/prestamo.service';
+import { AuthService } from '../../../auth/services/authService.service';
 
 @Component({
   selector: 'app-detalle-libros',
@@ -25,6 +26,7 @@ export default class DetalleLibros implements OnInit {
 
   service= inject(LibrosService);
   servicePrestamos=inject(PrestamoService);
+  serviceAuth= inject(AuthService);
 
   //Variables
 
