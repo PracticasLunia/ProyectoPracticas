@@ -27,7 +27,7 @@ class CrearAutorController extends Controller
         }catch (ValidationException $e) {
              return response()->json([
                 'data'=>null,
-                'message'=>'Autor no encontrado',
+                'message'=>'El autor no se pudo crear, errores de validación',
                 'errors'=>$e->errors(),
             ], 404 );
         }
