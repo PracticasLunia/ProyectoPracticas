@@ -7,7 +7,7 @@ use App\Http\Controllers\AuthAuthentication\RegisterController;
 use App\Http\Controllers\AuthAuthentication\UserController;
 use App\Http\Controllers\Autor\ActualizarAutorController;
 use App\Http\Controllers\Autor\CrearAutorController;
-use App\Http\Controllers\Autor\EliminiarAutorController;
+use App\Http\Controllers\Autor\EliminarAutorController;
 use App\Http\Controllers\Autor\LibrosDeAutorController;
 use App\Http\Controllers\Autor\ListarAutoresController;
 use App\Http\Controllers\Autor\VerAutorController;
@@ -68,7 +68,7 @@ Route::get('/autores', ListarAutoresController::class);
 Route::get('autores/{id}', VerAutorController::class);
 Route::post('autores', CrearAutorController::class);
 Route::put('autores/{id}', ActualizarAutorController::class);
-Route::delete('autores/{id}', EliminiarAutorController::class);
+Route::delete('autores/{id}', EliminarAutorController::class);
 
 //Routes Generos--------------------------------------
 Route::get('/generos', ListarGenerosController::class);

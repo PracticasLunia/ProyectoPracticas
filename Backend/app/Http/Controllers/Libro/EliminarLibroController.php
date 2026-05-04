@@ -27,7 +27,7 @@ class EliminarLibroController extends Controller
                 Storage::disk('local')->delete($rutaPortada);
             }
             return response()->json(
-                [   "data"=>$libro,
+                [   "data"=>null,
                     "message"=>"Libro eliminado",
                     "errors"=>[],
                 ], 204

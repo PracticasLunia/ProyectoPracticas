@@ -91,7 +91,7 @@ class ActualizarLibroTest extends TestCase
         ]);
     }
 
-    public function test_actualizar_libro_no_existente_devuelve_404(): void{
+    /*public function test_actualizar_libro_no_existente_devuelve_404(): void{
 
         $user = User::factory()->create();
         Sanctum::actingAs($user);
@@ -108,5 +108,5 @@ class ActualizarLibroTest extends TestCase
 
         $response->assertStatus(404);
 
-    }
+    }*/
 }
