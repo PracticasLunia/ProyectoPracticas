@@ -31,7 +31,7 @@ class ActualizarGeneroController extends Controller
         }
 
         try {
-            $genero= Genero::find($id);
+            $genero= Genero::findOrFail($id);
         }catch (ModelNotFoundException) {
              return response()->json([
                 'data'=>null,
