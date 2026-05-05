@@ -14,12 +14,13 @@ class UserController extends Controller
     {
         $user = $request->user();
 
-        if (!$user) {
-            return response()->json([
-                'user' => null,
-                'message' => 'Usuario no encontrado'
-            ], 401);
-        }
+        //El middleware protege antes de usar el controlador
+        // if (!$user) {
+        //     return response()->json([
+        //         'user' => null,
+        //         'message' => 'Usuario no encontrado'
+        //     ], 401);
+        // }
 
         return response()->json([
             'user' => $user,

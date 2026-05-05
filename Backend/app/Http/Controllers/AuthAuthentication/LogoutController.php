@@ -15,11 +15,12 @@ class LogoutController extends Controller
     {
         $user = $request->user();
 
-        if (!$user) {
-            return response()->json([
-                'message' => 'No autenticado o token inválido'
-            ], 401);
-        }
+        //El middleware actua en estos casos, por lo que nunca se ejecutara
+        // if (!$user) {
+        //     return response()->json([
+        //         'message' => 'No autenticado o token inválido'
+        //     ], 401);
+        // }
 
         $user->tokens()->delete();
 
