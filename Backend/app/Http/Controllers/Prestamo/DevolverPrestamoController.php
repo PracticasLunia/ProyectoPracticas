@@ -23,19 +23,18 @@ class DevolverPrestamoController extends Controller
                 'fecha_devolucion_real' => now()
             ]);
 
-
             return response()->json([
                 "data" => $prestamo,
                 "message" => "Estado del prestamo actualizado",
                 "errors" => [],
-            ]);
+            ], 200);
 
         } catch (ModelNotFoundException) {
             return response()->json([
                 "data" => "",
                 "message" => "No se pudo encontrar el prestamo",
                 "errors" => [],
-            ]);
+            ], 404);
         }
 
     }

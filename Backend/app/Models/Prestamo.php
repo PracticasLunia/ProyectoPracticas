@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Prestamo extends Model
 {
-    //
+    use HasFactory;
+
     protected $fillable = [
         'libro_id',
         'nombre_lector',
@@ -26,7 +28,7 @@ class Prestamo extends Model
         return true;
        }
        else{
-            return false;
+        return false;
        }
     }
 

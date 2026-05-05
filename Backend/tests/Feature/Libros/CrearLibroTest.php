@@ -42,7 +42,6 @@ class CrearLibroTest extends TestCase
     {
 
         $user = User::factory()->create();
-
         Sanctum::actingAs($user);
 
         $this->libro  = Libro::factory()->make([
@@ -53,7 +52,6 @@ class CrearLibroTest extends TestCase
 
         $response = $this->postJson('api/libros', $data);
 
-
         $response->assertStatus(201);
     }
 
@@ -62,7 +60,6 @@ class CrearLibroTest extends TestCase
         $this->assertDatabaseCount('libros',0);
 
         $user = User::factory()->create();
-
         Sanctum::actingAs($user);
 
         $this->libro  = Libro::factory()->make([
@@ -80,7 +77,6 @@ class CrearLibroTest extends TestCase
     public function test_validation_exception(){
 
         $user = User::factory()->create();
-
         Sanctum::actingAs($user);
 
         $this->libro  = Libro::factory()->make([

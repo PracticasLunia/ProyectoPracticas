@@ -44,7 +44,7 @@ class CrearPrestamoController extends Controller
     if ($prestamoActivo) {
         return response()->json([
             'data' => null,
-            'message' => 'Este libro ya tiene un préstamo activo',
+            'message' => 'Este libro ya tiene un prestamo activo',
             'errors' => []
         ], 422);
     }
@@ -55,7 +55,7 @@ class CrearPrestamoController extends Controller
         "data" => $prestamo,
         "message" => "Prestamo creado correctamente",
         "errors" => []
-    ], 200);
+    ], 201);
 
     }
 }

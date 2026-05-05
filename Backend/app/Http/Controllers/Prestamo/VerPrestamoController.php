@@ -26,7 +26,7 @@ class VerPrestamoController extends Controller
         } catch (ModelNotFoundException) {
              return response()->json([
                 'data'=>null,
-                'message'=>'Libro no encontrado',
+                'message'=>'Prestamo no encontrado',
                 'errors'=>[]
             ], 404 );
         }
