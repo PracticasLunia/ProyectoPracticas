@@ -10,6 +10,8 @@ use App\Models\Autor;
 use App\Models\Genero;
 use App\Models\User;
 use Laravel\Sanctum\Sanctum;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Override;
 
 class CrearLibroTest extends TestCase
@@ -98,5 +100,33 @@ class CrearLibroTest extends TestCase
             //Afirme que la respuesta contiene los datos dados en la ruta especificada
             ->assertJsonPath('message', 'Error al intentar crear el libro') ;
 
+    }
+
+    public function test_crear_libro_con_archivos(){
+        Storage::fake('local');
+
+        $portada = UploadedFile::fake()->image('portada.jpg');
+        $contenido = UploadedFile::fake()->create('libro.pdf', 500);
+
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
+        $response = $this->postJson('/api/libros', [
+            'titulo' => 'Libro test',
+            'isbn' => '1234567890',
+            'publicacion' => 2024,
+            'sinopsis' => 'Prueba',
+            'num_paginas' => 100,
+            'disponible' => true,
+            'autor_id' => $this->autor->id,
+            'genero_ids' => [$this->genero1->id, $this->genero2->id],
+            'portada' => $portada,
+            'contenido' => $contenido,
+        ]);
+
+        $response->assertStatus(201);
+
+        Storage::disk('local')->assertExists('portadas/'.$portada->hashName());
+        Storage::disk('local')->assertExists('contenidos/'.$contenido->hashName());
     }
 }
