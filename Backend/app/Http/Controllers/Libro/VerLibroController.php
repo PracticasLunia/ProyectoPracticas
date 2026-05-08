@@ -6,16 +6,16 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Libro;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Repositories\Libro\LibroRepositoryInterface;
 
 class VerLibroController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
-    public function __invoke(Request $request, $id)
-    {
-        //
-        //findOrFail return exception
+
+    public function __construct(
+        private readonly LibroRepositoryInterface $librosRepository
+    ){}
+
+    public function __invoke(Request $request, $id){
         try {
             $libro = Libro::with('autor', 'generos')
                 ->findOrFail($id);

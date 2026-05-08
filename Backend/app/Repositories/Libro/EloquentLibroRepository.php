@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Repositories\Autor;
+namespace App\Repositories\Libro;
 
 use App\Models\Libro;
 use App\Repositories\Libro\LibroRepositoryInterface;
 use Illuminate\Support\Collection;
+use Override;
 
-class EloquentAutorRepository implements LibroRepositoryInterface{
+class EloquentLibroRepository implements LibroRepositoryInterface{
 
     public function getAll(): Collection{
         return Libro::all();
@@ -35,4 +36,9 @@ class EloquentAutorRepository implements LibroRepositoryInterface{
         return $librosAutor->libros;
     }*/
 
+    public function libroCompleto(Libro $libro): Libro {
+        $libroCompleto = $libro->load('autor', 'generos');
+        return $libroCompleto;
+    }
+    
 }

@@ -15,4 +15,8 @@ interface LibroRepositoryInterface
 
     public function update(Libro $libro, array $data): Libro;
 
+    public function delete(Libro $libro): void;
+
+    public function libroCompleto(Libro $libro): Libro;
+
 }

@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use App\Repositories\Autor\AutorRepositoryInterface;
 use App\Repositories\Autor\EloquentAutorRepository;
+use App\Repositories\Libro\EloquentLibroRepository;
 use App\Repositories\Genero\EloquentGeneroRepository;
 use App\Repositories\Genero\GeneroRepositoryInterface;
+use App\Repositories\Libro\LibroRepositoryInterface;
 use App\Repositories\Prestamo\EloquentPrestamoRepository;
 use App\Repositories\Prestamo\PrestamoRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
@@ -32,6 +34,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             PrestamoRepositoryInterface::class,
             EloquentPrestamoRepository::class
+        );
+
+        $this->app->bind(
+            LibroRepositoryInterface::class,
+            EloquentLibroRepository::class
         );
     }
 

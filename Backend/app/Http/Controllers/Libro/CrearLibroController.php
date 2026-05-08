@@ -6,30 +6,30 @@ use App\Http\Controllers\Controller;
 use App\Models\Libro;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use App\Repositories\Libro\LibroRepositoryInterface;
 
 class CrearLibroController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
+
+    public function __construct(
+        private readonly LibroRepositoryInterface $librosRepository
+    ){}
+
     public function __invoke(Request $request){
-        //
         try {
-
-        $request->validate([
-            "titulo" => "required|string",
-            "isbn" => "required|unique:libros|string",
-            "publicacion"=>"required|integer",
-            "sinopsis"=>"nullable|max:255",
-            "num_paginas"=>"required|integer",
-            "disponible" => "boolean",
-            "autor_id"=> "required|exists:autores,id",
-            "genero_ids" => "required|array",
-            //Validaciones archivos
-            "portada" => "nullable|image|mimes:jpg,jpeg,png,webp|max:2048",
-            "contenido"=>"nullable|file|mimes:pdf|max:20480",
-        ]);
-
+            $request->validate([
+                "titulo" => "required|string",
+                "isbn" => "required|unique:libros|string",
+                "publicacion"=>"required|integer",
+                "sinopsis"=>"nullable|max:255",
+                "num_paginas"=>"required|integer",
+                "disponible" => "boolean",
+                "autor_id"=> "required|exists:autores,id",
+                "genero_ids" => "required|array",
+                //Validaciones archivos
+                "portada" => "nullable|image|mimes:jpg,jpeg,png,webp|max:2048",
+                "contenido"=>"nullable|file|mimes:pdf|max:20480",
+            ]);
         }
         catch (ValidationException $e) {
             return response()->json([
@@ -61,7 +61,7 @@ class CrearLibroController extends Controller
             $contenidoTamano= $file->getSize();
         }
 
-        $libro= Libro::create([
+        $data = [
             "titulo"=>$request->titulo,
             "isbn"=>$request->isbn,
             "publicacion"=>$request->publicacion,
@@ -74,7 +74,25 @@ class CrearLibroController extends Controller
             "contenido_path"   => $contenidoPath,
             "contenido_nombre" => $contenidoNombre,
             "contenido_tamano" => $contenidoTamano,
-        ]);
+        ];
+
+        $libro = $this->librosRepository->store($data);
+
+        /*$libro= Libro::create([
+            "titulo"=>$request->titulo,
+            "isbn"=>$request->isbn,
+            "publicacion"=>$request->publicacion,
+            "sinopsis"=>$request->sinopsis,
+            "num_paginas"=>$request->num_paginas,
+            "disponible"=>$request->disponible,
+            "autor_id"=>$request->autor_id,
+            //Crear con valores con lo resultante de los condicionantes anteriores
+            "portada_path" => $portadaPath,
+            "contenido_path"   => $contenidoPath,
+            "contenido_nombre" => $contenidoNombre,
+            "contenido_tamano" => $contenidoTamano,
+        ]);*/
+        
         //Create relations to generos
         $libro->generos()->attach($request->genero_ids);
         return response()->json([
