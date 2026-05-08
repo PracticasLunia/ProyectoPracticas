@@ -13,9 +13,9 @@ interface AutorRepositoryInterface
 
     public function store(array $data): Autor;
 
-    public function update(int $id, array $data): ?Autor;
+    public function update(Autor $autor, array $data): Autor;
 
-    public function delete(int $id): void;
+    public function delete(Autor $autor): void;
 
-    public function getBooks(int $id): ? Collection;
+    public function getBooks(Autor $autor): Collection;
 }

@@ -17,40 +17,23 @@ class LibrosDeAutorController extends Controller
 
     public function __invoke(Request $request, $id){
 
-        $librosDeAutor= $this->autoresRepository->getBooks($id);
+        $autor= $this->autoresRepository->getById($id);
 
-        if(is_null($librosDeAutor)){
+        if(is_null($autor)){
              return response()->json([
                 'data'=>null,
                 'message'=>'Autor no encontrado',
                 'errors'=>[]
             ], 404 );
         }
+
+        $librosDeAutor= $this->autoresRepository->getBooks($autor);
 
         return response()->json([
             "data" => $librosDeAutor,
             "message" => "Libros del Autor",
             "errors" => [],
         ], 200);
-
-        try {
-
-            $autor=Autor::with('libros')->findOrFail($id);
-            $autorLibros=$autor->libros()->with('generos')->get();
-
-            //Devuelve unicamente los libros, con sus generos relacionados, de aquel autor
-            return response()->json([
-                "data" => $autorLibros,
-                "message" => "Libros del Autor",
-                "errors" => [],
-            ], 200);
-
-        }catch (ModelNotFoundException) {
-             return response()->json([
-                'data'=>null,
-                'message'=>'Autor no encontrado',
-                'errors'=>[]
-            ], 404 );
-        }
+        
     }
 }

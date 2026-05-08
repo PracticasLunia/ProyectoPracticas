@@ -3,10 +3,8 @@
 namespace App\Http\Controllers\Autor;
 
 use App\Http\Controllers\Controller;
-use App\Models\Autor;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Repositories\Autor\AutorRepositoryInterface;
 
 class ActualizarAutorController extends Controller
@@ -34,8 +32,7 @@ class ActualizarAutorController extends Controller
             ], 422 );
         }
 
-        $data = $request->validated();
-        $autor=$this->autoresRepository->update($id, $request->all());
+        $autor = $this->autoresRepository->getById($id);
 
         if(is_null($autor)){
             return response()->json([
@@ -44,28 +41,21 @@ class ActualizarAutorController extends Controller
                 'errors'=>[]
             ], 404 );
         }
+
+        $data = [
+            'nombre' => $request->input('nombre'),
+            'apellidos' => $request->input('apellidos'),
+            'nacionalidad' =>$request->input('nacionalidad'),
+            'fecha_nacimiento' => $request->input('fecha_nacimiento'),
+            'biografia' => $request->input('biografia'),
+        ];
+
+        $autorActualizado=$this->autoresRepository->update($autor, $data);
+
         return response()->json([
-            "data" => $autor,
+            "data" => $autorActualizado,
             "message" => "Autor actualizado correctamente",
             "errors" => [],
         ], 200);
-
-
-        /*try {
-             $autor= Autor::findOrFail($id);
-        } catch (ModelNotFoundException) {
-             return response()->json([
-                'data'=>null,
-                'message'=>'Autor no encontrado',
-                'errors'=>[]
-            ], 404 );
-        }
-
-        $autor->update($request->all());
-        return response()->json([
-            "data" => $autor,
-            "message" => "Autor actualizado correctamente",
-            "errors" => [],
-        ], 200);*/
     }
 }

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Autor;
 use App\Http\Controllers\Controller;
 use App\Repositories\Autor\AutorRepositoryInterface;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 use function PHPUnit\Framework\isNull;
 
@@ -36,21 +35,5 @@ class VerAutorController extends Controller
             "errors" => [],
         ], 200);
 
-        //findOrFail return exception
-        /*try {
-            $autor=Autor::findOrFail($id);
-            return response()->json([
-                // "data" => $autor,
-                'data' => $this->autores->getById($id),
-                "message" => "Detalle del Autor",
-                "errors" => [],
-            ] , 200);
-        } catch (ModelNotFoundException) {
-             return response()->json([
-                'data'=>null,
-                'message'=>'Autor no encontrado',
-                'errors'=>[]
-            ], 404 );
-        }*/
     }
 }

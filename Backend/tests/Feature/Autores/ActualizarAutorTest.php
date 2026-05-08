@@ -77,7 +77,7 @@ class ActualizarAutorTest extends TestCase
         $data['nombre'] = 'Nuevo nombre';
         $data['apellidos'] = 'Nuevo apellido';
 
-        $response = $this->putJson("api/autores/{20}", $data);
+        $response = $this->putJson("api/autores/20", $data);
 
         $response->assertStatus(404)
             // Verifica la respuesta JSON

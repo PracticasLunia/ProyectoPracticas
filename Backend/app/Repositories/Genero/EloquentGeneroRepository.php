@@ -21,18 +21,18 @@ class EloquentGeneroRepository implements GeneroRepositoryInterface{
     }
 
     public function update(Genero $genero, array $data): Genero {
-        $genero= Genero::find($genero->id);
-        return $genero->update($data);
+        $genero->update($data);
+        return $genero;
     }
 
     public function delete(Genero $genero): void {
-        $autor= Genero::find($genero->id);
-        $autor->delete();
+        $genero->delete();
     }
 
     public function getBooks(Genero $genero): Collection {
-        $genero = Genero::with('libros.generos')->find($genero->id);
-        return $genero->libros;
+        //Load se usa cuando ya tienes una instancia del modelo cargada.
+        $librosGeneros = $genero->load('libros.autores');
+        return $librosGeneros->libros;
     }
 
 }

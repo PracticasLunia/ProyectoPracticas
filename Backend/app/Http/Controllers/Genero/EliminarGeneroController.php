@@ -3,32 +3,35 @@
 namespace App\Http\Controllers\Genero;
 
 use App\Http\Controllers\Controller;
-use App\Models\Genero;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Repositories\Genero\GeneroRepositoryInterface;
+
 
 class EliminarGeneroController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
+    public function __construct(
+        private readonly GeneroRepositoryInterface $generosRepository
+    ){}
+
     public function __invoke(Request $request, $id)
     {
-        //findOrFail return exception
-        try {
-            $genero=Genero::findOrFail($id);
-            $genero->delete();
+
+        $genero= $this->generosRepository->getById($id);
+
+        if(is_null($genero)){
             return response()->json([
-                "data" => null,
-                "message"=>"Genero eliminado",
-                "errors" => []
-            ], 200);
-        }catch (ModelNotFoundException) {
-             return response()->json([
                 'data'=>null,
                 'message'=>'Genero no encontrado',
                 'errors'=>[]
             ], 404 );
         }
+
+        $this->generosRepository->delete($genero);
+        return response()->json([
+            "data" => null,
+            "message"=>"Genero eliminado",
+            "errors" => []
+        ], 200);
+
     }
 }

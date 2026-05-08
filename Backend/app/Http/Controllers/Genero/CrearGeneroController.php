@@ -3,15 +3,18 @@
 namespace App\Http\Controllers\Genero;
 
 use App\Http\Controllers\Controller;
-use App\Models\Genero;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use App\Repositories\Genero\GeneroRepositoryInterface;
+
 
 class CrearGeneroController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
+    public function __construct(
+        private readonly GeneroRepositoryInterface $generosRepository
+    ){}
+
+
     public function __invoke(Request $request)
     {
         try {
@@ -27,12 +30,18 @@ class CrearGeneroController extends Controller
             ], 422 );
         }
 
-        $genero=Genero::create($request->all());
+        $data = [
+            'nombre' => $request->input('nombre'),
+            'descripcion' => $request->input('descripcion'),
+        ];
+
+        $genero = $this->generosRepository->store($data);
 
         return response()->json([
             "data" => $genero,
             "message" => "Genero creado correctamente",
             "errors"=> [],
         ], 200);
+
     }
 }

@@ -20,27 +20,19 @@ class EloquentAutorRepository implements AutorRepositoryInterface{
         return Autor::create($data);
     }
 
-    public function update(int $id, array $data): ?Autor {
-        $autor= Autor::find($id);
-        if(is_null($autor)){
-            return null;
-        }
+    public function update(Autor $autor, array $data): Autor {
         $autor->update($data);
-
         return $autor;
     }
 
-    public function delete(int $id): void {
-        $autor= Autor::findOrFail($id);
+    public function delete(Autor $autor): void {
         $autor->delete();
     }
 
-    public function getBooks(int $id): ? Collection {
-        $autor = Autor::with('libros.generos')->find($id);
-        if(is_null($autor)){
-            return null;
-        }
-        return $autor->libros;
+    public function getBooks(Autor $autor): Collection {
+        //Load se usa cuando ya tienes una instancia del modelo cargada.
+        $librosAutor= $autor->load('libros.generos');
+        return $librosAutor->libros;
     }
 
 }

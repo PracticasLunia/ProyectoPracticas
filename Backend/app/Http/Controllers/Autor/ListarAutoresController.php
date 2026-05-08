@@ -17,12 +17,12 @@ class ListarAutoresController extends Controller
     public function __invoke(Request $request) {
 
         $listadoAutores= $this->autoresRepository->getAll();
-        // $listadoAutores= Autor::all();
 
         return response()->json([
                 "data" => $listadoAutores,
                 "message" => "Listado de autores",
                 "errors" => [],
         ], 200);
+
     }
 }

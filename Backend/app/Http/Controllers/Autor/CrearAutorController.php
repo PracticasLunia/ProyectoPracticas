@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Autor;
 
 use App\Http\Controllers\Controller;
-use App\Models\Autor;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use App\Repositories\Autor\AutorRepositoryInterface;
@@ -37,7 +36,16 @@ class CrearAutorController extends Controller
         //$autor = Autor::create($request->all());
         //No enviar toda la request que involucra recibir HTTP validar ,transformar input ,decidir response
         //$data = $request->validated();
-        $autor = $this->autoresRepository->store($request->all());
+
+        $data = [
+            'nombre' => $request->input('nombre'),
+            'apellidos' => $request->input('apellidos'),
+            'nacionalidad' =>$request->input('nacionalidad'),
+            'fecha_nacimiento' => $request->input('fecha_nacimiento'),
+            'biografia' => $request->input('biografia'),
+        ];
+
+        $autor = $this->autoresRepository->store($data);
 
         return response()->json([
             "data" => $autor,

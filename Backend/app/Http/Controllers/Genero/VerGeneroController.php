@@ -3,30 +3,32 @@
 namespace App\Http\Controllers\Genero;
 
 use App\Http\Controllers\Controller;
-use App\Models\Genero;
+use App\Repositories\Genero\GeneroRepositoryInterface;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class VerGeneroController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
-    public function __invoke(Request $request, $id)
-    {
-        //findOrFail return exception
-        try {
-            $genero=Genero::findOrFail($id);
-            return response()->json([
-                "data" => $genero,
-                "message" => "Detalle del género"
-            ], 200);
-        } catch (ModelNotFoundException) {
+
+    public function __construct(
+        private readonly GeneroRepositoryInterface $generosRepository
+    ){}
+
+    public function __invoke(Request $request, $id){
+
+        $genero = $this->generosRepository->getById($id);
+
+        if(is_null($genero)){
             return response()->json([
                 "data"=> null,
                 "message"=>"Genero no encontrado",
                 "errors" => []
             ], 404);
         }
+
+        return response()->json([
+            "data" => $genero,
+            "message" => "Detalle del género"
+        ], 200);
+
     }
 }
