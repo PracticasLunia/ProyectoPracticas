@@ -3,32 +3,33 @@
 namespace App\Http\Controllers\Prestamo;
 
 use App\Http\Controllers\Controller;
-use App\Models\Prestamo;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-
-use function PHPSTORM_META\map;
+use App\Repositories\Prestamo\PrestamoRepositoryInterface;
 
 class VerPrestamoController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
-    public function __invoke(Request $request, $id)
-    {
-        try {
-            $prestamo=Prestamo::findOrFail($id);
+
+    public function __construct(
+        private readonly PrestamoRepositoryInterface $prestamosRepository
+    ){}
+
+    public function __invoke(Request $request, $id){
+
+        $prestamo = $this->prestamosRepository->getById($id);
+
+        if(is_null($prestamo)){
             return response()->json([
-                'data' => $prestamo,
-                'message' => 'Detalle del prestamo',
-                'errors' => [],
-            ]);
-        } catch (ModelNotFoundException) {
-             return response()->json([
                 'data'=>null,
                 'message'=>'Prestamo no encontrado',
                 'errors'=>[]
-            ], 404 );
+            ], 404);
         }
+
+        return response()->json([
+            'data' => $prestamo,
+            'message' => 'Detalle del prestamo',
+            'errors' => [],
+        ], 200);
+
     }
 }

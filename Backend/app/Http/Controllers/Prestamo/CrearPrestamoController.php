@@ -3,15 +3,17 @@
 namespace App\Http\Controllers\Prestamo;
 
 use App\Http\Controllers\Controller;
-use App\Models\Prestamo;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use App\Repositories\Prestamo\PrestamoRepositoryInterface;
 
 class CrearPrestamoController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
+
+    public function __construct(
+        private readonly PrestamoRepositoryInterface $prestamosRepository
+    ){}
+
     public function __invoke(Request $request)
     {
 
@@ -37,9 +39,7 @@ class CrearPrestamoController extends Controller
     $libroId = $request->input('libro_id');
 
     // Verificar si ya existe un préstamo activo
-    $prestamoActivo = Prestamo::where('libro_id', $libroId)
-        ->whereNull('fecha_devolucion_real')
-        ->exists();
+    $prestamoActivo = $this->prestamosRepository->isActive($libroId);
 
     if ($prestamoActivo) {
         return response()->json([
@@ -49,7 +49,17 @@ class CrearPrestamoController extends Controller
         ], 422);
     }
 
-    $prestamo= Prestamo::create($request->all());
+    $data = [
+        'libro_id' => $request->input('libro_id'),
+        'nombre_lector' => $request->input('nombre_lector'),
+        'email_lector' => $request->input('email_lector'),
+        'fecha_prestamo' => $request->input('fecha_prestamo'),
+        'fecha_devolucion_prevista' => $request->input('fecha_devolucion_prevista'),
+        'fecha_devolucion_real' => $request->input('fecha_devolucion_real'),
+        'observaciones' => $request->input('observaciones')
+    ];
+
+    $prestamo = $this->prestamosRepository->store($data);
 
     return response()->json([
         "data" => $prestamo,

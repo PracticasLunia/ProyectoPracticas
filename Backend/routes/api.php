@@ -1,6 +1,10 @@
 <?php
-//imports
 
+//Imports--------------------------------------------
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
+//Controllers-----------------------------------------
 use App\Http\Controllers\AuthAuthentication\LoginController;
 use App\Http\Controllers\AuthAuthentication\LogoutController;
 use App\Http\Controllers\AuthAuthentication\RegisterController;
@@ -17,10 +21,6 @@ use App\Http\Controllers\Genero\EliminarGeneroController;
 use App\Http\Controllers\Genero\LibrosDeGeneroController;
 use App\Http\Controllers\Genero\ListarGenerosController;
 use App\Http\Controllers\Genero\VerGeneroController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-
-//Controllers-----------------------------------------
 use App\Http\Controllers\Libro\ListarLibrosController;
 use App\Http\Controllers\Libro\BuscarLibrosController;
 use App\Http\Controllers\Libro\VerLibroController;
@@ -35,7 +35,7 @@ use App\Http\Controllers\Prestamo\ListarPrestamosController;
 use App\Http\Controllers\Prestamo\PrestamosDeLibroController;
 use App\Http\Controllers\Prestamo\VerPrestamoController;
 
-//Routes Authentication----------------------
+//Routes Authentication------------------------------
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
 // })->middleware('auth:sanctum');
@@ -88,4 +88,3 @@ Route::get('prestamos/{id}/libro', PrestamosDeLibroController::class);
 Route::get('autores/{id}/libros', LibrosDeAutorController::class);
 //Libros by genero
 Route::get('generos/{id}/libros', LibrosDeGeneroController::class);
-//Busqueda ampliada

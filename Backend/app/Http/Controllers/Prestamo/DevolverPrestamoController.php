@@ -3,33 +3,22 @@
 namespace App\Http\Controllers\Prestamo;
 
 use App\Http\Controllers\Controller;
-use App\Models\Prestamo;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Repositories\Prestamo\PrestamoRepositoryInterface;
 
 class DevolverPrestamoController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
+
+    public function __construct(
+        private readonly PrestamoRepositoryInterface $prestamosRepository
+    ){}
+
     public function __invoke(Request $request, $id)
     {
 
-        try {
-            $prestamo=Prestamo::findOrFail($id);
+        $prestamo = $this->prestamosRepository->getById($id);
 
-            $prestamo->update([
-                'fecha_devolucion_real' => now()
-            ]);
-
-            return response()->json([
-                "data" => $prestamo,
-                "message" => "Estado del prestamo actualizado",
-                "errors" => [],
-            ], 200);
-
-        } catch (ModelNotFoundException) {
+        if(is_null($prestamo)){
             return response()->json([
                 "data" => "",
                 "message" => "No se pudo encontrar el prestamo",
@@ -37,5 +26,12 @@ class DevolverPrestamoController extends Controller
             ], 404);
         }
 
+        $this->prestamosRepository->returnPrestamo($prestamo);
+
+        return response()->json([
+            "data" => $prestamo,
+            "message" => "Estado del prestamo actualizado",
+            "errors" => [],
+        ], 200);
     }
 }
