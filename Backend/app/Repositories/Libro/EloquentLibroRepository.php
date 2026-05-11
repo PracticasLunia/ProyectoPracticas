@@ -17,17 +17,9 @@ class EloquentLibroRepository implements LibroRepositoryInterface{
 
         $libro = Libro::find($id);
 
-        /*if(is_null($libro)){
+        if(is_null($libro)){
             return null;
         }
-
-        $libro->esta_prestado = $libro->prestamos()
-            ->whereNull('fecha_devolucion_real')
-            ->exists();
-
-        $libro->prestamo_activo= $libro->prestamos()
-        ->whereNull('fecha_devolucion_real')
-        ->first();*/
 
         return $libro;
     }
@@ -53,7 +45,7 @@ class EloquentLibroRepository implements LibroRepositoryInterface{
 
     public function filter(array $data): Collection {
 
-        return Libro::where('titulo', 'LIKE', '%'.$data['titulo'].'%')
+        $libros = Libro::where('titulo', 'LIKE', '%'.$data['titulo'].'%')
             ->where('isbn', 'LIKE', '%'.$data['isbn'].'%')
             ->where('publicacion', 'LIKE', '%'.$data['publicacion'].'%')
             ->where('sinopsis', 'LIKE', '%'.$data['sinopsis'].'%')
@@ -79,11 +71,7 @@ class EloquentLibroRepository implements LibroRepositoryInterface{
             })
             ->get();
 
-            /*foreach ($libros as $libro) {
-                $libro->esta_prestado = $libro->prestamos()
-                    ->whereNull('fecha_devolucion_real')
-                    ->exists();
-            }*/
+            return $libros;
     }
 
 }

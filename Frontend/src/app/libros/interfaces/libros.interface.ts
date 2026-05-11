@@ -15,6 +15,7 @@ export interface Libro {
   disponible:  boolean;
   tiene_portada:boolean;
   tiene_contenido:boolean;
+  tiene_prestamo_activo:boolean
   contenido_nombre: string | null;
   contenido_tamano: number | null;
   autor_id: number;

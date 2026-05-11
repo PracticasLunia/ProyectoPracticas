@@ -37,34 +37,39 @@ class ActualizarLibroTest extends TestCase
 
     }
 
-    public function test_update_libro(): void
-    {
-        //$genero3= Genero::factory()->create();
+public function test_update_libro(): void
+{
+    $user = User::factory()->create();
+    Sanctum::actingAs($user);
 
-        $user = User::factory()->create();
-        Sanctum::actingAs($user);
+    $id = $this->libro->id;
 
-        $data = $this->libro->toArray();
+    $data = [
+        'titulo' => 'Nuevo título',
+        'isbn' => $this->libro->isbn,
+        'publicacion' => $this->libro->publicacion,
+        'sinopsis' => 'Nueva sinopsis',
+        'num_paginas' => $this->libro->num_paginas,
+        'disponible' => $this->libro->disponible,
+        'autor_id' => $this->libro->autor_id,
+        'genero_ids' => $this->libro
+            ->generos()
+            ->pluck('generos.id')
+            ->toArray(),
+    ];
 
-        // Modificar los campos manteniendo los demas
-        $data['titulo'] = 'Nuevo título';
-        $data['sinopsis'] = 'Nueva sinopsis';
-        //Enviar los id de generos de la relacion
-        $data['genero_ids'] = $this->libro->generos()->pluck('generos.id')->toArray();
+    $response = $this->putJson("api/libros/{$id}", $data);
 
-        $response = $this->putJson("api/libros/{$data['id']}", $data);
+    $response->assertStatus(200);
 
-        $response->assertStatus(200);
-
-        // Verifica la respuesta JSON
-        $response->assertJson([
-            'data' => [
-                'titulo' => 'Nuevo título',
-                'sinopsis' => 'Nueva sinopsis',
-            ],
-            'message' => 'Libro actualizado correctamente',
-        ]);
-    }
+    $response->assertJson([
+        'data' => [
+            'titulo' => 'Nuevo título',
+            'sinopsis' => 'Nueva sinopsis',
+        ],
+        'message' => 'Libro actualizado correctamente',
+    ]);
+}
 
     public function test_validation_exception_return_422(): void{
 

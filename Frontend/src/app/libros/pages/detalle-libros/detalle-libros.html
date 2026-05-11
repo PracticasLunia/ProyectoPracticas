@@ -50,7 +50,7 @@
         <div class="col-6">
           <small class="text-muted text-uppercase fw-semibold">Disponible</small>
           <p class="mb-0">
-            @if (libro()?.esta_prestado==false) {
+            @if (libro()?.tiene_prestamo_activo==false) {
               <span class="badge text-bg-success">Si</span>
             } @else {
               <span class="badge text-bg-danger">No</span>
