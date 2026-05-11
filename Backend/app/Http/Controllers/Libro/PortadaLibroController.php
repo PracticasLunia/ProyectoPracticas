@@ -5,17 +5,18 @@ namespace App\Http\Controllers\Libro;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Libro;
+use App\Repositories\Libro\LibroRepositoryInterface;
 
 class PortadaLibroController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
-    public function __invoke(Request $request, $id)
-    {
 
-    $libro = Libro::find($id);
+    public function __construct(
+        private readonly LibroRepositoryInterface $librosRepository
+    ){}
+
+    public function __invoke(Request $request, $id){
+
+        $libro = $this->librosRepository->getById($id);
 
         //Si el libro no existe o no tiene portada
         if ($libro === null || $libro->portada_path === null) {

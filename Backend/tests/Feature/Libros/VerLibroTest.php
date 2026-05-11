@@ -48,7 +48,7 @@ class VerLibroTest extends TestCase
 
     public function test_ver_libro_no_existente(): void{
 
-        $response = $this->getJson("api/libros/{10}");
+        $response = $this->getJson("api/libros/10");
 
         $response->assertStatus(404);
     }

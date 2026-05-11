@@ -19,4 +19,6 @@ interface LibroRepositoryInterface
 
     public function libroCompleto(Libro $libro): Libro;
 
+    public function filter(array $data): Collection;
+
 }

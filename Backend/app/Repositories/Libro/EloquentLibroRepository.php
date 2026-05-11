@@ -5,7 +5,7 @@ namespace App\Repositories\Libro;
 use App\Models\Libro;
 use App\Repositories\Libro\LibroRepositoryInterface;
 use Illuminate\Support\Collection;
-use Override;
+use Illuminate\Database\Eloquent\Builder;
 
 class EloquentLibroRepository implements LibroRepositoryInterface{
 
@@ -14,7 +14,22 @@ class EloquentLibroRepository implements LibroRepositoryInterface{
     }
 
     public function getById(int $id): ? Libro{
-        return Libro::find($id);
+
+        $libro = Libro::find($id);
+
+        /*if(is_null($libro)){
+            return null;
+        }
+
+        $libro->esta_prestado = $libro->prestamos()
+            ->whereNull('fecha_devolucion_real')
+            ->exists();
+
+        $libro->prestamo_activo= $libro->prestamos()
+        ->whereNull('fecha_devolucion_real')
+        ->first();*/
+
+        return $libro;
     }
 
     public function store(array $data): Libro {
@@ -27,18 +42,48 @@ class EloquentLibroRepository implements LibroRepositoryInterface{
     }
 
     public function delete(Libro $libro): void {
+
         $libro->delete();
     }
-
-    /*public function getBooks(Libro $libro): Collection {
-        //Load se usa cuando ya tienes una instancia del modelo cargada.
-        $librosAutor= $libro->load('libros.generos');
-        return $librosAutor->libros;
-    }*/
 
     public function libroCompleto(Libro $libro): Libro {
         $libroCompleto = $libro->load('autor', 'generos');
         return $libroCompleto;
     }
-    
+
+    public function filter(array $data): Collection {
+
+        return Libro::where('titulo', 'LIKE', '%'.$data['titulo'].'%')
+            ->where('isbn', 'LIKE', '%'.$data['isbn'].'%')
+            ->where('publicacion', 'LIKE', '%'.$data['publicacion'].'%')
+            ->where('sinopsis', 'LIKE', '%'.$data['sinopsis'].'%')
+            ->where('num_paginas', 'LIKE', '%'.$data['num_paginas'].'%')
+            ->where('disponible', 'LIKE', '%'.$data['disponible'].'%')
+
+            ->whereHas('autor', function(Builder $query) use ($data){
+                if(is_array($data['autor'])){
+                    $query->whereIn('autores.nombre', $data['autor']);
+                }
+                elseif(!empty($data['autor'])){
+                    $query->where('autores.nombre', 'LIKE', '%'.$data['autor'].'%');
+                }
+            })
+
+            ->whereHas('generos', function(Builder $query) use($data){
+                if(is_array($data['genero_nombre']))
+                    {
+                        $query->whereIn('generos.nombre',$data['genero_nombre']);
+                    }elseif(!empty($data['genero_nombre'])){
+                        $query->where('generos.nombre', $data['genero_nombre']);
+                    }
+            })
+            ->get();
+
+            /*foreach ($libros as $libro) {
+                $libro->esta_prestado = $libro->prestamos()
+                    ->whereNull('fecha_devolucion_real')
+                    ->exists();
+            }*/
+    }
+
 }

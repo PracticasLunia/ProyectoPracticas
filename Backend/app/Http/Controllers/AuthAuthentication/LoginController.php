@@ -18,6 +18,8 @@ class LoginController extends Controller
         //Validacion de existencia y credenciales del usuario
         $user = User::where('email', $request->email)->first();
 
+
+        //
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
                 'user' => null,

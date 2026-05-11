@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Libro;
 
 use App\Http\Controllers\Controller;
-use App\Models\Libro;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use App\Repositories\Libro\LibroRepositoryInterface;
@@ -78,23 +77,9 @@ class CrearLibroController extends Controller
 
         $libro = $this->librosRepository->store($data);
 
-        /*$libro= Libro::create([
-            "titulo"=>$request->titulo,
-            "isbn"=>$request->isbn,
-            "publicacion"=>$request->publicacion,
-            "sinopsis"=>$request->sinopsis,
-            "num_paginas"=>$request->num_paginas,
-            "disponible"=>$request->disponible,
-            "autor_id"=>$request->autor_id,
-            //Crear con valores con lo resultante de los condicionantes anteriores
-            "portada_path" => $portadaPath,
-            "contenido_path"   => $contenidoPath,
-            "contenido_nombre" => $contenidoNombre,
-            "contenido_tamano" => $contenidoTamano,
-        ]);*/
-        
         //Create relations to generos
         $libro->generos()->attach($request->genero_ids);
+
         return response()->json([
             'data'=>$libro,
             'message'=>'Libro creado exitosamente',

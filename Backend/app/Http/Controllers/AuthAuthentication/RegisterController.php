@@ -23,6 +23,8 @@ class RegisterController extends Controller
 
         $user = User::create($datos);
 
+        //
+
         $token = $user->createToken('api-token')->plainTextToken;
 
         Mail::to($user)->send(new BienvenidoMail($user));

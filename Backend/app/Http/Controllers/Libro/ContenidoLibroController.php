@@ -3,19 +3,20 @@
 namespace App\Http\Controllers\Libro;
 
 use App\Http\Controllers\Controller;
-use App\Models\Libro;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Repositories\Libro\LibroRepositoryInterface;
+
 
 class ContenidoLibroController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
+    public function __construct(
+        private readonly LibroRepositoryInterface $librosRepository
+    ){}
+
     public function __invoke(Request $request, $id)
     {
-        $libro=Libro::find($id);
+        $libro= $this->librosRepository->getById($id);
 
         if($libro===null || $libro->contenido_path ===null){
             return response()->json("Contenido no encontrado", 404);

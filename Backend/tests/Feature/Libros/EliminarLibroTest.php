@@ -58,7 +58,7 @@ class EliminarLibroTest extends TestCase
         $user = User::factory()->create();
         Sanctum::actingAs($user);
 
-        $response = $this->deleteJson("api/libros/{10}");
+        $response = $this->deleteJson("api/libros/10");
 
         $response->assertStatus(404);
 

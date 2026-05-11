@@ -12,6 +12,7 @@ class UserController extends Controller
      */
     public function __invoke(Request $request)
     {
+        
         $user = $request->user();
 
         //El middleware protege antes de usar el controlador

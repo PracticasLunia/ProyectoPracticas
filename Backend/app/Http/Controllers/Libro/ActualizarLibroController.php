@@ -3,17 +3,16 @@
 namespace App\Http\Controllers\Libro;
 
 use App\Http\Controllers\Controller;
-use App\Models\Libro;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
+use App\Repositories\Libro\LibroRepositoryInterface;
 
 class ActualizarLibroController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     */
+    public function __construct(
+        private readonly LibroRepositoryInterface $librosRepository
+    ){}
     public function __invoke(Request $request, $id)
     {
         try {
@@ -38,14 +37,14 @@ class ActualizarLibroController extends Controller
             ], 422 );
         }
 
-        try {
-             $libro= Libro::findOrFail($id);
-        } catch (ModelNotFoundException) {
-             return response()->json([
+        $libro = $this->librosRepository->getById($id);
+
+        if(is_null($libro)){
+            return response()->json([
                 'data'=>null,
                 'message'=>'Libro no encontrado',
                 'errors'=>[]
-            ], 404 );
+            ], 404);
         }
 
         //GESTIÓN DE ARCHIVOS-----------------------------
@@ -88,7 +87,8 @@ class ActualizarLibroController extends Controller
 
         //Caso 3: el usuario no ha tocado la portada o contenido
         //Actualización del resto de campos
-        $libro->update([
+
+        $data = [
             "titulo"       => $request->titulo,
             "isbn"         => $request->isbn,
             "publicacion"  => $request->publicacion,
@@ -101,15 +101,16 @@ class ActualizarLibroController extends Controller
             "contenido_path" => $libro->contenido_path,
             "contenido_nombre" => $libro->contenido_nombre,
             "contenido_tamano" => $libro->contenido_tamano,
-        ]);
+        ];
 
-        $libro->generos()->sync($request->genero_ids);
-        return response()->json(
-            [
-                'data' => $libro,
-                'message' => 'Libro actualizado correctamente',
-                'errors' => []
-            ]
-        , 200);
+        $libroActualizado = $this->librosRepository->update($libro, $data);
+
+        $libroActualizado->generos()->sync($request->genero_ids);
+
+        return response()->json([
+            'data' => $libroActualizado,
+            'message' => 'Libro actualizado correctamente',
+            'errors' => []
+        ], 200);
     }
 }
