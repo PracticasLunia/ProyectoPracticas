@@ -23,6 +23,9 @@ class CrearAutorTest extends TestCase
 
     public function test_creacion_de_nuevo_autor_y_lo_devuelve_junto_a_mensaje(): void {
 
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
         $data= Autor::factory()->make()->toArray();
 
         $response = $this->postJson('api/autores', $data);

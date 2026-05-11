@@ -66,23 +66,35 @@ Route::middleware('auth:sanctum')->group(function(){
 //Routes Autores--------------------------------------
 Route::get('/autores', ListarAutoresController::class);
 Route::get('autores/{id}', VerAutorController::class);
-Route::post('autores', CrearAutorController::class);
-Route::put('autores/{id}', ActualizarAutorController::class);
-Route::delete('autores/{id}', EliminarAutorController::class);
+
+//Proteccion de rutas con middleware para usuarios auntenticados
+Route::middleware('auth:sanctum')->group(function(){
+    Route::post('autores', CrearAutorController::class);
+    Route::put('autores/{id}', ActualizarAutorController::class);
+    Route::delete('autores/{id}', EliminarAutorController::class);
+});
 
 //Routes Generos--------------------------------------
 Route::get('/generos', ListarGenerosController::class);
 Route::get('generos/{id}', VerGeneroController::class);
-Route::post('generos', CrearGeneroController::class);
-Route::put('generos/{id}', ActualizarGeneroController::class);
-Route::delete('generos/{id}', EliminarGeneroController::class);
+
+//Proteccion de rutas con middleware para usuarios auntenticados
+Route::middleware('auth:sanctum')->group(function(){
+    Route::post('generos', CrearGeneroController::class);
+    Route::put('generos/{id}', ActualizarGeneroController::class);
+    Route::delete('generos/{id}', EliminarGeneroController::class);
+});
 
 //Routes prestamos---------------------------------------
 Route::get('prestamos', ListarPrestamosController::class);
 Route::get('prestamos/{id}', VerPrestamoController::class);
-Route::post('prestamos', CrearPrestamoController::class);
-Route::put('prestamos/{id}/devolver', DevolverPrestamoController::class);
-Route::get('prestamos/{id}/libro', PrestamosDeLibroController::class);
+Route::get('libros/{id}/prestamos', PrestamosDeLibroController::class);
+
+//Proteccion de rutas con middleware para usuarios auntenticados
+Route::middleware('auth:sanctum')->group(function(){
+    Route::post('prestamos', CrearPrestamoController::class);
+    Route::put('prestamos/{id}/devolver', DevolverPrestamoController::class);
+});
 
 //Libros by autor
 Route::get('autores/{id}/libros', LibrosDeAutorController::class);

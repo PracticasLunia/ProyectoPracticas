@@ -17,8 +17,6 @@ interface UserRepositoryInterface
 
     public function delete(User $autor): void;
 
-    public function getBooks(User $autor): Collection;
-
     public function getByEmail(string $email): ? User;
 
 

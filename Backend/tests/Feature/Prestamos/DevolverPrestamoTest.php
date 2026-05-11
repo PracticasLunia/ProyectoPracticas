@@ -9,6 +9,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Override;
 use Tests\TestCase;
+use App\Models\User;
+use Laravel\Sanctum\Sanctum;
 
 class DevolverPrestamoTest extends TestCase
 {
@@ -30,6 +32,10 @@ class DevolverPrestamoTest extends TestCase
 
     public function test_devolver_prestamo_existente(): void
     {
+
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
         $prestamo = Prestamo::factory()->create([
 
             'libro_id' => $this->libro->id,
@@ -49,10 +55,13 @@ class DevolverPrestamoTest extends TestCase
 
     public function test_devolver_prestamo_no_existente(): void {
 
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
         $response = $this->putJson("api/prestamos/10/devolver");
 
         $response->assertStatus(404);
         $response->assertJsonPath('message', 'No se pudo encontrar el prestamo');
-        
+
     }
 }

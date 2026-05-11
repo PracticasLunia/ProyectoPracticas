@@ -7,6 +7,8 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\Genero;
 use App\Repositories\Genero\GeneroRepositoryInterface;
+use App\Models\User;
+use Laravel\Sanctum\Sanctum;
 use Mockery;
 
 class ActualizarGeneroMockTest extends TestCase
@@ -18,6 +20,9 @@ class ActualizarGeneroMockTest extends TestCase
     use RefreshDatabase;
 
     public function test_actualizar_genero_devuelve_200(): void {
+
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
 
         $genero = Genero::factory()->make();
 

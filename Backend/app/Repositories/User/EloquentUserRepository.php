@@ -26,11 +26,6 @@ class EloquentUserRepository implements UserRepositoryInterface{
         $user->delete();
     }
 
-    public function getBooks(User $user): Collection {
-        //Load se usa cuando ya tienes una instancia del modelo cargada.
-        $librosGeneros = $user->load('libros.autores');
-        return $librosGeneros->libros;
-    }
 
     public function store(array $data): User {
         return User::create($data);

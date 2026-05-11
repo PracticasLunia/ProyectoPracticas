@@ -32,7 +32,7 @@ export class PrestamoService {
   }
 
   prestamosDelLibro(id:number): Observable<PrestamosResponse>{
-    return this.http.get<PrestamosResponse>(`${environment.urlBackend}/prestamos/${id}/libro`);
+    return this.http.get<PrestamosResponse>(`${environment.urlBackend}/libros/${id}/prestamos`);
   }
 
 }
