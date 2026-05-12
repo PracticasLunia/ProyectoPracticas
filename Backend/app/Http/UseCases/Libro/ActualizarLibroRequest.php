@@ -4,7 +4,7 @@ namespace App\Http\UseCases\Libro;
 
 use Illuminate\Http\UploadedFile;
 
-final readonly class CrearLibroRequest
+final readonly class ActualizarLibroRequest
 {
     public function __construct(
         public string $titulo,
@@ -17,5 +17,9 @@ final readonly class CrearLibroRequest
         public array $genero_ids,
         public ?UploadedFile $portada,
         public ?UploadedFile $contenido,
+
+        public ?string $eliminar_portada,
+        public ?string $eliminar_contenido,
+        public int $libro_id,
     ) {}
 }

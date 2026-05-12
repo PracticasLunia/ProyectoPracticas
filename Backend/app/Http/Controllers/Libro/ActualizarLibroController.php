@@ -3,55 +3,49 @@
 namespace App\Http\Controllers\Libro;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\ValidationException;
-use App\Repositories\Libro\LibroRepositoryInterface;
+use App\Http\UseCases\Libro\ActualizarLibro;
+use App\Http\UseCases\Libro\ActualizarLibroRequest;
+use App\Http\Validators\Libro\ActualizarLibroValidator;
 
 class ActualizarLibroController extends Controller
 {
     public function __construct(
-        private readonly LibroRepositoryInterface $librosRepository
+        private readonly ActualizarLibro $actualizar_libro
     ){}
-    public function __invoke(Request $request, $id)
-    {
-        try {
-            //Validaciones
-            $request->validate([
-                "titulo" => "required|string",
-                "isbn" => "required|string|unique:libros,isbn,".$id,
-                "publicacion"=>"required|integer",
-                "sinopsis"=>"nullable|max:255",
-                "num_paginas"=>"required|integer|min:1|max:1000",
-                "disponible" => "boolean",
-                "autor_id"=> "required|exists:autores,id",
-                "genero_ids" => "required|array",
-                "portada" => "nullable|image|mimes:jpg,jpeg,png,webp|max:2048",
-                "contenido"=>"nullable|file|mimes:pdf|max:20480",
-            ]);
-        } catch (ValidationException $e) {
-             return response()->json([
-                'data'=>null,
-                'message'=>'Error al intentar actualizar el libro',
-                'errors'=>$e->errors(),
-            ], 422 );
-        }
+    public function __invoke(ActualizarLibroValidator $request, int $id){
 
-        $libro = $this->librosRepository->getById($id);
+        $libroActualizado = $this->actualizar_libro->handle(new ActualizarLibroRequest(
+            libro_id: $id,
 
-        if(is_null($libro)){
+            titulo: $request->input('titulo'),
+            isbn : $request->input('isbn'),
+            publicacion: $request->input('publicacion'),
+            sinopsis : $request->input('sinopsis'),
+            num_paginas: $request->input('num_paginas'),
+            disponible : $request->input('disponible'),
+            autor_id: $request->input('autor_id'),
+            genero_ids : $request->input('genero_ids'),
+            portada: $request->file('portada'),
+            contenido: $request->file('contenido'),
+            eliminar_portada: $request->input('eliminar_portada'),
+            eliminar_contenido: $request->input('eliminar_contenido'),
+        ));
+
+        // $libro = $this->librosRepository->getById($id);
+
+        /*if(is_null($libro)){
             return response()->json([
                 'data'=>null,
                 'message'=>'Libro no encontrado',
                 'errors'=>[]
             ], 404);
-        }
+        }*/
 
         //GESTIÓN DE ARCHIVOS-----------------------------
 
         //Gestion de portada------------------------------
         // Caso 1: el usuario ha subido una nueva imagen
-        if ($request->hasFile('portada')) {
+        /*if ($request->hasFile('portada')) {
             // Si había una anterior, la borramos del disco
             if ($libro->portada_path) {
                 Storage::disk('local')->delete($libro->portada_path);
@@ -105,7 +99,7 @@ class ActualizarLibroController extends Controller
 
         $libroActualizado = $this->librosRepository->update($libro, $data);
 
-        $libroActualizado->generos()->sync($request->genero_ids);
+        $libroActualizado->generos()->sync($request->genero_ids);*/
 
         return response()->json([
             'data' => $libroActualizado,

@@ -2,9 +2,15 @@
 
 namespace App\Exceptions\Domain;
 
-use Exception;
+use Override;
+use RunTimeException;
+use Throwable;
 
-class LibroYaPrestadoException extends Exception
+class LibroYaPrestadoException extends RunTimeException
 {
-    //
+
+    public function __construct(int $libroId = 0)
+    {
+        return parent::__construct("El libro {$libroId} ya tiene un prestamo activo");
+    }
 }

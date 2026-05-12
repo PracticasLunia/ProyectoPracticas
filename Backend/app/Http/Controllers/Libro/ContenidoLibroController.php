@@ -3,34 +3,30 @@
 namespace App\Http\Controllers\Libro;
 
 use App\Http\Controllers\Controller;
+use App\Http\UseCases\Libro\ContenidoLibro;
+use App\Http\UseCases\Libro\ContenidoLibroRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use App\Repositories\Libro\LibroRepositoryInterface;
-
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ContenidoLibroController extends Controller
 {
     public function __construct(
-        private readonly LibroRepositoryInterface $librosRepository
+        private readonly ContenidoLibro $contenido_libro
     ){}
 
-    public function __invoke(Request $request, $id)
+    public function __invoke(Request $request, int $id)
     {
-        $libro= $this->librosRepository->getById($id);
-
-        if($libro===null || $libro->contenido_path ===null){
-            return response()->json("Contenido no encontrado", 404);
+        try {
+            $contenido = $this->contenido_libro->handle(new ContenidoLibroRequest(
+                download: $request->download
+            ), $id);
+            return $contenido;
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'data'=>null,
+                'message'=>'Libro no encontrado',
+                'errors'=>[]
+            ], 404);
         }
-
-        //Devuelve el documento descargado y para asignarle su nombre con el que fue guardado
-        if ($request->query('download') === '1') {
-            return Storage::disk('local')->download(
-                $libro->contenido_path,
-                $libro->contenido_nombre
-            );
-        }
-
-        // Por defecto → inline (el navegador lo abre en su visor)
-        return Storage::disk('local')->response($libro->contenido_path);
     }
 }

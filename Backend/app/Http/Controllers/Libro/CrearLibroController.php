@@ -3,82 +3,31 @@
 namespace App\Http\Controllers\Libro;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
-use App\Repositories\Libro\LibroRepositoryInterface;
+use App\Http\UseCases\Libro\CrearLibroRequest;
+use App\Http\Validators\Libro\CrearLibroValidator;
+use App\Http\UseCases\Libro\CrearLibro;
 
 class CrearLibroController extends Controller
 {
 
     public function __construct(
-        private readonly LibroRepositoryInterface $librosRepository
+        private readonly CrearLibro $crearLibro
     ){}
 
-    public function __invoke(Request $request){
-        try {
-            $request->validate([
-                "titulo" => "required|string",
-                "isbn" => "required|unique:libros|string",
-                "publicacion"=>"required|integer",
-                "sinopsis"=>"nullable|max:255",
-                "num_paginas"=>"required|integer",
-                "disponible" => "boolean",
-                "autor_id"=> "required|exists:autores,id",
-                "genero_ids" => "required|array",
-                //Validaciones archivos
-                "portada" => "nullable|image|mimes:jpg,jpeg,png,webp|max:2048",
-                "contenido"=>"nullable|file|mimes:pdf|max:20480",
-            ]);
-        }
-        catch (ValidationException $e) {
-            return response()->json([
-                'data'=>null,
-                'message'=>'Error al intentar crear el libro',
-                'errors'=>$e->errors(),
-            ], 422 );
-        }
+    public function __invoke(CrearLibroValidator $request){
 
-        //GESTIÓN DE ARCHIVOS-----------------------------
-
-        //Gestion de portada------------------------------
-        // Si viene un fichero de portada, lo guardamos en disco y obtenemos el path
-        $portadaPath = null;
-        if ($request->hasFile('portada')) {
-            $portadaPath = $request->file('portada')->store('portadas', 'local');
-        }
-
-        //Guardar un documento adjunto en el disco, y obtener su path en donde fue guardado, nombre y tamaño
-        $contenidoPath=null;
-        $contenidoNombre=null;
-        $contenidoTamano=null;
-
-        //Gestion de documento-----------------------------
-        if($request->hasFile('contenido')){
-            $file=$request->file('contenido');
-            $contenidoPath= $file->store('contenidos', 'local');
-            $contenidoNombre= $file->getClientOriginalName();
-            $contenidoTamano= $file->getSize();
-        }
-
-        $data = [
-            "titulo"=>$request->titulo,
-            "isbn"=>$request->isbn,
-            "publicacion"=>$request->publicacion,
-            "sinopsis"=>$request->sinopsis,
-            "num_paginas"=>$request->num_paginas,
-            "disponible"=>$request->disponible,
-            "autor_id"=>$request->autor_id,
-            //Crear con valores con lo resultante de los condicionantes anteriores
-            "portada_path" => $portadaPath,
-            "contenido_path"   => $contenidoPath,
-            "contenido_nombre" => $contenidoNombre,
-            "contenido_tamano" => $contenidoTamano,
-        ];
-
-        $libro = $this->librosRepository->store($data);
-
-        //Create relations to generos
-        $libro->generos()->attach($request->genero_ids);
+        $libro = $this->crearLibro->handle(new CrearLibroRequest(
+            titulo: $request->input('titulo'),
+            isbn : $request->input('isbn'),
+            publicacion: $request->input('publicacion'),
+            sinopsis : $request->input('sinopsis'),
+            num_paginas: $request->input('num_paginas'),
+            disponible : $request->input('disponible'),
+            autor_id: $request->input('autor_id'),
+            genero_ids : $request->input('genero_ids'),
+            portada: $request->file('portada'),
+            contenido: $request->file('contenido')
+        ));
 
         return response()->json([
             'data'=>$libro,

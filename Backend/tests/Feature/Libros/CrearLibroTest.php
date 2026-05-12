@@ -90,16 +90,8 @@ class CrearLibroTest extends TestCase
 
         $response = $this->postJson('api/libros', $data);
 
-        $response->assertStatus(422)
-
-            ->assertJsonStructure([
-                'data',
-                'message',
-                'errors'
-            ])
-            //Afirme que la respuesta contiene los datos dados en la ruta especificada
-            ->assertJsonPath('message', 'Error al intentar crear el libro') ;
-
+        $response->assertStatus(422);
+        
     }
 
     public function test_crear_libro_con_archivos(){
