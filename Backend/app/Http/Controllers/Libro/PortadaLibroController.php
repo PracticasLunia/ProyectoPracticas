@@ -3,29 +3,28 @@
 namespace App\Http\Controllers\Libro;
 
 use App\Http\Controllers\Controller;
+use App\Http\UseCases\Libro\PortadaLibro;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use App\Repositories\Libro\LibroRepositoryInterface;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PortadaLibroController extends Controller
 {
 
     public function __construct(
-        private readonly LibroRepositoryInterface $librosRepository
+        private readonly PortadaLibro $portada_libro
     ){}
 
-    public function __invoke(Request $request, $id){
+    public function __invoke(Request $request, int $id){
 
-        $libro = $this->librosRepository->getById($id);
-
-        //Si el libro no existe o no tiene portada
-        if ($libro === null || $libro->portada_path === null) {
-            return response()->json("Portada no encontrada", 404);
+        try{
+            $portada = $this->portada_libro->handle($id);
+            return $portada;
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'data'=>null,
+                'message'=>'Libro no encontrado',
+                'errors'=>[]
+            ], 404);
         }
-
-        //Selecciona el disco (Privado storage/app), lee el archivo, detecta el tipo,
-        //crea una respuesta http, envia el archivo al navegador
-        return Storage::disk('local')->response($libro->portada_path);
-
     }
 }
