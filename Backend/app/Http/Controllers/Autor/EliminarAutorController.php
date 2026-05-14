@@ -3,35 +3,40 @@
 namespace App\Http\Controllers\Autor;
 
 use App\Http\Controllers\Controller;
+use App\Http\UseCases\Autor\EliminarAutor;
+use App\Http\UseCases\Autor\EliminarAutorRequest;
 use Illuminate\Http\Request;
 use App\Repositories\Autor\AutorRepositoryInterface;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class EliminarAutorController extends Controller
 {
 
     public function __construct(
-        private readonly AutorRepositoryInterface $autoresRepository
+        private readonly EliminarAutor $eliminarAutor
     ){}
 
-    public function __invoke(Request $request, $id){
+    public function __invoke(Request $request, int $id){
 
-        $autor = $this->autoresRepository->getById($id);
+        try {
 
-        if(is_null($autor)){
+            $this->eliminarAutor->handle( new EliminarAutorRequest(
+                autor_id:$id
+            ));
+
+            return response()->json([
+                "data" => null,
+                "message" => "Autor eliminado",
+                "errors"=>[],
+            ], 204);
+
+        } catch (ModelNotFoundException $e) {
             return response()->json([
                 'data'=>null,
                 'message'=>'Autor no encontrado',
-                'errors'=>[]
-            ], 404 );
+                'errors'=>$e->getMessage(),
+            ], 404);
         }
-
-        $this->autoresRepository->delete($autor);
-
-        return response()->json([
-            "data" => null,
-            "message" => "Autor eliminado",
-            "errors"=>[],
-        ], 204);
-
+        
     }
 }

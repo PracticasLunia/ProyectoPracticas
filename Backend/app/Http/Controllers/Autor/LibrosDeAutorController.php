@@ -3,37 +3,45 @@
 namespace App\Http\Controllers\Autor;
 
 use App\Http\Controllers\Controller;
-use App\Models\Autor;
+use App\Http\UseCases\Autor\LibrosDeAutor;
+use App\Http\UseCases\Autor\LibrosDeAutorRequest;
+use App\Http\UseCases\Autor\VerAutor;
+use App\Http\UseCases\Autor\VerAutorRequest;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Repositories\Autor\AutorRepositoryInterface;
 
 class LibrosDeAutorController extends Controller
 {
 
     public function __construct(
-        private readonly AutorRepositoryInterface $autoresRepository
+        private readonly VerAutor $verAutor,
+        private readonly LibrosDeAutor $librosDeAutor
     ){}
 
-    public function __invoke(Request $request, $id){
+    public function __invoke(Request $request, int $id){
 
-        $autor= $this->autoresRepository->getById($id);
+        try {
+            $autor = $this->verAutor->handle( new VerAutorRequest(
+                autor_id: $id
+            ));
 
-        if(is_null($autor)){
+            $librosDeAutor = $this->librosDeAutor->handle( new LibrosDeAutorRequest(
+                autor:$autor
+            ));
+
+            return response()->json([
+                "data" => $librosDeAutor,
+                "message" => "Libros del Autor",
+                "errors" => [],
+            ], 200);
+
+        } catch (ModelNotFoundException $e) {
              return response()->json([
                 'data'=>null,
                 'message'=>'Autor no encontrado',
                 'errors'=>[]
-            ], 404 );
+            ], 404);
         }
 
-        $librosDeAutor= $this->autoresRepository->getBooks($autor);
-
-        return response()->json([
-            "data" => $librosDeAutor,
-            "message" => "Libros del Autor",
-            "errors" => [],
-        ], 200);
-        
     }
 }

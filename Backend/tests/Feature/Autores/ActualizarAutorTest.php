@@ -55,15 +55,17 @@ class ActualizarAutorTest extends TestCase
         $data = $this->autor->toArray();
         // Modificar los campos manteniendo los demas
         $data['nombre'] = 123;
-        $data['apellidos'] = 456;
 
         $response = $this->putJson("api/autores/{$data['id']}", $data);
 
         $response->assertStatus(422)
-            // Verifica la respuesta JSON
             ->assertJson([
-                'data' => null,
-                'message' => 'Error al intentar actualizar el autor',
+                'message' => 'El nombre debe ser texto',
+            ])
+            ->assertJsonStructure([
+                'errors' => [
+                    'nombre'
+                ]
             ]);
     }
 
