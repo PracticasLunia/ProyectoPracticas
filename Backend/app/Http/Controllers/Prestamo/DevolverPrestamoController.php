@@ -2,36 +2,45 @@
 
 namespace App\Http\Controllers\Prestamo;
 
+use App\Exceptions\Domain\PrestamoYaDevueltoException;
 use App\Http\Controllers\Controller;
+use App\Http\UseCases\Prestamo\DevolverPrestamo;
+use App\Http\UseCases\Prestamo\DevolverPrestamoRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use App\Repositories\Prestamo\PrestamoRepositoryInterface;
 
 class DevolverPrestamoController extends Controller
 {
 
     public function __construct(
-        private readonly PrestamoRepositoryInterface $prestamosRepository
+        private readonly DevolverPrestamo $devolverPrestamo
     ){}
 
-    public function __invoke(Request $request, $id)
-    {
+    public function __invoke(Request $request, int $id){
 
-        $prestamo = $this->prestamosRepository->getById($id);
+        try {
 
-        if(is_null($prestamo)){
+            $prestamo = $this->devolverPrestamo->handle(new DevolverPrestamoRequest(
+                prestamo_id: $id
+            ));
             return response()->json([
-                "data" => "",
-                "message" => "No se pudo encontrar el prestamo",
+                "data" => $prestamo,
+                "message" => "Estado del prestamo actualizado",
                 "errors" => [],
-            ], 404);
+            ], 200);
+
+        } catch (PrestamoYaDevueltoException $e) {
+            return response()->json([
+                "data" => null,
+                "message" => "No se pudo crear el prestamo",
+                "errors" => $e->getMessage(),
+            ], 409);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                "data" => null,
+                "message" => "No se pudo encontrar el prestamo",
+                "errors" => $e->getMessage(),
+            ], 422);
         }
-
-        $this->prestamosRepository->returnPrestamo($prestamo);
-
-        return response()->json([
-            "data" => $prestamo,
-            "message" => "Estado del prestamo actualizado",
-            "errors" => [],
-        ], 200);
     }
 }

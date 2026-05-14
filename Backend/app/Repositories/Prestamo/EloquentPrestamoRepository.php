@@ -22,14 +22,14 @@ class EloquentPrestamoRepository implements PrestamoRepositoryInterface{
         return Prestamo::create($data);
     }
 
-    public function returnPrestamo(Prestamo $prestamo): Prestamo {
+    public function marcarDevuelto(Prestamo $prestamo): Prestamo {
         $prestamo->update([
             'fecha_devolucion_real' => now()
         ]);
         return $prestamo;
     }
 
-    public function isActive(int $libroId): bool {
+    public function existePrestamoActivo(int $libroId): bool {
         return
             Prestamo::where('libro_id', $libroId)
                 ->whereNull('fecha_devolucion_real')

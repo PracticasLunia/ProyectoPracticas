@@ -60,7 +60,7 @@ class DevolverPrestamoTest extends TestCase
 
         $response = $this->putJson("api/prestamos/10/devolver");
 
-        $response->assertStatus(404);
+        $response->assertStatus(422);
         $response->assertJsonPath('message', 'No se pudo encontrar el prestamo');
 
     }

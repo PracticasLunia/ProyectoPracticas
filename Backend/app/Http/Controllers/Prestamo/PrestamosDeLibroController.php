@@ -3,36 +3,38 @@
 namespace App\Http\Controllers\Prestamo;
 
 use App\Http\Controllers\Controller;
+use App\Http\UseCases\Prestamo\PrestamosDelLibro;
+use App\Http\UseCases\Prestamo\PrestamosDelLibroRequest;
 use Illuminate\Http\Request;
-use App\Repositories\Libro\LibroRepositoryInterface;
-use App\Repositories\Prestamo\PrestamoRepositoryInterface;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PrestamosDeLibroController extends Controller
 {
 
     public function __construct(
-        private readonly PrestamoRepositoryInterface $prestamosRepository,
-        private readonly LibroRepositoryInterface $librosRepository
+        private readonly PrestamosDelLibro $prestamosDelLibro
     ){}
 
-    public function __invoke(Request $request, $id){
+    public function __invoke(Request $request, int $id){
 
-        $libro = $this->librosRepository->getById($id);
+        try {
 
-        if(is_null($libro)){
+            $prestamos = $this->prestamosDelLibro->handle( new PrestamosDelLibroRequest(
+                libro_id: $id
+            ));
+
+            return response()->json([
+                "data" => $prestamos,
+                "message" => "Prestamos de libro",
+                "errors" => []
+            ], 200);
+
+        } catch (ModelNotFoundException $e) {
             return response()->json([
                 'data'=>null,
-                'message'=>'Libro no encontrado',
-                'errors'=>[]
+                'message'=>'Prestamo no encontrado',
+                'errors'=> $e->getMessage(),
             ], 404);
         }
-
-        $prestamos = $this->prestamosRepository->prestamosDeLibro($libro);
-
-        return response()->json([
-            "data" => $prestamos,
-            "message" => "Prestamos de libro",
-            "errors" => []
-        ], 200);
     }
 }

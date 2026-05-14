@@ -14,9 +14,9 @@ interface PrestamoRepositoryInterface
 
     public function store(array $data): Prestamo;
 
-    public function returnPrestamo(Prestamo $prestamo): Prestamo;
+    public function marcarDevuelto(Prestamo $prestamo): Prestamo;
 
-    public function isActive(int $libroId): bool;
+    public function existePrestamoActivo(int $libroId): bool;
 
     public function prestamosDeLibro(Libro $libro): Collection;
 
