@@ -44,7 +44,7 @@ class CrearGeneroTest extends TestCase
         $response = $this->postJson('api/generos', $data);
 
         $response->assertStatus(422);
-        $response->assertJsonPath('message', 'Error al intentar crear el genero');
+        $response->assertJsonPath('message', 'El nombre debe ser un texto');
         //Verificar que no se inserto en la bd
         $this->assertDatabaseCount('generos', 0);
     }

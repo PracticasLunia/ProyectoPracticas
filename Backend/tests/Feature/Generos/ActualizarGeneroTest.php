@@ -82,8 +82,8 @@ class ActualizarGeneroTest extends TestCase
 
         // Verifica la respuesta JSON
         $response->assertJson([
-            'data' => null,
-            'message' => 'Error al intentar actualizar el genero',
+            //'data' => null,
+            'message' => 'El nombre debe ser un texto',
         ]);
     }
 }

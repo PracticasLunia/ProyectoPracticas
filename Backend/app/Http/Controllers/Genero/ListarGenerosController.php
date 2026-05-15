@@ -3,20 +3,18 @@
 namespace App\Http\Controllers\Genero;
 
 use App\Http\Controllers\Controller;
+use App\Http\UseCases\Genero\ListarGeneros;
 use Illuminate\Http\Request;
-use App\Repositories\Genero\GeneroRepositoryInterface;
 
 class ListarGenerosController extends Controller
 {
     public function __construct(
-        private readonly GeneroRepositoryInterface $generosRepository
+        private readonly ListarGeneros $listarGeneros
     ){}
 
-    public function __invoke(Request $request)
-    {
+    public function __invoke(Request $request){
 
-        $listadoGeneros = $this->generosRepository->getAll();
-        // $listadoGeneros= Genero::all();
+        $listadoGeneros = $this->listarGeneros->handle();
 
         return response()->json([
             "data" => $listadoGeneros,

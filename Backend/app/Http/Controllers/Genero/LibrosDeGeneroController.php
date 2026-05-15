@@ -3,32 +3,38 @@
 namespace App\Http\Controllers\Genero;
 
 use App\Http\Controllers\Controller;
+use App\Http\UseCases\Genero\LibrosDeGenero;
+use App\Http\UseCases\Genero\LibrosDeGeneroRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use App\Repositories\Genero\GeneroRepositoryInterface;
 
 class LibrosDeGeneroController extends Controller
 {
     public function __construct(
-        private readonly GeneroRepositoryInterface $generosRepository
+        private readonly LibrosDeGenero $librosDeGenero
     ){}
 
-    public function __invoke(Request $request, $id){
+    public function __invoke(Request $request, int $id){
 
-        $generoLibros= $this->generosRepository->getBooks($id);
+        try {
 
-        if(is_null($generoLibros)){
+            $libros = $this->librosDeGenero->handle( new LibrosDeGeneroRequest(
+                genero_id: $id
+            ));
+
+            return response()->json([
+                "data" => $libros,
+                "message" => "Libros de género",
+                "errors" => []
+            ], 200);
+
+        } catch (ModelNotFoundException $e) {
             return response()->json([
                 "data" => null,
                 "message" => "Genero no encontrado",
-                "errors" => []
-            ], 400);
+                "errors" => $e->getMessage()
+            ], 404);
         }
-
-        return response()->json([
-            "data" => $generoLibros,
-            "message" => "Libros de género",
-            "errors" => []
-        ], 200);
 
     }
 }

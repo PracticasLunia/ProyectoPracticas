@@ -3,45 +3,42 @@
 namespace App\Http\Controllers\Genero;
 
 use App\Http\Controllers\Controller;
+use App\Http\UseCases\Genero\CrearGenero;
+use App\Http\UseCases\Genero\CrearGeneroRequest;
+use App\Http\Validators\Genero\CrearGeneroValidator;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
-use App\Repositories\Genero\GeneroRepositoryInterface;
-
 
 class CrearGeneroController extends Controller
 {
     public function __construct(
-        private readonly GeneroRepositoryInterface $generosRepository
+        private readonly CrearGenero $crearGenero
     ){}
 
 
-    public function __invoke(Request $request)
+    public function __invoke(CrearGeneroValidator $request)
     {
-        try {
-        $request->validate([
-            "nombre" => "required|string|unique:generos",
-            "descripcion" => "nullable",
-        ]);
-        }catch (ValidationException $e) {
-            return response()->json([
-                'data'=>null,
-                'message'=>'Error al intentar crear el genero',
-                'errors'=>$e->errors(),
-            ], 422 );
-        }
 
-        $data = [
-            'nombre' => $request->input('nombre'),
-            'descripcion' => $request->input('descripcion'),
-        ];
+    try {
 
-        $genero = $this->generosRepository->store($data);
+        $genero = $this->crearGenero->handle( new CrearGeneroRequest(
+            nombre: $request->input('nombre'),
+            descripcion: $request->input('descripcion'),
+        ));
 
         return response()->json([
             "data" => $genero,
             "message" => "Genero creado correctamente",
             "errors"=> [],
         ], 200);
+
+    }catch (ValidationException $e) {
+        return response()->json([
+            'data'=>null,
+            'message'=>'Error al intentar crear el genero',
+            'errors'=>$e->errors(),
+        ], 422);
+    }
 
     }
 }
