@@ -54,6 +54,24 @@ class CrearPrestamoTest extends TestCase
 
     }
 
+    public function test_creacion_prestamo_sin_login_devuelve_401(): void{
+
+        $this->prestamo = Prestamo::factory()->make([
+            'libro_id' => $this->libro->id,
+            'fecha_prestamo' => '2026-04-05',
+            'fecha_devolucion_prevista' => '2026-05-05',
+            'fecha_devolucion_real' => '2026-05-05',
+        ]);
+
+        $data = $this->prestamo->toArray();
+
+        $response = $this->postJson('api/prestamos', $data);
+
+        $response->assertStatus(401);
+        $this->assertDatabaseCount('prestamos',0);
+
+    }
+
     public function test_creacion_prestamo_con_excepcion_de_validacion_devuelve_422(): void {
 
         $user = User::factory()->create();
@@ -103,6 +121,5 @@ class CrearPrestamoTest extends TestCase
         $response->assertStatus(409);
         $this->assertDatabaseCount('prestamos',1);
         //$response->assertJsonPath('message', 'Este libro ya tiene un prestamo activo');
-
     }
 }

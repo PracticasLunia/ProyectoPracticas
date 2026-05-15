@@ -39,7 +39,7 @@ class EloquentLibroRepository implements LibroRepositoryInterface{
     }
 
     public function libroCompleto(Libro $libro): Libro {
-        $libroCompleto = $libro->load('autor', 'generos');
+        $libroCompleto = $libro->load('autor', 'generos', 'prestamos');
         return $libroCompleto;
     }
 

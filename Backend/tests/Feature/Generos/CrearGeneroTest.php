@@ -31,6 +31,17 @@ class CrearGeneroTest extends TestCase
         ]);
     }
 
+    public function test_creacion_nuevo_genero_sin_login_devuelve_401(): void{
+
+        $data=Genero::factory()->make()->toArray();
+
+        $response = $this->postJson('api/generos', $data);
+
+        $response->assertStatus(401);
+        $this->assertDatabaseCount('generos',0);
+
+    }
+
     public function test_creacion_de_genero_con_excepcion_de_validacion_devuelve_422(): void {
 
         $user = User::factory()->create();

@@ -20,7 +20,7 @@ final readonly class DevolverPrestamo {
             throw new ModelNotFoundException('Libro no encontrado');
         }
 
-        if($prestamo->fecha_devolucion != null){
+        if($prestamo->fecha_devolucion_real != null){
             throw new PrestamoYaDevueltoException($request->prestamo_id);
         }
 

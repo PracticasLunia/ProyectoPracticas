@@ -42,7 +42,9 @@ export default class DetalleLibros implements OnInit {
   id= inject(ActivatedRoute).snapshot.params['id'];
   //Informacion del libro, valor inicial nulo
   libro= signal<Libro|null>(null);
-  prestamoActivo = computed(() => this.libro()?.prestamo_activo ?? null);
+  prestamoActivo = computed(() =>
+    this.libro()?.prestamos?.find(p => p.fecha_devolucion_real === null) ?? null
+  );
 
   //Metodos
 

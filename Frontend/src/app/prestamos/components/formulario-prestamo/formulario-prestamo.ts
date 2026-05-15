@@ -41,7 +41,7 @@ export default class FormularioPrestamo implements OnInit{
 
   //Formulario
   formulario=this.fb.group({
-    libro_id: [0],
+    libro_id: [1],
     nombre_lector: [''],
     email_lector: [''],
     fecha_prestamo: [''],

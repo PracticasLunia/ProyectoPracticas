@@ -48,7 +48,7 @@ final readonly class ActualizarLibro {
             $libro->contenido_tamano=$request->contenido->getSize();
         }
         elseif($request->eliminar_contenido ==='1'){
-            if($libro->portada_path){
+            if($libro->contenido_path){
                 Storage::disk('local')->delete($libro->contenido_path);
             }
             $libro->contenido_path=null;
@@ -62,7 +62,7 @@ final readonly class ActualizarLibro {
             "num_paginas"=>$request->num_paginas,
             "disponible"=>$request->disponible,
             "autor_id"=>$request->autor_id,
-            "portada_path" => $libro->contenido_path,
+            "portada_path" => $libro->portada_path,
             "contenido_path"   => $libro->contenido_path,
             "contenido_nombre" =>  $libro->contenido_nombre,
             "contenido_tamano" => $libro->contenido_tamano,

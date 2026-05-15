@@ -171,17 +171,17 @@ se muestra el pdf, con opciones de verlo, descargar y demas-->
     <div class="alert alert-warning mb-0">
       <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
         <div>
-          <div class="fw-semibold mb-1">Prestado actualmente a {{ libro()?.prestamo_activo?.nombre_lector}}</div>
-          <div class="small">Fecha de préstamo: {{ libro()?.prestamo_activo?.fecha_prestamo | date:'shortDate' }}</div>
-          <div class="small">Fecha prevista: {{ libro()?.prestamo_activo?.fecha_devolucion_prevista | date:'shortDate' }}</div>
+          <div class="fw-semibold mb-1">Prestado actualmente a {{ prestamoActivo()?.nombre_lector}}</div>
+          <div class="small">Fecha de préstamo: {{ prestamoActivo()?.fecha_prestamo| date:'shortDate' }}</div>
+          <div class="small">Fecha prevista: {{ prestamoActivo()?.fecha_devolucion_prevista| date:'shortDate' }}</div>
         </div>
         <div class="d-flex gap-2 flex-wrap">
-          <a [routerLink]="['/prestamos', libro()?.prestamo_activo?.id]" class="btn btn-sm btn-outline-secondary">
+          <a [routerLink]="['/prestamos', prestamoActivo()?.id]" class="btn btn-sm btn-outline-secondary">
             Ver préstamo
           </a>
 
           @if(serviceAuth.estaLogueado()){
-            <button class="btn btn-sm btn-warning" (click)="marcarDevuelto(libro()!.prestamo_activo!.id)">
+            <button class="btn btn-sm btn-warning" (click)="marcarDevuelto(prestamoActivo()!.id)">
               Marcar devolución
             </button>
           }

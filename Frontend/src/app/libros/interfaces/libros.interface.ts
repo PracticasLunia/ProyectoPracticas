@@ -22,6 +22,6 @@ export interface Libro {
   nombre_autor: string;
   generos:Genero[];
   autor:Autor;
-  prestamo_activo:Prestamo;
+  prestamos:Prestamo[];
   esta_prestado:boolean;
 }

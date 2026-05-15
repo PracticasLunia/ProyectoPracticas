@@ -53,14 +53,14 @@ Route::middleware('auth:sanctum')->group(function(){
 Route::get('/libros/buscar', BuscarLibrosController::class);
 Route::get('/libros', ListarLibrosController::class);
 Route::get('/libros/{id}', VerLibroController::class);
+Route::get('libros/{id}/portada', PortadaLibroController::class);
+Route::get('libros/{id}/contenido', ContenidoLibroController::class);
 
 //Proteccion de rutas con middleware para usuarios auntenticados
 Route::middleware('auth:sanctum')->group(function(){
     Route::post('/libros', CrearLibroController::class);
     Route::put('/libros/{id}', ActualizarLibroController::class);
     Route::delete('/libros/{id}', EliminarLibroController::class);
-    Route::get('libros/{id}/portada', PortadaLibroController::class);
-    Route::get('libros/{id}/contenido', ContenidoLibroController::class);
 });
 
 //Routes Autores--------------------------------------
