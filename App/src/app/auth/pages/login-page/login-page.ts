@@ -1,0 +1,57 @@
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from '../../services/authService.service';
+import { Router, RouterLink } from '@angular/router';
+import {
+  IonHeader, IonToolbar, IonTitle, IonContent,
+  IonItem, IonLabel, IonInput, IonButton, IonText
+} from '@ionic/angular/standalone';
+
+@Component({
+  selector: 'app-login-page',
+  imports: [
+    ReactiveFormsModule, RouterLink, IonHeader, IonToolbar,
+    IonTitle, IonContent, IonItem, IonLabel, IonInput, IonButton, IonText
+  ],
+  templateUrl: './login-page.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export default class LoginPage {
+
+  //Inyeccion dependency
+  fb=inject(FormBuilder);
+  service= inject(AuthService);
+  router= inject(Router);
+
+  //Variables---------------
+
+  formulario=this.fb.group({
+    email: [''],
+    password: [''],
+  })
+
+  errorLogin=signal('');
+
+  //Metodos-------------
+
+  onSubmit(){
+
+    const datos={
+      email: this.formulario.value.email ?? '',
+      password: this.formulario.value.password ?? '',
+    }
+
+    this.service.login(datos.email, datos.password)
+    .subscribe({
+      next:(respuesta)=>{
+        this.service.guardarToken(respuesta.token)
+        this.router.navigate(['/home']);
+
+      },
+      error:(err)=>{
+        this.errorLogin.set('Credenciales incorrectas. Revisa email y password')
+      },
+    })
+  }
+
+}
