@@ -62,7 +62,7 @@ export default class RegisterPage {
       .subscribe({
         next: (respuesta) => {
           this.service.guardarToken(respuesta.token);
-          this.router.navigate(['/libros']);
+          this.router.navigate(['/catalogo']);
         },
         error: (err) => {
           if (err.status === 422) {

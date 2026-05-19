@@ -1,0 +1,109 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Catálogo</ion-title>
+  </ion-toolbar>
+
+
+  <ion-searchbar
+    search-icon="search-circle"
+    placeholder="Buscar por titulo"
+    [(ngModel)]="texto"
+    (ionInput)="buscar()"
+    debounce="400"
+    >
+  </ion-searchbar>
+
+  <!-- <ion-toolbar>
+    <ion-searchbar
+      [(ngModel)]="texto"
+      (ionInput)="buscar()"
+      placeholder="Buscar por título"
+      debounce="400">
+    </ion-searchbar>
+  </ion-toolbar> -->
+
+</ion-header>
+
+<ion-content class="ion-paddinº">
+
+  <ion-refresher slot="fixed" (ionRefresh)="onRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-item lines="none">
+    <ion-label>Buscar por Género</ion-label>
+    <ion-select
+      [(ngModel)]="generoId"
+      (ionChange)="buscar()"
+      placeholder="Todos"
+      interface="popover">
+      <ion-select-option [value]="null">Todos</ion-select-option>
+      @for (g of generos(); track g.id) {
+        <ion-select-option [value]="g.id">{{ g.nombre }}</ion-select-option>
+      }
+    </ion-select>
+  </ion-item>
+
+  <ion-item lines="none">
+    <ion-label>Solo disponibles</ion-label>
+    <ion-toggle
+      [enableOnOffLabels]="true"
+      [(ngModel)]="soloDisponibles"
+      (ionChange)="buscar()">
+    </ion-toggle>
+  </ion-item>
+
+  @if (cargando()) {
+    <div class="ion-text-center ion-padding">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  } @else if (libros().length === 0) {
+    <div class="ion-text-center ion-padding">
+      <ion-text color="medium">
+        <p>No hay libros que coincidan con los filtros.</p>
+      </ion-text>
+    </div>
+  } @else {
+
+    <ion-grid>
+      <ion-row>
+        @for (libro of libros(); track libro.id) {
+          <ion-col size="12" size-md="6" size-lg="4">
+            <ion-card button [routerLink]="['/libros', libro.id]">
+
+              @if (libro.tiene_portada) {
+                <ion-img [src]="urlPortada(libro.id)" alt="Portada"></ion-img>
+              }
+
+              <ion-card-header>
+                <ion-card-title color="dark" >{{ libro.titulo }}</ion-card-title>
+                <ion-card-subtitle>{{ libro.nombre_autor }}</ion-card-subtitle>
+              </ion-card-header>
+
+              <ion-card-content>
+                <p class="sinopsis">{{ libro.sinopsis }}</p>
+
+                <div class="meta">
+                  @if (libro.tiene_prestamo_activo) {
+                    <ion-badge color="warning">Prestado</ion-badge>
+                  } @else {
+                    <ion-badge color="success">Disponible</ion-badge>
+                  }
+
+                  @for (g of libro.generos; track g.id) {
+                    <ion-badge color="medium">{{ g.nombre }}</ion-badge>
+                  }
+                </div>
+              </ion-card-content>
+
+            </ion-card>
+          </ion-col>
+        }
+      </ion-row>
+    </ion-grid>
+  }
+
+</ion-content>

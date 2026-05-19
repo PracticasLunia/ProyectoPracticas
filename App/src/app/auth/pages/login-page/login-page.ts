@@ -45,7 +45,7 @@ export default class LoginPage {
     .subscribe({
       next:(respuesta)=>{
         this.service.guardarToken(respuesta.token)
-        this.router.navigate(['/home']);
+        this.router.navigate(['/catalogo']);
 
       },
       error:(err)=>{

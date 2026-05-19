@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   urlBackend: 'http://10.0.2.2:8000/api',
+  //urlBackend: 'http://localhost:8000/api',
 };
 
 /*

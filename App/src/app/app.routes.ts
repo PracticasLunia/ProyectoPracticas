@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { authGuard } from './auth/guards/authGuard.guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '', redirectTo: 'catalogo', pathMatch: 'full' },
 
   {
     path: 'auth/login',
@@ -14,8 +14,16 @@ export const routes: Routes = [
   },
 
   {
+    path: 'catalogo',
+    loadComponent: () => import('./libros/pages/catalogo/catalogo.page'),
+    canActivate: [authGuard],
+  },
+  {
     path: 'home',
     loadComponent: () => import('./home/home.page').then(m => m.HomePage),
     canActivate: [authGuard],
   },
+
+  // En la próxima fase: detalle de libro
+  // { path: 'libros/:id', loadComponent: () => ..., canActivate: [authGuard] },
 ];
