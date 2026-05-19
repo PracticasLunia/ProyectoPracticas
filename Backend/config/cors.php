@@ -22,7 +22,7 @@ return [
     'allowed_origins' => [
         'http://localhost:4200',
         'http://localhost:8100',
-        'http://10.0.2.2',
+        'http://localhost',
         ],
 
     'allowed_origins_patterns' => [],
