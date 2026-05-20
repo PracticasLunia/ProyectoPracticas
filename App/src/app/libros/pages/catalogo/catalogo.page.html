@@ -6,25 +6,15 @@
     <ion-title>Catálogo</ion-title>
   </ion-toolbar>
 
-
-  <ion-searchbar
-    search-icon="search-circle"
-    placeholder="Buscar por titulo"
-    [(ngModel)]="texto"
-    (ionInput)="buscar()"
-    debounce="400"
-    >
-  </ion-searchbar>
-
-  <!-- <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-searchbar
+      search-icon="search-circle"
+      placeholder="Buscar por título"
       [(ngModel)]="texto"
       (ionInput)="buscar()"
-      placeholder="Buscar por título"
       debounce="400">
     </ion-searchbar>
-  </ion-toolbar> -->
-
+  </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
