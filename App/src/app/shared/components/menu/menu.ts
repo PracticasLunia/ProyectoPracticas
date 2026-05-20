@@ -11,6 +11,7 @@ import { libraryOutline, peopleOutline, bookmarksOutline, logOutOutline, homeOut
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.html',
+  host: { style: 'display: contents' },
   imports: [
     RouterLink,
     IonMenu, IonHeader, IonToolbar, IonTitle, IonContent,
