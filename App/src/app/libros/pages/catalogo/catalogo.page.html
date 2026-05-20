@@ -12,7 +12,7 @@
       placeholder="Buscar por título"
       [(ngModel)]="texto"
       (ionInput)="buscar()"
-      debounce="400">
+      [debounce]="400">
     </ion-searchbar>
   </ion-toolbar>
 </ion-header>
