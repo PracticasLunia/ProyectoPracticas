@@ -1,3 +1,4 @@
+import { Genero } from './../../../generos/interfaces/genero.interface';
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -42,7 +43,7 @@ constructor() {
   private service = inject(LibrosService);
 
   libros = signal<Libro[]>([]);
-  generos = signal<{ id: number; nombre: string }[]>([]);
+  generos = signal< Genero []>([]);
   cargando = signal(false);
 
   // estado de los filtros
@@ -57,7 +58,7 @@ constructor() {
 
   cargarGeneros() {
     this.service.cargarGeneros().subscribe({
-      next: (respuesta:any) => this.generos.set(respuesta.data),
+      next: (respuesta) => this.generos.set(respuesta.data!),
     });
   }
 

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { LibrosService } from '../../services/libros.service';
 import { Libro } from '../../interfaces/libros.interface';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+    import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import {PdfViewerModule } from 'ng2-pdf-viewer';
 import { DatePipe } from '@angular/common';

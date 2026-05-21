@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@ang
 import { Router, RouterLink, RouterLinkActive, RouterLinkWithHref, RouterOutlet } from "@angular/router";
 import { AuthService } from '../../../auth/services/authService.service';
 import { User } from '../../../auth/interfaces/user.interface';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-layout-component',
@@ -14,6 +15,7 @@ export default class LayoutComponent implements OnInit{
 
   service= inject(AuthService);
   router= inject(Router);
+
 
   user:User|undefined;
 
@@ -37,8 +39,12 @@ export default class LayoutComponent implements OnInit{
   }
 
   finishLogout() {
-    this.service.eliminarToken();
-    this.router.navigate(['/auth/login']);
+    this.service.logout()
+      .pipe(finalize(() => {
+        this.service.eliminarToken();
+        this.router.navigate(['/auth/login']);
+      }))
+      .subscribe({ error: () => {} });
   }
 
 }

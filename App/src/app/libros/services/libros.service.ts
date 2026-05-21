@@ -3,26 +3,34 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Libro } from '../interfaces/libro.interface';
+import { LibrosResponse } from '../interfaces/libroResponse.interface';
+import { GenerosResponse } from 'src/app/generos/interfaces/generosResponse.interface';
+import { LibroResponse } from '../interfaces/librosResponse.interface';
 
 @Injectable({ providedIn: 'root' })
 export class LibrosService {
 
   private http = inject(HttpClient);
 
-  cargarLibros(): Observable<Libro[]> {
-    return this.http.get<Libro[]>(`${environment.urlBackend}/libros`);
+  cargarLibros(): Observable<LibrosResponse> {
+    return this.http.get<LibrosResponse>(`${environment.urlBackend}/libros`);
   }
 
-  buscarLibros(urlForm: string): Observable<Libro[]> {
-    return this.http.get<Libro[]>(`${environment.urlBackend}/libros/buscar?${urlForm}`);
+  buscarLibros(urlForm: string): Observable<LibrosResponse> {
+    return this.http.get<LibrosResponse>(`${environment.urlBackend}/libros/buscar?${urlForm}`);
   }
 
   cargarGeneros() {
-    return this.http.get<{ id: number; nombre: string }[]>(`${environment.urlBackend}/generos`);
+    return this.http.get<GenerosResponse>(`${environment.urlBackend}/generos`);
   }
 
-  urlPortada(id: number): string {
-    return `${environment.urlBackend}/libros/${id}/portada`;
+  urlPortada(id: number, version?: Date | string): string {
+    const base = `${environment.urlBackend}/libros/${id}/portada`;
+    return version ? `${base}?v=${version}` : base;
+  }
+
+  cargarLibroById(id:number): Observable<LibroResponse>{
+    return this.http.get<LibroResponse>(`${environment.urlBackend}/libros/${id}`)
   }
 }
 

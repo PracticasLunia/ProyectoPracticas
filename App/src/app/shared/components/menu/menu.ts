@@ -7,6 +7,7 @@ import {
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { libraryOutline, peopleOutline, bookmarksOutline, logOutOutline, homeOutline, bookOutline } from 'ionicons/icons';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-menu',
@@ -28,11 +29,11 @@ export class MenuComponent {
   }
 
   cerrarSesion() {
-    this.service.logout().subscribe({
-      complete: () => {
+    this.service.logout()
+      .pipe(finalize(() => {
         this.service.eliminarToken();
         this.router.navigate(['/auth/login']);
-      },
-    });
+      }))
+      .subscribe({ error: () => {} });
   }
 }
