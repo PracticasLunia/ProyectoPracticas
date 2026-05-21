@@ -7,6 +7,14 @@
   </ion-toolbar>
 </ion-header>
 
+@if(cargando()){
+  <ion-spinner>Cargando...</ion-spinner>
+}
+
+@if(noEncontrado()){
+  <ion-text>Este libro no esta Disponible</ion-text>
+}
+
 <ion-content>
   @if (libro(); as l) {
     @if (l.tiene_portada) {

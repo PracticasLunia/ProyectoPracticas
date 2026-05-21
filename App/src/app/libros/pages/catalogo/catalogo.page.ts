@@ -77,8 +77,8 @@ constructor() {
       : this.service.cargarLibros();
 
     observable.subscribe({
-      next: (respuesta:any) => {
-        this.libros.set(respuesta.data);
+      next: (respuesta) => {
+        this.libros.set(respuesta.data ?? []);
         this.cargando.set(false);
       },
       error: () => this.cargando.set(false),
