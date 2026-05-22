@@ -27,4 +27,7 @@ export const routes: Routes = [
     path: 'libros/:id', loadComponent: () => import('./libros/pages/detalle-libro/detalle-libro.page'),
     canActivate: [authGuard]
   },
+  {
+    path: 'lector/:id', loadComponent: () => import('./libros/pages/lector.page/lector.page')
+  }
 ];

@@ -32,5 +32,9 @@ export class LibrosService {
   cargarLibroById(id:number): Observable<LibroResponse>{
     return this.http.get<LibroResponse>(`${environment.urlBackend}/libros/${id}`)
   }
+
+  contenidoLibro(id:number): any {
+    return this.http.get(`${environment.urlBackend}/libros/contenido/${id}/?download=1`)
+  }
 }
 

@@ -53,6 +53,24 @@
 
         <h4>Sinopsis</h4>
         <p>{{ l.sinopsis }}</p>
+
+        @if(l.tiene_contenido){
+          <ion-button
+            expand="block"
+            [routerLink]="['/lector', l.id]">
+            Leer Libro
+          </ion-button>
+
+
+          <ion-button
+            expand="block"
+            fill="outline"
+            (click)="descargarPdf(l.id)">
+            Descargar PDF
+          </ion-button>
+
+        }
+
       </ion-card-content>
     </ion-card>
 

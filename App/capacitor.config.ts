@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
+  appId: 'es.lunia.biblioteca',
   appName: 'Biblioteca',
   webDir: 'www',
   android: {
@@ -13,7 +13,7 @@ const config: CapacitorConfig = {
   },
   plugins: {
     SplashScreen: {
-      launchShowDuration: 2000,
+      launchShowDuration: 1500,
       launchAutoHide: false,
       backgroundColor: "#3880ffff",
       androidScaleType: "CENTER_CROP",

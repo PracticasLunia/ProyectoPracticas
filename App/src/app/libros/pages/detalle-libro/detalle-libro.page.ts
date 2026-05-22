@@ -1,13 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-
-import {
-  IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle,
-  IonContent, IonImg, IonCard, IonCardHeader, IonCardTitle,
-  IonCardSubtitle, IonCardContent, IonBadge, IonList,
-  IonItem, IonIcon, IonLabel, IonChip, IonSpinner, IonText
-} from '@ionic/angular/standalone';
+import { HttpClient } from '@angular/common/http';
+import { IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonContent, IonImg, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonBadge, IonList, IonItem, IonIcon, IonLabel, IonChip, IonSpinner, IonText, IonButton } from '@ionic/angular/standalone';
 
 import { addIcons } from 'ionicons';
 import {
@@ -19,6 +14,7 @@ import {
 import { LibrosService } from '../../services/libros.service';
 import { Libro } from '../../interfaces/libro.interface';
 import { environment } from 'src/environments/environment';
+import { Router, RouterLink } from '@angular/router';
 
 addIcons({
   barcodeOutline,
@@ -30,11 +26,12 @@ addIcons({
   selector: 'app-detalle-libro',
   standalone: true,
   imports: [
-    DatePipe,IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle,
+    DatePipe, IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle,
     IonContent, IonImg, IonCard, IonCardHeader, IonCardTitle,
     IonCardSubtitle, IonCardContent, IonBadge, IonList,
-    IonItem, IonIcon, IonLabel, IonChip, IonSpinner, IonText
-  ],
+    IonItem, IonIcon, IonLabel, IonChip, IonSpinner, IonText,
+    IonButton, RouterLink
+],
   templateUrl: './detalle-libro.page.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -43,6 +40,7 @@ export default class DetalleLibroPage implements OnInit {
 
   private route = inject(ActivatedRoute);
   public serviceLibro = inject(LibrosService);
+  http = inject(HttpClient);
 
   libro = signal<Libro | null>(null);
   noEncontrado = signal(false);
@@ -90,4 +88,23 @@ export default class DetalleLibroPage implements OnInit {
     const base = `${environment.urlBackend}/libros/${id}/portada`;
   return version ? `${base}?v=${version}` : base;
   }
+
+
+  descargarPdf(id: number) {
+    const url = `${environment.urlBackend}/libros/${id}/contenido?download=1`;
+
+    this.http.get(url, {
+      responseType: 'blob'
+    })
+    .subscribe(blob => {
+      const objectUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = objectUrl;
+      a.download = `libro-${id}.pdf`;
+      a.click();
+      URL.revokeObjectURL(objectUrl);
+    });
+
+  }
+
 }
