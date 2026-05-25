@@ -24,10 +24,15 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'asistente',
+    loadComponent: ()=> import('./asistente/pages/asistente/asistente.page'),
+    canActivate: [authGuard],
+  },
+  {
     path: 'libros/:id', loadComponent: () => import('./libros/pages/detalle-libro/detalle-libro.page'),
     canActivate: [authGuard]
   },
   {
     path: 'lector/:id', loadComponent: () => import('./libros/pages/lector.page/lector.page')
-  }
+  },
 ];

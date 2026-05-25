@@ -1,0 +1,81 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start"><ion-menu-button /></ion-buttons>
+    <ion-title>Asistente</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content #scrollEl>
+  @if (mensajes().length === 0) {
+    <div class="welcome-container">
+
+      <ion-card>
+
+        <ion-card-header>
+
+          <ion-card-title>
+            Hola
+          </ion-card-title>
+
+          <ion-card-subtitle>
+            Soy el asistente de la biblioteca
+          </ion-card-subtitle>
+
+        </ion-card-header>
+
+        <ion-card-content>
+
+          Puedes preguntarme cosas como:
+
+          <ul>
+            <li>Recomiéndame 3 novelas</li>
+            <li>Libros de fantasía juvenil</li>
+            <li>Autores parecidos a Tolkien</li>
+          </ul>
+
+        </ion-card-content>
+
+      </ion-card>
+
+    </div>
+  } @else {
+  @for (m of mensajes(); track $index) {
+
+    <div
+      class="message-wrapper"
+      [class.user-wrapper]="m.role === 'user'"
+      [class.bot-wrapper]="m.role === 'assistant'"
+    >
+
+      <div
+        class="message"
+        [class.user]="m.role === 'user'"
+        [class.bot]="m.role === 'assistant'"
+      >
+
+        {{ m.content }}
+
+      </div>
+
+    </div>
+
+  }
+    @if (cargando()){
+      <ion-item>
+        <ion-spinner name="dots"></ion-spinner>
+      </ion-item>
+    }
+  }
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-input [(ngModel)]="texto" placeholder="Escribe tu pregunta…"></ion-input>
+    <ion-buttons slot="end">
+      <ion-button color="primary" shape="round" (click)="enviar()" [disabled]="!texto().trim() || cargando()">
+        <!--<ion-icon name="send" slot="icon-only"></ion-icon>-->
+        Enviar
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

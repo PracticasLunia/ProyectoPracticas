@@ -6,7 +6,7 @@ import {
   IonList, IonItem, IonIcon, IonLabel, IonMenuToggle
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { libraryOutline, peopleOutline, bookmarksOutline, logOutOutline, homeOutline, bookOutline } from 'ionicons/icons';
+import { libraryOutline, peopleOutline, bookmarksOutline, logOutOutline, homeOutline, bookOutline, chatbubbleEllipses, chatbubbleEllipsesOutline } from 'ionicons/icons';
 import { finalize } from 'rxjs';
 
 @Component({
@@ -25,7 +25,8 @@ export class MenuComponent {
   private router = inject(Router);
 
   constructor() {
-    addIcons({ libraryOutline, peopleOutline, bookmarksOutline, logOutOutline, homeOutline, bookOutline });
+    addIcons({ libraryOutline, peopleOutline, bookmarksOutline,
+      logOutOutline, homeOutline, bookOutline, chatbubbleEllipsesOutline});
   }
 
   cerrarSesion() {

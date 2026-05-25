@@ -35,4 +35,16 @@ return [
         ],
     ],
 
+    'azure_openai' => [
+        'endpoint' => env('AZURE_OPENAI_ENDPOINT'),
+        'api_key' => env('AZURE_OPENAI_API_KEY'),
+        'model' => env('AZURE_OPENAI_MODEL'),
+    ],
+
+    'langfuse' => [
+        'public_key' => env('LANGFUSE_PUBLIC_KEY'),
+        'secret_key' => env('LANGFUSE_SECRET_KEY'),
+        'host' => env('LANGFUSE_BASE_URL')
+    ],
+
 ];

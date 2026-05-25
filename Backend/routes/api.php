@@ -15,6 +15,7 @@ use App\Http\Controllers\Autor\EliminarAutorController;
 use App\Http\Controllers\Autor\LibrosDeAutorController;
 use App\Http\Controllers\Autor\ListarAutoresController;
 use App\Http\Controllers\Autor\VerAutorController;
+use App\Http\Controllers\Chat\SendMessageController;
 use App\Http\Controllers\Genero\ActualizarGeneroController;
 use App\Http\Controllers\Genero\CrearGeneroController;
 use App\Http\Controllers\Genero\EliminarGeneroController;
@@ -46,6 +47,11 @@ Route::post('/register', RegisterController::class);
 Route::middleware('auth:sanctum')->group(function(){
     Route::get('/user', UserController::class);
     Route::post('/logout', LogoutController::class);
+});
+
+//Routes asistente
+Route::middleware('auth:sanctum')->group(function(){
+    Route::post('/chat', SendMessageController::class);
 });
 
 

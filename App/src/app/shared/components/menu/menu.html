@@ -23,6 +23,13 @@
       </ion-menu-toggle>
 
       <ion-menu-toggle auto-hide="false">
+        <ion-item routerLink="/asistente" routerDirection="root" lines="full">
+          <ion-icon slot="start" name="chatbubble-ellipses-outline"></ion-icon>
+          <ion-label>Asistente</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+
+      <ion-menu-toggle auto-hide="false">
         <ion-item button (click)="cerrarSesion()" lines="full">
           <ion-icon slot="start" name="log-out-outline"></ion-icon>
           <ion-label>Cerrar sesión</ion-label>
