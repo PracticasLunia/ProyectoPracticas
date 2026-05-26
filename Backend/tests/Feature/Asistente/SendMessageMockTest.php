@@ -13,7 +13,7 @@ class SendMessageMockTest extends TestCase{
 
     use RefreshDatabase;
 
-    /*public function test_send_message_return_200(): void{
+    public function test_send_message_return_200(): void{
         $user = User::factory()->create();
 
         Sanctum::actingAs($user);
@@ -23,6 +23,7 @@ class SendMessageMockTest extends TestCase{
             "content" => "Dime 2 autores",
         ];
 
+
         //Crea un objeto falso
         $mock = Mockery::mock(\App\Services\AzureOpenAIClient::class);
 
@@ -31,7 +32,8 @@ class SendMessageMockTest extends TestCase{
         $mock->shouldReceive('responses->create')
             ->once()
             ->andReturn((object) [
-                'outputText' => 'Miguel de Cervantes y Victor Marie Hugo'
+                'outputText' => 'Miguel de Cervantes y Victor Marie Hugo',
+                'output' => []
             ]);
 
         //reemplaza el servicio real del contenedor de Laravel
@@ -47,6 +49,6 @@ class SendMessageMockTest extends TestCase{
         ]);
 
         $response->assertStatus(200);
-    }*/
+    }
 
 }
