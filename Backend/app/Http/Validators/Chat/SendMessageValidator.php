@@ -3,7 +3,6 @@
 namespace App\Http\Validators\Chat;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Override;
 
 final class SendMessageValidator extends FormRequest
 {
@@ -15,7 +14,9 @@ final class SendMessageValidator extends FormRequest
     public function rules(): array
     {
         return [
-            "message" => "required|string",
+            "messages" => "required|array|min:1",
+            "messages.*.role"    => "required|string|in:user,assistant",
+            "messages.*.content" => "required|string",
         ];
     }
 

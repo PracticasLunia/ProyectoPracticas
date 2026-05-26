@@ -2,6 +2,7 @@
 
 namespace App\Http\UseCases\Chat;
 
+use App\Services\AzureOpenAIClient;
 use Illuminate\Support\Collection;
 use OpenAI\Client;
 use Illuminate\Support\Facades\Http;
@@ -12,22 +13,17 @@ use function Illuminate\Support\now;
 final readonly class SendMessage {
 
     public function __construct(
-        private Client $cliente
+        private AzureOpenAIClient $cliente
     ){}
 
     public function handle(SendMessageRequest $request): array{
 
         $inicio = now()->toIso8601String();
 
-        $cliente = \OpenAI::factory()
-                ->withBaseUri(config('services.azure_openai.endpoint') . '/openai/v1')
-                ->withHttpHeader('api-key', config('services.azure_openai.api_key'))
-                ->make();
-
-        $respuesta = $cliente->responses()->create([
+        $respuesta = $this->cliente->responses()->create([
             'model'        => $request->model,
             'instructions' => $this->systemPrompt(),
-            'input'        => $request->message,
+            'input'        => $request->messages,
             'tools'        => [
                 ['type' => 'web_search'],
             ],
@@ -36,30 +32,30 @@ final readonly class SendMessage {
         $despues = now()->toIso8601String();
 
         Http::withBasicAuth(
-    config('services.langfuse.public_key'),
-    config('services.langfuse.secret_key'),
-)->timeout(2)->post(config('services.langfuse.host') . '/api/public/ingestion', [
-    'batch' => [[
-        'id' => Str::uuid()->toString(),
-        'timestamp' => now()->toIso8601String(),
-        'type' => 'generation-create',
-        'body' => [
-            'id' => Str::uuid()->toString(),
-            'traceId' => Str::uuid()->toString(),
-            'name' => 'chat-asistente',
-            'model' => $request->model,
-            'input' => $request->message,           // instructions + mensaje del usuario
-            'output' => $respuesta,         // texto de la respuesta
-            'startTime' => $inicio,
-            'endTime' => $despues,
-            'usage' => [
-                'inputTokens'  => $usage->inputTokens ?? null,
-                'outputTokens' => $usage->outputTokens ?? null,
-                'totalTokens'  => $usage->totalTokens ?? null,
-            ],
-        ],
-    ]],
-]);
+            config('services.langfuse.public_key'),
+            config('services.langfuse.secret_key'),
+        )->timeout(2)->post(config('services.langfuse.host') . '/api/public/ingestion', [
+            'batch' => [[
+                'id' => Str::uuid()->toString(),
+                'timestamp' => now()->toIso8601String(),
+                'type' => 'generation-create',
+                'body' => [
+                    'id' => Str::uuid()->toString(),
+                    'traceId' => Str::uuid()->toString(),
+                    'name' => 'chat-asistente',
+                    'model' => $request->model,
+                    'input' => $request->messages,           // instructions + mensaje del usuario
+                    'output' => $respuesta,         // texto de la respuesta
+                    'startTime' => $inicio,
+                    'endTime' => $despues,
+                    'usage' => [
+                        'inputTokens'  => $usage->inputTokens ?? null,
+                        'outputTokens' => $usage->outputTokens ?? null,
+                        'totalTokens'  => $usage->totalTokens ?? null,
+                    ],
+                ],
+            ]],
+        ]);
 
         $texto = $respuesta->outputText;
 

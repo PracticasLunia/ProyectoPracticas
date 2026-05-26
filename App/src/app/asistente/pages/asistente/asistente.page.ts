@@ -1,9 +1,7 @@
 import { Component, ViewChild, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
-
 import { IonContent, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonFooter, IonInput, IonButton, IonIcon, IonItem, IonSpinner, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonCard } from '@ionic/angular/standalone';
-
 import { MessageInterface } from '../../interfaces/messageInterface';
 import { AsistenteResponseInterface } from '../../interfaces/asistenteResponse.interface';
 import { AsistenteService } from '../../services/asistenteService.service';
@@ -14,24 +12,9 @@ import { AsistenteService } from '../../services/asistenteService.service';
   styleUrls: ['./asistente.page.scss'],
   standalone: true,
   imports: [
-    FormsModule,
-    IonHeader,
-    IonToolbar,
-    IonButtons,
-    IonMenuButton,
-    IonTitle,
-    IonContent,
-    IonFooter,
-    IonInput,
-    IonButton,
-    IonIcon,
-    IonItem,
-    IonSpinner,
-    IonCardContent,
-    IonCardSubtitle,
-    IonCardTitle,
-    IonCardHeader,
-    IonCard
+    FormsModule,IonHeader,IonToolbar,IonButtons,IonMenuButton,IonTitle,
+    IonContent,IonFooter,IonInput,IonButton,IonIcon,IonItem,IonSpinner,
+    IonCardContent,IonCardSubtitle,IonCardTitle,IonCardHeader,IonCard
 ],
 })
 export default class AsistentePage {
@@ -57,6 +40,7 @@ export default class AsistentePage {
       return;
     }
 
+    //Añade el nuevo mensaje al historial de mensajes
     this.mensajes.update(actual => [
       ...actual,
       {
@@ -73,10 +57,12 @@ export default class AsistentePage {
 
     try {
 
+      //Envia la peticion con todo el historial de mensajes y recibe la devolucion del asistente
       const response = await firstValueFrom(
-        this.chatService.enviarMensaje(mensaje)
+        this.chatService.enviarMensaje(this.mensajes())
       );
 
+      //La respuesta se añade al historial
       this.mensajes.update(actual => [
         ...actual,
         {

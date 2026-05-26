@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\UseCases\Chat\SendMessage;
 use App\Http\UseCases\Chat\SendMessageRequest;
 use App\Http\Validators\Chat\SendMessageValidator;
-use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 class SendMessageController extends Controller
@@ -21,7 +20,7 @@ class SendMessageController extends Controller
         try {
 
             $datos = $this->sendMessage->handle( new SendMessageRequest(
-                message: $request->input('message'),
+                messages: $request->input('messages'),
                 model: config('services.azure_openai.model')
             ));
 
@@ -34,7 +33,7 @@ class SendMessageController extends Controller
         } catch (ValidationException $e) {
             return response()->json([
                 'data'=>null,
-                'message'=>'Error al intentar actualizar el genero',
+                'message'=>'No se pudo enviar el mensaje',
                 'errors'=>$e->errors(),
             ], 422 );
         }
