@@ -26,11 +26,4 @@ export class AsistenteService {
     return this.http.post<AsistenteResponseInterface>(`${environment.urlBackend}/chat`, payload)
   }
 
-
-
-
-
-
-
-
 }

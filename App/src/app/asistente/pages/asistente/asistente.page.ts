@@ -1,7 +1,7 @@
 import { Component, ViewChild, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
-import { IonContent, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonFooter, IonInput, IonButton, IonIcon, IonItem, IonSpinner, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonCard } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonFooter, IonInput, IonButton, IonIcon, IonItem, IonSpinner, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonCard, IonGrid } from '@ionic/angular/standalone';
 import { MessageInterface } from '../../interfaces/messageInterface';
 import { AsistenteResponseInterface } from '../../interfaces/asistenteResponse.interface';
 import { AsistenteService } from '../../services/asistenteService.service';
@@ -12,9 +12,10 @@ import { AsistenteService } from '../../services/asistenteService.service';
   styleUrls: ['./asistente.page.scss'],
   standalone: true,
   imports: [
-    FormsModule,IonHeader,IonToolbar,IonButtons,IonMenuButton,IonTitle,
-    IonContent,IonFooter,IonInput,IonButton,IonIcon,IonItem,IonSpinner,
-    IonCardContent,IonCardSubtitle,IonCardTitle,IonCardHeader,IonCard
+    FormsModule, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle,
+    IonContent, IonFooter, IonInput, IonButton, IonIcon, IonItem, IonSpinner,
+    IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonCard,
+    IonGrid
 ],
 })
 export default class AsistentePage {

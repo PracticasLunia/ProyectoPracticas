@@ -63,3 +63,17 @@ ion-content {
     margin-bottom: 8px;
   }
 }
+
+ion-footer {
+
+  ion-toolbar {
+
+    --padding-top: 10px;
+    --padding-bottom: 10px;
+    --padding-start: 12px;
+    --padding-end: 12px;
+
+  }
+
+
+}

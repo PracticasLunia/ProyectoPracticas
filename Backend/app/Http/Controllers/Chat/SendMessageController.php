@@ -21,7 +21,8 @@ class SendMessageController extends Controller
 
             $datos = $this->sendMessage->handle( new SendMessageRequest(
                 messages: $request->input('messages'),
-                model: config('services.azure_openai.model')
+                model: config('services.azure_openai.model'),
+                user:     $request->user(), 
             ));
 
             return response()->json([

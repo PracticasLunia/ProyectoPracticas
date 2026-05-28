@@ -4,6 +4,7 @@ namespace App\Http\UseCases\Prestamo;
 use App\Repositories\Prestamo\PrestamoRepositoryInterface;
 use App\Exceptions\Domain\LibroYaPrestadoException;
 use App\Models\Prestamo;
+use App\Models\User;
 
 final readonly class CrearPrestamo {
 
@@ -20,8 +21,14 @@ final readonly class CrearPrestamo {
             throw new LibroYaPrestadoException($request->libro_id);
         }
 
+        //Verificar si el correo esta asociado a un usuario
+        $userId = $request->email_lector
+            ? User::where('email', $request->email_lector)->value('id')
+            : null;
+
         $prestamo = $this->prestamosRepository->store([
             'libro_id' => $request->libro_id,
+            'user_id' => $userId,
             'nombre_lector' => $request->nombre_lector,
             'email_lector' => $request->email_lector,
             'fecha_prestamo' => $request->fecha_prestamo,

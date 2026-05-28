@@ -47,4 +47,8 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function prestamos(){
+        return $this->hasMany(Prestamo::class);
+    }
 }
