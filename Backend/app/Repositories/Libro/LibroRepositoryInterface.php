@@ -3,11 +3,12 @@
 namespace App\Repositories\Libro;
 
 use App\Models\Libro;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 interface LibroRepositoryInterface
 {
-    public function getAll(): Collection;
+    public function getAll():  LengthAwarePaginator;
 
     public function getById(int $id): ?Libro;
 

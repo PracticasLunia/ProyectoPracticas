@@ -96,4 +96,13 @@
     </ion-grid>
   }
 
+  <nav>
+    <ul class="pagination justify-content-center">
+      @for (n of paginas(); track n) {
+        <li class="page-item" [class.active]="n === paginaActual()">
+          <button class="page-link" (click)="cargarPagina(n)">{{ n }}</button>
+        </li>
+      }
+    </ul>
+  </nav>
 </ion-content>

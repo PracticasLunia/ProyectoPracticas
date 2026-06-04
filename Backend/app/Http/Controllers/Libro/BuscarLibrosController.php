@@ -28,10 +28,16 @@ class BuscarLibrosController extends Controller
     ));
 
     return response()->json([
-        'data' => $libros,
-        'messsage' => 'Listado de libros',
-        'errors' => [],
-    ],200);
+        'data' => $libros->items(),
+        'meta' => [
+            'current_page' => $libros->currentPage(),
+            'last_page'    => $libros->lastPage(),
+            'per_page'     => $libros->perPage(),
+            'total'        => $libros->total(),
+        ],
+        'message' => 'Listado de libros',
+        'errors'  => [],
+    ], 200);
 
     }
 }

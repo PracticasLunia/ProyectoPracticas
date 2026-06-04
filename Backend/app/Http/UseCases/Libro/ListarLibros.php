@@ -4,6 +4,7 @@ namespace App\Http\UseCases\Libro;
 
 use App\Repositories\Libro\LibroRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 final readonly class ListarLibros {
 
@@ -11,7 +12,7 @@ final readonly class ListarLibros {
         private LibroRepositoryInterface $librosRepository,
     ){}
 
-    public function handle(): Collection{
+    public function handle():  LengthAwarePaginator{
 
         $libros = $this->librosRepository->getAll();
 

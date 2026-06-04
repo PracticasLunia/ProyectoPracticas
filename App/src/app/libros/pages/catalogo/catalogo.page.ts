@@ -1,5 +1,5 @@
 import { Genero } from './../../../generos/interfaces/genero.interface';
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -46,6 +46,11 @@ constructor() {
   generos = signal< Genero []>([]);
   cargando = signal(false);
 
+  paginaActual = signal(1);
+  totalPaginas = signal(1);
+
+  paginas = computed(() => Array.from({ length: this.totalPaginas() }, (_, i) => i + 1));
+
   // estado de los filtros
   texto = '';
   generoId: number | null = null;
@@ -55,6 +60,15 @@ constructor() {
     this.cargarGeneros();
     this.buscar();
   }
+
+  cargarPagina(pagina: number) {
+  this.paginaActual.set(pagina);
+  const url = `&page=${pagina}`;   // mantiene los filtros del buscador
+  this.service.buscarLibros(url).subscribe((resp) => {
+    this.libros.set(resp.data ?? []);
+    this.totalPaginas.set(resp.meta?.last_page ?? 1);
+  });
+}
 
   cargarGeneros() {
     this.service.cargarGeneros().subscribe({

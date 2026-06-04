@@ -19,6 +19,12 @@ class ListarLibrosController extends Controller
 
         return response()->json([
             'data' => $listadoLibros,
+            'meta' => [
+                'current_page' => $listadoLibros->currentPage(),
+                'last_page'    => $listadoLibros->lastPage(),
+                'per_page'     => $listadoLibros->perPage(),
+                'total'        => $listadoLibros->total(),
+            ],
             'message' => 'Listado de libros',
         ], 200);
     }

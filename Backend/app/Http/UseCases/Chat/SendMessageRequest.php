@@ -9,6 +9,6 @@ final readonly class SendMessageRequest
     public function __construct(
         public array $messages,
         public string $model,
-         public User $user,
+        public User $user,
     ) {}
 }

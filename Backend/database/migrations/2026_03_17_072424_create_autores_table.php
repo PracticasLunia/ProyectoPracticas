@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string("nombre", 50);
-            $table->string("apellidos", 50);
+            $table->string("apellidos", 50)->nullable();
             $table->string("nacionalidad", 50)->nullable();
             $table->date("fecha_nacimiento")->nullable();
             $table->text("biografia")->nullable();

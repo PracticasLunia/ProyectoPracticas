@@ -6,11 +6,12 @@ use App\Models\Libro;
 use App\Repositories\Libro\LibroRepositoryInterface;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class EloquentLibroRepository implements LibroRepositoryInterface{
 
-    public function getAll(): Collection{
-        return Libro::all();
+    public function getAll():  LengthAwarePaginator{
+        return Libro::paginate(2);
     }
 
     public function getById(int $id): ? Libro{
@@ -69,7 +70,7 @@ class EloquentLibroRepository implements LibroRepositoryInterface{
                         $query->where('generos.nombre', $data['genero_nombre']);
                     }
             })
-            ->get();
+            ->paginate(perPage: 2, page: (int) $data['page']);
 
             return $libros;
     }
