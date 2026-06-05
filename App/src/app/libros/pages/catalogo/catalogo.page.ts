@@ -5,13 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { LibrosService } from '../../services/libros.service';
 import { Libro } from '../../interfaces/libro.interface';
-import {
-  IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonMenuButton,
-  IonSearchbar, IonItem, IonLabel, IonSelect, IonSelectOption, IonToggle,
-  IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent,
-  IonImg, IonBadge, IonGrid, IonRow, IonCol, IonRefresher, IonRefresherContent,
-  IonSpinner, IonText, IonButton
-} from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonMenuButton, IonSearchbar, IonItem, IonLabel, IonSelect, IonSelectOption, IonToggle, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonImg, IonBadge, IonGrid, IonRow, IonCol, IonRefresher, IonRefresherContent, IonSpinner, IonText, IonButton, InfiniteScrollCustomEvent, IonInfiniteScroll, IonInfiniteScrollContent } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { bookOutline, searchCircle } from 'ionicons/icons';
 
@@ -26,7 +20,7 @@ import { bookOutline, searchCircle } from 'ionicons/icons';
     IonSearchbar, IonItem, IonLabel, IonSelect, IonSelectOption, IonToggle,
     IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent,
     IonImg, IonBadge, IonGrid, IonRow, IonCol, IonRefresher, IonRefresherContent,
-    IonSpinner, IonText, IonButton
+    IonSpinner, IonText, IonButton, IonInfiniteScroll, IonInfiniteScrollContent
   ],
 })
 export default class CatalogoPage implements OnInit {
@@ -46,10 +40,8 @@ constructor() {
   generos = signal< Genero []>([]);
   cargando = signal(false);
 
-  paginaActual = signal(1);
-  totalPaginas = signal(1);
-
-  paginas = computed(() => Array.from({ length: this.totalPaginas() }, (_, i) => i + 1));
+  paginaActual = 1;
+  totalPaginas = 1;
 
   // estado de los filtros
   texto = '';
@@ -57,18 +49,19 @@ constructor() {
   soloDisponibles = false;
 
   ngOnInit() {
-    this.cargarGeneros();
     this.buscar();
+    this.cargarGeneros();
+
   }
 
-  cargarPagina(pagina: number) {
+  /*cargarPagina(pagina: number) {
   this.paginaActual.set(pagina);
   const url = `&page=${pagina}`;   // mantiene los filtros del buscador
   this.service.buscarLibros(url).subscribe((resp) => {
     this.libros.set(resp.data ?? []);
     this.totalPaginas.set(resp.meta?.last_page ?? 1);
   });
-}
+}*/
 
   cargarGeneros() {
     this.service.cargarGeneros().subscribe({
@@ -77,6 +70,8 @@ constructor() {
   }
 
   buscar() {
+
+    this.paginaActual=1;
     this.cargando.set(true);
 
     const params = new URLSearchParams();
@@ -92,7 +87,12 @@ constructor() {
 
     observable.subscribe({
       next: (respuesta) => {
+        console.log(respuesta);
         this.libros.set(respuesta.data ?? []);
+
+        this.paginaActual = respuesta.meta?.current_page ?? 1;
+        this.totalPaginas = respuesta.meta?.last_page ?? 1;
+
         this.cargando.set(false);
       },
       error: () => this.cargando.set(false),
@@ -106,5 +106,37 @@ constructor() {
 
   urlPortada(id: number) {
     return this.service.urlPortada(id);
+  }
+
+  infiniteScroll(event: InfiniteScrollCustomEvent) {
+
+    // Si ya no hay más páginas
+    if (this.paginaActual >= this.totalPaginas) {
+      event.target.disabled = true;
+      return;
+    }
+
+    const siguientePagina = this.paginaActual + 1;
+
+    const url = `&page=${siguientePagina}`;
+
+    this.service.buscarLibros(url).subscribe(resp => {
+
+      const nuevos = resp.data ?? [];
+
+      this.libros.update(actual => [...actual, ...nuevos]);
+
+      // actualizar paginación
+      this.paginaActual = siguientePagina;
+      this.totalPaginas = resp.meta?.last_page ?? 1;
+
+      // terminar evento ionic
+      event.target.complete();
+
+      // si ya no hay más páginas, desactivar scroll
+      if (this.paginaActual >= this.totalPaginas) {
+        event.target.disabled = true;
+      }
+    });
   }
 }

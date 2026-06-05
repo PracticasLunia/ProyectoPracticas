@@ -96,11 +96,11 @@
     </ion-grid>
   }
 
-  <nav>
-    <ul class="pagination justify-content-center">
-      @for (n of paginas(); track n) {
-        <ion-button (click)="cargarPagina(n)" >{{n}}</ion-button>
-      }
-    </ul>
-  </nav>
+  <ion-infinite-scroll (ionInfinite)="infiniteScroll($event)">
+    <ion-infinite-scroll-content
+        loadingSpinner="crescent"
+        loadingText="Cargando más libros...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
 </ion-content>
