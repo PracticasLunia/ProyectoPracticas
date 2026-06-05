@@ -10,7 +10,7 @@ import {
   IonSearchbar, IonItem, IonLabel, IonSelect, IonSelectOption, IonToggle,
   IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent,
   IonImg, IonBadge, IonGrid, IonRow, IonCol, IonRefresher, IonRefresherContent,
-  IonSpinner, IonText,
+  IonSpinner, IonText, IonButton
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { bookOutline, searchCircle } from 'ionicons/icons';
@@ -26,7 +26,7 @@ import { bookOutline, searchCircle } from 'ionicons/icons';
     IonSearchbar, IonItem, IonLabel, IonSelect, IonSelectOption, IonToggle,
     IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent,
     IonImg, IonBadge, IonGrid, IonRow, IonCol, IonRefresher, IonRefresherContent,
-    IonSpinner, IonText,
+    IonSpinner, IonText, IonButton
   ],
 })
 export default class CatalogoPage implements OnInit {

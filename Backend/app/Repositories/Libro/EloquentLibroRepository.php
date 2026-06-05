@@ -11,7 +11,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class EloquentLibroRepository implements LibroRepositoryInterface{
 
     public function getAll():  LengthAwarePaginator{
-        return Libro::paginate(2);
+        return Libro::paginate(5);
     }
 
     public function getById(int $id): ? Libro{
@@ -44,7 +44,7 @@ class EloquentLibroRepository implements LibroRepositoryInterface{
         return $libroCompleto;
     }
 
-    public function filter(array $data): Collection {
+    public function filter(array $data): LengthAwarePaginator {
 
         $libros = Libro::where('titulo', 'LIKE', '%'.$data['titulo'].'%')
             ->where('isbn', 'LIKE', '%'.$data['isbn'].'%')
@@ -70,7 +70,7 @@ class EloquentLibroRepository implements LibroRepositoryInterface{
                         $query->where('generos.nombre', $data['genero_nombre']);
                     }
             })
-            ->paginate(perPage: 2, page: (int) $data['page']);
+            ->paginate(perPage: 5, page: (int) $data['page'] ?? 1);
 
             return $libros;
     }

@@ -22,6 +22,7 @@ final class BuscarLibrosValidator extends FormRequest
             "disponible" => "nullable|boolean",
             "autor_id"=> "nullable|string",
             "genero_nombre" => "nullable|string",
+            "page" => "nullable|integer|min:1",
         ];
     }
 }

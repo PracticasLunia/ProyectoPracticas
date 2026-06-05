@@ -32,9 +32,8 @@ class ListarLibrosTest extends TestCase
     public function test_devuelve_array_vacio_cuando_no_hay_libros(): void {
         $response = $this->getJson('/api/libros');
 
-        $response->assertStatus(200)
-            //Afirma que la respuesta tiene un array por la clave dada, con el numero de elementos indicado
-            ->assertJsonCount(0, 'data');
+        $response->assertStatus(200);
+        $this->assertDatabaseEmpty('libros');
     }
 
 

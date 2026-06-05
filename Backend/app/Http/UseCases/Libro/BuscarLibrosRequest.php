@@ -14,6 +14,7 @@ final readonly class BuscarLibrosRequest
         public ?int $num_paginas,
         public ?bool $disponible,
         public ?string $autor,
-        public ?string $genero_nombre
+        public ?string $genero_nombre,
+        public ?string $page
     ) {}
 }

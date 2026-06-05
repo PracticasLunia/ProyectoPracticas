@@ -25,6 +25,7 @@ class BuscarLibrosController extends Controller
         disponible: $request->input('disponible'),
         autor: $request->input('autor'),
         genero_nombre: $request->input('genero_nombre'),
+        page: $request->input('page', 5),
     ));
 
     return response()->json([

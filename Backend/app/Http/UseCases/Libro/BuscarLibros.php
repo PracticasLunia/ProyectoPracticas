@@ -4,6 +4,7 @@ namespace App\Http\UseCases\Libro;
 
 use App\Repositories\Libro\LibroRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 final readonly class BuscarLibros {
 
@@ -11,7 +12,7 @@ final readonly class BuscarLibros {
         private LibroRepositoryInterface $librosRepository,
     ){}
 
-    public function handle(BuscarLibrosRequest $request): Collection{
+    public function handle(BuscarLibrosRequest $request): LengthAwarePaginator{
 
 
         $libros = $this->librosRepository->filter([
@@ -22,7 +23,8 @@ final readonly class BuscarLibros {
             "num_paginas"=>$request->num_paginas,
             "disponible"=>$request->disponible,
             "autor" =>$request->autor,
-            "genero_nombre" => $request->genero_nombre
+            "genero_nombre" => $request->genero_nombre,
+            "page" => $request->page
         ]);
 
         return $libros;
