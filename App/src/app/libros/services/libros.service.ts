@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Libro } from '../interfaces/libro.interface';
 import { LibrosResponse } from '../interfaces/libroResponse.interface';
 import { GenerosResponse } from 'src/app/generos/interfaces/generosResponse.interface';
 import { LibroResponse } from '../interfaces/librosResponse.interface';
@@ -18,6 +17,11 @@ export class LibrosService {
 
   buscarLibros(urlForm: string): Observable<LibrosResponse> {
     return this.http.get<LibrosResponse>(`${environment.urlBackend}/libros/buscar?${urlForm}`);
+  }
+
+  buscarLibrosFormulario(urlForm:string): Observable<LibrosResponse>{
+    return this.http.get<LibrosResponse>
+    (`${environment.urlBackend}/libros/buscar?${urlForm}`)
   }
 
   cargarGeneros() {

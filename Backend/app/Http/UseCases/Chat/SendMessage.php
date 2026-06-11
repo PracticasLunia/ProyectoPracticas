@@ -85,31 +85,34 @@ final readonly class SendMessage {
 
         $despues = now()->toIso8601String();
 
-        Http::withBasicAuth(
-            config('services.langfuse.public_key'),
-            config('services.langfuse.secret_key'),
-        )->timeout(2)->post(config('services.langfuse.host') . '/api/public/ingestion', [
-            'batch' => [[
-                'id' => Str::uuid()->toString(),
-                'timestamp' => now()->toIso8601String(),
-                'type' => 'generation-create',
-                'body' => [
+        if (! app()->runningUnitTests()) {
+
+            Http::withBasicAuth(
+                config('services.langfuse.public_key'),
+                config('services.langfuse.secret_key'),
+            )->timeout(2)->post(config('services.langfuse.host') . '/api/public/ingestion', [
+                'batch' => [[
                     'id' => Str::uuid()->toString(),
-                    'traceId' => Str::uuid()->toString(),
-                    'name' => 'chat-asistente',
-                    'model' => $request->model,
-                    'input' => $request->messages,           // instructions + mensaje del usuario
-                    'output' => $respuesta,         // texto de la respuesta
-                    'startTime' => $inicio,
-                    'endTime' => $despues,
-                    'usage' => [
-                        'inputTokens'  => $usage->inputTokens ?? null,
-                        'outputTokens' => $usage->outputTokens ?? null,
-                        'totalTokens'  => $usage->totalTokens ?? null,
+                    'timestamp' => now()->toIso8601String(),
+                    'type' => 'generation-create',
+                    'body' => [
+                        'id' => Str::uuid()->toString(),
+                        'traceId' => Str::uuid()->toString(),
+                        'name' => 'chat-asistente',
+                        'model' => $request->model,
+                        'input' => $request->messages,           // instructions + mensaje del usuario
+                        'output' => $respuesta,         // texto de la respuesta
+                        'startTime' => $inicio,
+                        'endTime' => $despues,
+                        'usage' => [
+                            'inputTokens'  => $usage->inputTokens ?? null,
+                            'outputTokens' => $usage->outputTokens ?? null,
+                            'totalTokens'  => $usage->totalTokens ?? null,
+                        ],
                     ],
-                ],
-            ]],
-        ]);
+                ]],
+            ]);
+        }
 
         $data = [
             'texto' => $texto,

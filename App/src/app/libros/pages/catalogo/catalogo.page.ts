@@ -81,13 +81,10 @@ constructor() {
 
     const query = params.toString();
 
-    const observable = query
-      ? this.service.buscarLibros(query)
-      : this.service.cargarLibros();
+    const observable = this.service.buscarLibrosFormulario(query)
 
     observable.subscribe({
       next: (respuesta) => {
-        console.log(respuesta);
         this.libros.set(respuesta.data ?? []);
 
         this.paginaActual = respuesta.meta?.current_page ?? 1;
@@ -118,9 +115,9 @@ constructor() {
 
     const siguientePagina = this.paginaActual + 1;
 
-    const url = `&page=${siguientePagina}`;
+    const url = `page=${siguientePagina}`;
 
-    this.service.buscarLibros(url).subscribe(resp => {
+    this.service.buscarLibrosFormulario(url).subscribe(resp => {
 
       const nuevos = resp.data ?? [];
 

@@ -58,7 +58,7 @@ class LibroAIService
         $respuesta = $this->cliente->responses()->create([
             'model'        => config('services.azure_openai.model'), // gpt-5.4-nano
             'instructions' => 'Inventas libros de biblioteca realistas en español. El título nunca pasa de 50 caracteres.',
-            'input'        => 'Genera 2 libros variados, de distintos géneros y épocas.',
+            'input'        => 'Genera 15 libros variados, de distintos géneros y épocas.',
             'text' => [
                 'format' => [
                     'type'   => 'json_schema',
