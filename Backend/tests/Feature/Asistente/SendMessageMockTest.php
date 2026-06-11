@@ -23,7 +23,6 @@ class SendMessageMockTest extends TestCase{
             "content" => "Dime 2 autores",
         ];
 
-
         //Crea un objeto falso
         $mock = Mockery::mock(\App\Services\AzureOpenAIClient::class);
 
@@ -44,8 +43,9 @@ class SendMessageMockTest extends TestCase{
 
         $response = $this->postJson('/api/chat', [
             'messages' => [
-                $message
-            ]
+                $message,
+            ],
+            //'model' =>
         ]);
 
         $response->assertStatus(200);

@@ -32,6 +32,8 @@ jobs:
 
       - name: Run backend tests
         run: composer test
+        env: 
+          AZURE_OPENAI_MODEL: gpt-5.4-nano
 
   frontend:
     runs-on: ubuntu-latest
