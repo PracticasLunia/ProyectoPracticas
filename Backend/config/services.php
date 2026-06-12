@@ -39,7 +39,8 @@ return [
         'endpoint' => env('AZURE_OPENAI_ENDPOINT'),
         'api_key' => env('AZURE_OPENAI_API_KEY'),
         'model' => env('AZURE_OPENAI_MODEL'),
-        'image' => env('AZURE_OPENAI_IMAGE_MODEL')
+        'image' => env('AZURE_OPENAI_IMAGE_MODEL'),
+        'embedding' => env('AZURE_OPENAI_EMBEDDING_MODEL')
     ],
 
     'langfuse' => [

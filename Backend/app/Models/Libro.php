@@ -47,6 +47,10 @@ class Libro extends Model
         return $this->hasMany(Prestamo::class);
     }
 
+    public function fragmentos(){
+        return $this->hasMany(LibroFragmento::class);
+    }
+
     //Funciones para asignarles valor a los atributos $appends
     public function getTienePortadaAttribute(): bool
     {

@@ -20,4 +20,8 @@ class AzureOpenAIClient
     {
         return $this->cliente->responses();
     }
+
+    public function embeddings(){
+        return $this->cliente->embeddings();
+    }
 }
