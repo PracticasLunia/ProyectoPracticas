@@ -52,11 +52,37 @@
         [class.user]="m.role === 'user'"
         [class.bot]="m.role === 'assistant'"
       >
-
         {{ m.content }}
 
-      </div>
+        @if (m.fuentes && m.fuentes.length > 0) {
 
+          <div class="fuentes">
+
+            <strong>Fuentes consultadas</strong>
+
+            @for (fuente of m.fuentes; track $index) {
+
+              <div class="fuente">
+
+                <div>
+                  <strong>{{ fuente.titulo }}</strong>
+                  - página {{ fuente.pagina }}
+                </div>
+
+                <small>
+                {{ fuente.texto | slice:0:200 }}...
+              </small>
+
+              </div>
+
+            }
+
+          </div>
+
+        }
+
+      </div>
+      
     </div>
 
   }

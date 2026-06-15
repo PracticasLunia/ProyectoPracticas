@@ -5,9 +5,18 @@ namespace App\Services;
 use App\Models\Libro;
 use Illuminate\Support\Facades\Storage;
 use Smalot\PdfParser\Parser;
+use App\Services\AzureOpenAIClient;
+use Illuminate\Support\Str;
+use thiagoalessio\TesseractOCR\TesseractOCR;
+use Imagick;
 
 class LibroIndexacionService
 {
+
+    public function __construct(
+        private AzureOpenAIClient $azureOpenAIClient
+    ) {}
+
     public function handle(): void
     {
         Libro::query()
@@ -84,7 +93,7 @@ class LibroIndexacionService
 
             $resultado[$numeroPagina] = [
                 'texto' => $texto,
-                'origen' => 'pdf',
+                'origen' => 'pdf_text',
             ];
         }
 
@@ -98,18 +107,56 @@ class LibroIndexacionService
             return [];
         }
 
-        return str_split($texto, 1000);
+        $palabras = preg_split('/\s+/', $texto);
+
+        $fragmentos = [];
+        $chunkActual = [];
+        $limitePalabras = 700;
+
+        foreach ($palabras as $palabra) {
+
+            $chunkActual[] = $palabra;
+
+            if (count($chunkActual) >= $limitePalabras) {
+                $fragmentos[] = implode(' ', $chunkActual);
+                $chunkActual = [];
+            }
+        }
+
+        if (! empty($chunkActual)) {
+            $fragmentos[] = implode(' ', $chunkActual);
+        }
+
+        return $fragmentos;
     }
 
-    private function crearEmbedding(string $texto): array {
+    private function crearEmbedding(string $texto): array{
+        $respuesta = $this->azureOpenAIClient
+            ->embeddings()
+            ->create([
+                'model' => config('services.azure_openai.embedding'),
+                'input' => $texto,
+            ]);
 
-        return [];
+        return $respuesta->data[0]->embedding;
     }
 
     private function extraerTextoConOCR(string $rutaPdf, int $pagina): string {
+        $imagick = new Imagick();
 
-        
+        $imagick->setResolution(300, 300);
+        $imagick->readImage($rutaPdf.'['.($pagina - 1).']');
 
-        return '';
+        $rutaTemporal = storage_path(
+            'app/temp/'.Str::uuid().'.png'
+        );
+
+        $imagick->writeImage($rutaTemporal);
+
+        $texto = (new TesseractOCR($rutaTemporal))
+            ->lang('spa')
+            ->run();
+
+        return $texto;
     }
 }

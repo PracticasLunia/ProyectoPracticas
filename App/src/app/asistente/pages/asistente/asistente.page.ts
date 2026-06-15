@@ -5,6 +5,7 @@ import { IonContent, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle,
 import { MessageInterface } from '../../interfaces/messageInterface';
 import { AsistenteResponseInterface } from '../../interfaces/asistenteResponse.interface';
 import { AsistenteService } from '../../services/asistenteService.service';
+import { SlicePipe } from '@angular/common';
 
 @Component({
   selector: 'app-asistente',
@@ -15,7 +16,7 @@ import { AsistenteService } from '../../services/asistenteService.service';
     FormsModule, IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle,
     IonContent, IonFooter, IonInput, IonButton, IonIcon, IonItem, IonSpinner,
     IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonCard,
-    IonGrid
+    IonGrid, SlicePipe
 ],
 })
 export default class AsistentePage {
@@ -70,6 +71,7 @@ export default class AsistentePage {
           role: 'assistant',
           content: response.data?.texto ?? 'No pude generar respuesta.',
           citas: response.data?.citas ?? [],
+          fuentes: response.data?.fuentes ?? [],
         }
       ]);
 

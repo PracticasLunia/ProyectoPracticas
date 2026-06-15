@@ -19,7 +19,11 @@ final readonly class SendMessage {
 
         $inicio = now()->toIso8601String();
 
-        $toolExecutor = new ToolExecutor($request->user);
+        $toolExecutor = new ToolExecutor(
+            $request->user,
+            app(AzureOpenAIClient::class)
+        );
+
         $input        = $request->messages;
         $iteraciones  = 0;
         $maxIteraciones = 5;
@@ -35,6 +39,7 @@ final readonly class SendMessage {
             ]);
 
             $functionCalls = [];
+
             foreach ($respuesta->output as $item) {
                 if ($item->type === 'function_call') {
                     $functionCalls[] = $item;
@@ -49,6 +54,12 @@ final readonly class SendMessage {
 
                 $args      = json_decode($call->arguments ?? '{}', true) ?: [];
                 $resultado = $toolExecutor->ejecutar($call->name, $args);
+
+                $fuentesRag = [];
+
+                if ($call->name === 'buscar_en_contenido_libros') {
+                    $fuentesRag = $resultado;
+                }
 
                 $input[] = [
                     'type'      => 'function_call',
@@ -117,6 +128,7 @@ final readonly class SendMessage {
         $data = [
             'texto' => $texto,
             'citas' => $citas,
+            'fuentes' => $fuentesRag ?? [],
         ];
 
         return $data;
@@ -132,6 +144,8 @@ final readonly class SendMessage {
            recuérdale amablemente que estás aquí para ayudarle con la biblioteca
            Puedes usar varias tools entre si, por ejemplo cuando te realizan una consulta que dependa una de la otra,
            siempre que tenga sentido obviamente.
+           si usas la tool `buscar_en_contenido_libros`, responde apoyandote en esos fragmentos, cita libro y pagina,
+           si no hay contexto suficiente, dilo, no inventes paginas.
         ';
     }
 
@@ -184,6 +198,22 @@ final readonly class SendMessage {
                 ],
             ],
             ['type' => 'web_search'],
+            [
+                'type' => 'function',
+                'name' => 'buscar_en_contenido_libros',
+                'description' => 'Busca en el contenido real de los PDFs de la biblioteca usando retrieval semantico. Devuelve fragmentos relevantes con titulo del libro, pagina y texto.',
+                'parameters' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'consulta' => [
+                            'type' => 'string',
+                            'description' => 'Pregunta o tema a buscar dentro del contenido de los libros.',
+                        ],
+                    ],
+                    'required' => ['consulta'],
+                ]
+            ]
+
         ];
     }
 }

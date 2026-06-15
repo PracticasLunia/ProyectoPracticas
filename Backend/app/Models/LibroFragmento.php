@@ -15,6 +15,10 @@ class LibroFragmento extends Model {
         "origen"
     ];
 
+    protected $casts = [
+        'embedding' => 'array',
+    ];
+
     public function libro(){
         return $this->belongsTo(Libro::class);
     }

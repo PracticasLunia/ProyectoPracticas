@@ -3,12 +3,15 @@
 namespace App\Services\Chat;
 
 use App\Models\Libro;
+use App\Models\LibroFragmento;
 use App\Models\User;
+use App\Services\AzureOpenAIClient;
 
 final class ToolExecutor
 {
     public function __construct(
-        private readonly User $user
+        private readonly User $user,
+        private AzureOpenAIClient $azureOpenAIClient
     ) {}
 
     public function ejecutar(string $nombre, array $argumentos): array
@@ -18,6 +21,7 @@ final class ToolExecutor
             'obtener_mis_prestamos'       => $this->obtenerMisPrestamos(),
             'obtener_mi_historial_lectura' => $this->obtenerMiHistorialLectura(),
             'buscar_libros_en_catalogo'   => $this->buscarLibrosEnCatalogo($argumentos['termino'] ?? ''),
+            'buscar_en_contenido_libros' => $this->buscarEnContenidoLibros($argumentos['consulta'] ?? ''),
             default                       => ['error' => "Tool desconocida: {$nombre}"],
         };
     }
@@ -83,4 +87,60 @@ final class ToolExecutor
             'disponible' => $l->getTienePrestamoActivoAttribute() === false,
         ])->all();
     }
+
+    private function buscarEnContenidoLibros(string $consulta): array{
+        if ($consulta === '') {
+            return ['error' => 'Consulta vacía'];
+        }
+
+        $respuesta = $this->azureOpenAIClient->embeddings()->create([
+            'model' => config('services.azure_openai.embedding'),
+            'input' => $consulta,
+        ]);
+
+        $embeddingConsulta = $respuesta->toArray()['data'][0]['embedding'];
+
+        $fragmentos = LibroFragmento::with('libro')
+            ->limit(3000)
+            ->get();
+
+        $resultados = [];
+
+        foreach ($fragmentos as $fragmento) {
+
+            $score = $this->cosineSimilarity(
+                $embeddingConsulta,
+                $fragmento->embedding
+            );
+
+            $resultados[] = [
+                'libro_id' => $fragmento->libro_id,
+                'titulo'   => $fragmento->libro->titulo,
+                'pagina'   => $fragmento->pagina,
+                'texto'    => $fragmento->contenido,
+                'score'    => $score,
+            ];
+        }
+
+        usort($resultados, fn ($a, $b) => $b['score'] <=> $a['score']);
+
+        return array_slice($resultados, 0, 5);
+    }
+
+    private function cosineSimilarity(array $a, array $b): float{
+        $dot = 0;
+        $magA = 0;
+        $magB = 0;
+
+        foreach ($a as $i => $val) {
+            $dot += $val * $b[$i];
+            $magA += $val * $val;
+            $magB += $b[$i] * $b[$i];
+        }
+
+        return $dot / (sqrt($magA) * sqrt($magB) + 1e-10);
+    }
+
+
+
 }
