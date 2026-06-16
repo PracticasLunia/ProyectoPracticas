@@ -51,7 +51,7 @@ class LibroIndexacionService
                 $libro->fragmentos()->create([
                     'pagina' => $numeroPagina,
                     'orden' => $orden,
-                    'contenido' => $textoFragmento,
+                    'texto' => $textoFragmento,
                     'origen' => $datosPagina['origen'],
                     'embedding' => $embedding,
                 ]);
@@ -138,7 +138,7 @@ class LibroIndexacionService
                 'input' => $texto,
             ]);
 
-        return $respuesta->data[0]->embedding;
+        return $respuesta->embeddings[0]->embedding;
     }
 
     private function extraerTextoConOCR(string $rutaPdf, int $pagina): string {
@@ -148,7 +148,7 @@ class LibroIndexacionService
         $imagick->readImage($rutaPdf.'['.($pagina - 1).']');
 
         $rutaTemporal = storage_path(
-            'app/temp/'.Str::uuid().'.png'
+            'app/private/'.Str::uuid().'.png'
         );
 
         $imagick->writeImage($rutaTemporal);

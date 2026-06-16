@@ -45,7 +45,6 @@ class SendMessageMockTest extends TestCase{
             'messages' => [
                 $message,
             ],
-            //'model' =>
         ]);
 
         $response->assertStatus(200);

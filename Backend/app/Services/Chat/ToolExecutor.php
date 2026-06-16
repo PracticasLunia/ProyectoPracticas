@@ -117,7 +117,7 @@ final class ToolExecutor
                 'libro_id' => $fragmento->libro_id,
                 'titulo'   => $fragmento->libro->titulo,
                 'pagina'   => $fragmento->pagina,
-                'texto'    => $fragmento->contenido,
+                'texto'    => $fragmento->texto,
                 'score'    => $score,
             ];
         }
