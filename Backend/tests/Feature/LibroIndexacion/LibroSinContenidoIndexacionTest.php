@@ -4,7 +4,9 @@ namespace Tests\Feature\LibroIndexacion;
 
 use App\Models\Autor;
 use App\Models\Libro;
+use App\Services\LibroIndexacionService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Mockery;
 use Tests\TestCase;
 
 class LibroSinContenidoIndexacionTest extends TestCase
@@ -31,6 +33,17 @@ class LibroSinContenidoIndexacionTest extends TestCase
             'contenido_path' => null,
         ]);
 
+        $mock = Mockery::mock(LibroIndexacionService::class);
+
+        $mock->shouldReceive('handle')
+            ->once()
+            ->andReturn(null);
+
+
+        $this->app->instance(
+            LibroIndexacionService::class,
+            $mock
+        );
 
         $this->artisan('libros:indexar-contenidos')
             ->assertSuccessful();
