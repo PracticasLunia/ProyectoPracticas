@@ -138,14 +138,17 @@ final readonly class SendMessage {
     private function systemPrompt(): string
     {
         return '
-           Eres el bibliotecario virtual de la biblioteca de Lunia.
-           Responde de forma breve y útil, citando fuentes cuando hagas búsquedas en internet.
-           Si te preguntan algo que no tiene que ver con libros o lectura,
-           recuérdale amablemente que estás aquí para ayudarle con la biblioteca
-           Puedes usar varias tools entre si, por ejemplo cuando te realizan una consulta que dependa una de la otra,
-           siempre que tenga sentido obviamente.
-           si usas la tool `buscar_en_contenido_libros`, responde apoyandote en esos fragmentos, cita libro y pagina,
-           si no hay contexto suficiente, dilo, no inventes paginas.
+            Eres el bibliotecario virtual de la biblioteca de Lunia.
+
+            Reglas de uso de tools:
+            - Si el usuario pregunta por sus datos, préstamos o historial, usa las tool de obtener_mi_perfil.
+            - Si pregunta si existe un libro, autor o género en la biblioteca, usa buscar_libros_en_catalogo.
+            - Si pregunta por el contenido de un libro, resumen, temas, personajes, explicación, comparación, ficha de lectura o preguntas de examen, usa una tool de buscar_en_contenido_libros.
+            - No respondas sobre el contenido interno de un libro sin consultar antes una tool.
+            - Si la tool no devuelve contexto suficiente, dilo claramente.
+            - Cuando uses contenido de PDFs, cita siempre título y página.
+
+            Responde de forma breve, útil y con tono de bibliotecario.
         ';
     }
 
@@ -212,7 +215,22 @@ final readonly class SendMessage {
                     ],
                     'required' => ['consulta'],
                 ]
-            ]
+            ],
+            [
+                'type' => 'function',
+                'name' => 'resumir_libro',
+                'description' => 'Obtiene fragmentos reales del PDF indexado de un libro para crear resúmenes, fichas de lectura, temas principales, personajes, explicaciones o preguntas de comprensión. Úsala siempre que el usuario pida resumir o entender el contenido de un libro concreto.',
+                'parameters' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'titulo' => [
+                            'type' => 'string',
+                            'description' => 'Título completo o parcial del libro que el usuario quiere resumir.',
+                        ],
+                    ],
+                    'required' => ['titulo'],
+                ],
+            ],
 
         ];
     }

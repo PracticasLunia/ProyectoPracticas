@@ -22,6 +22,7 @@ final class ToolExecutor
             'obtener_mi_historial_lectura' => $this->obtenerMiHistorialLectura(),
             'buscar_libros_en_catalogo'   => $this->buscarLibrosEnCatalogo($argumentos['termino'] ?? ''),
             'buscar_en_contenido_libros' => $this->buscarEnContenidoLibros($argumentos['consulta'] ?? ''),
+            'resumir_libro' => $this->resumirLibro($argumentos['titulo'] ?? ''),
             default                       => ['error' => "Tool desconocida: {$nombre}"],
         };
     }
@@ -141,6 +142,50 @@ final class ToolExecutor
         return $dot / (sqrt($magA) * sqrt($magB) + 1e-10);
     }
 
+
+    private function resumirLibro(string $titulo): array{
+        if ($titulo === '') {
+            return ['error' => 'Falta el título del libro'];
+        }
+
+        $libro = Libro::query()
+            ->where('titulo', 'like', "%{$titulo}%")
+            ->with(['autor', 'fragmentos' => fn ($q) => $q->orderBy('pagina')->orderBy('orden')])
+            ->first();
+
+        if (! $libro) {
+            return ['error' => "No he encontrado ningún libro parecido a {$titulo}"];
+        }
+
+        if ($libro->fragmentos->isEmpty()) {
+            return [
+                'libro' => [
+                    'id' => $libro->id,
+                    'titulo' => $libro->titulo,
+                    'autor' => $libro->autor->nombre ?? 'desconocido',
+                ],
+                'error' => 'El libro existe, pero todavía no tiene contenido indexado',
+            ];
+        }
+
+        $fragmentos = $libro->fragmentos
+            ->take(12)
+            ->map(fn ($fragmento) => [
+                'pagina' => $fragmento->pagina,
+                'texto' => mb_substr($fragmento->texto, 0, 1200),
+            ])
+            ->values()
+            ->all();
+
+        return [
+            'libro' => [
+                'id' => $libro->id,
+                'titulo' => $libro->titulo,
+                'autor' => $libro->autor->nombre ?? 'desconocido',
+            ],
+            'fragmentos' => $fragmentos,
+        ];
+    }
 
 
 }
