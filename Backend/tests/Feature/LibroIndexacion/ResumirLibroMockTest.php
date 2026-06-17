@@ -35,6 +35,11 @@ class ResumirLibroMockTest extends TestCase{
 
     public function test_resumir_libro_devuelve_error_con_titulo_vacio(): void{
 
+        $this->app->instance(
+            AzureOpenAIClient::class,
+            Mockery::mock(AzureOpenAIClient::class)
+        );
+
         $executor = app(ToolExecutor::class);
 
         $resultado = $executor->ejecutar(
@@ -68,6 +73,11 @@ class ResumirLibroMockTest extends TestCase{
             'embedding' => [0.1,0.2,0.3],
             'origen' => 'pdf_text',
         ]);
+
+        $this->app->instance(
+            AzureOpenAIClient::class,
+            Mockery::mock(AzureOpenAIClient::class)
+        );
 
         $executor = app(ToolExecutor::class);
 
